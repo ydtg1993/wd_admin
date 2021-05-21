@@ -90,6 +90,16 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
         ],
+//mongodb://saas:NOUmr64I84BTVvO@35.72.160.109:27077/?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false
+        'mongodb' => [
+            'driver'   => 'mongodb',
+            'host'     => env('MONGODB_HOST','35.72.160.109'),
+            'port'     => env('MONGODB_PORT',27077),
+            'database' => env('MONGODB_DATABASE','VideoInfoDB'),
+            'username' => env('MONGODB_USERNAME','saas'),
+            'password' => env('MONGODB_PASSWORD','NOUmr64I84BTVvO'),
+        ],
+
 
     ],
 

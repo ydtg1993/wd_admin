@@ -10,4 +10,5 @@
 - php artisan migrate
 - php artisan db:seed
 - php artisan key:generate
+- php artisan command:DBInit 初始化业务数据表
 - 登录后台：host/admin   帐号：root  密码：123456

@@ -165,6 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Jenssegers\Mongodb\MongodbServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -229,6 +230,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Mongo'     => Jenssegers\Mongodb\MongodbServiceProvider::class,
 
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
         'EasyWeChat' => Overtrue\LaravelWeChat\Facade::class,
