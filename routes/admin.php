@@ -186,4 +186,14 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         //删除
         Route::delete('tag/destroy', 'TagController@destroy')->name('admin.tag.destroy')->middleware('permission:information.tag.destroy');
     });
+
+    //审核管理
+    Route::group(['middleware' => 'permission:information.tag'], function () {
+        //审核影片
+        Route::get('review/movie', 'ReviewMovieController@index')->name('admin.review.movie');
+        Route::get('review/movie/data', 'ReviewMovieController@data')->name('admin.review_movie.data');
+        //编辑
+        Route::get('review/movie/{id}/edit', 'ReviewMovieController@edit')->name('admin.review.movie.edit')->middleware('permission:review.movie.edit');
+        Route::put('review/movie/{id}/update', 'ReviewMovieController@update')->name('admin.review.movie.update')->middleware('permission:review.movie.update');
+    });
 });
