@@ -188,7 +188,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
     });
 
     //审核管理
-    Route::group(['middleware' => 'permission:information.tag'], function () {
+    Route::group(['middleware' => 'permission:review.movie'], function () {
         //审核影片
         Route::get('review/movie', 'ReviewMovieController@index')->name('admin.review.movie');
         Route::get('review/movie/data', 'ReviewMovieController@data')->name('admin.review_movie.data');
@@ -196,4 +196,41 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::get('review/movie/{id}/edit', 'ReviewMovieController@edit')->name('admin.review.movie.edit')->middleware('permission:review.movie.edit');
         Route::put('review/movie/{id}/update', 'ReviewMovieController@update')->name('admin.review.movie.update')->middleware('permission:review.movie.update');
     });
+    //发行商
+    Route::group(['middleware' => 'permission:movie.companies'], function () {
+        Route::get('movie/companies', 'MovieFilmCompaniesController@index')->name('admin.movie.companies');
+        Route::get('movie/companies/data', 'MovieFilmCompaniesController@data')->name('admin.movie_companies.data');
+        Route::get('movie/companies/create', 'MovieFilmCompaniesController@create')->name('admin.movie.companies.create')->middleware('permission:movie.companies.create');
+        Route::post('movie/companies/store', 'MovieFilmCompaniesController@store')->name('admin.movie.companies.store')->middleware('permission:movie.companies.store');
+        Route::get('movie/companies/{id}/edit', 'MovieFilmCompaniesController@edit')->name('admin.movie.companies.edit')->middleware('permission:movie.companies.edit');
+        Route::put('movie/companies/{id}/update', 'MovieFilmCompaniesController@update')->name('admin.movie.companies.update')->middleware('permission:movie.companies.update');
+    });
+    //系列
+    Route::group(['middleware' => 'permission:movie.series'], function () {
+        Route::get('movie/series', 'MovieSeriesController@index')->name('admin.movie.series');
+        Route::get('movie/series/data', 'MovieSeriesController@data')->name('admin.movie_series.data');
+        Route::get('movie/series/create', 'MovieSeriesController@create')->name('admin.movie.series.create')->middleware('permission:movie.series.create');
+        Route::post('movie/series/store', 'MovieSeriesController@store')->name('admin.movie.series.store')->middleware('permission:movie.series.store');
+        Route::get('movie/series/{id}/edit', 'MovieSeriesController@edit')->name('admin.movie.series.edit')->middleware('permission:movie.series.edit');
+        Route::put('movie/series/{id}/update', 'MovieSeriesController@update')->name('admin.movie.series.update')->middleware('permission:movie.series.update');
+    });
+    //标签
+    Route::group(['middleware' => 'permission:movie.label'], function () {
+        Route::get('movie/label', 'MovieLabelController@index')->name('admin.movie.label');
+        Route::get('movie/label/data', 'MovieLabelController@data')->name('admin.movie_label.data');
+        Route::get('movie/label/create', 'MovieLabelController@create')->name('admin.movie.label.create')->middleware('permission:movie.label.create');
+        Route::post('movie/label/store', 'MovieLabelController@store')->name('admin.movie.label.store')->middleware('permission:movie.label.store');
+        Route::get('movie/label/{id}/edit', 'MovieLabelController@edit')->name('admin.movie.label.edit')->middleware('permission:movie.label.edit');
+        Route::put('movie/label/{id}/update', 'MovieLabelController@update')->name('admin.movie.label.update')->middleware('permission:movie.label.update');
+    });
+    //演员
+    Route::group(['middleware' => 'permission:movie.actor'], function () {
+        Route::get('movie/actor', 'MovieActorController@index')->name('admin.movie.actor');
+        Route::get('movie/actor/data', 'MovieActorController@data')->name('admin.movie_actor.data');
+        Route::get('movie/actor/create', 'MovieActorController@create')->name('admin.movie.actor.create')->middleware('permission:movie.actor.create');
+        Route::post('movie/actor/store', 'MovieActorController@store')->name('admin.movie.actor.store')->middleware('permission:movie.actor.store');
+        Route::get('movie/actor/{id}/edit', 'MovieActorController@edit')->name('admin.movie.actor.edit')->middleware('permission:movie.actor.edit');
+        Route::put('movie/actor/{id}/update', 'MovieActorController@update')->name('admin.movie.actor.update')->middleware('permission:movie.actor.update');
+    });
+
 });

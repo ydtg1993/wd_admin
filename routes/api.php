@@ -31,4 +31,7 @@ Route::group(['namespace'=>'Api'],function (){
     Route::any('movieFileUpload', 'MovieFileController@upload')->name('api.movieFileUpload');
     Route::any('movieFileBatchUpload', 'MovieFileController@batchUpload')->name('api.movieFileBatchUpload');
     Route::any('movieFileRemove', 'MovieFileController@remove')->name('api.movieFileRemove');
+
+    Route::any('actorFileUpload', 'ActorFileController@upload')->name('api.actorFileUpload');
+    Route::any('actorFileRemove', 'ActorFileController@remove')->name('api.actorFileRemove');
 });
