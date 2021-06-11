@@ -43,7 +43,7 @@ class UserController extends Controller
     protected function validateLogin(Request $request)
     {
         $this->validate($request, [
-            //'captcha' => 'required|captcha',
+            'captcha' => 'required|captcha',
             $this->username() => 'required|string',
             'password' => 'required|string',
         ]);
@@ -313,7 +313,5 @@ class UserController extends Controller
             return Redirect::back()->withErrors('更新失败');
         }
     }
-
-
 
 }

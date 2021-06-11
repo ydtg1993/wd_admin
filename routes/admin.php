@@ -139,6 +139,8 @@ Route::group(['namespace'=>'Admin','prefix'=>'admin','middleware'=>['auth','perm
         Route::delete('operate_log/destroy','OperateLogController@destroy')->name('admin.operate_log.destroy');
     });
 
+
+
 });
 
 /*
@@ -186,7 +188,14 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         //删除
         Route::delete('tag/destroy', 'TagController@destroy')->name('admin.tag.destroy')->middleware('permission:information.tag.destroy');
     });
+});
 
+/*
+|--------------------------------------------------------------------------
+| 影片发布模块
+|--------------------------------------------------------------------------
+*/
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'permission:information', 'operate.log']], function () {
     //审核管理
     Route::group(['middleware' => 'permission:review.movie'], function () {
         //审核影片
@@ -196,6 +205,13 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::get('review/movie/{id}/edit', 'ReviewMovieController@edit')->name('admin.review.movie.edit')->middleware('permission:review.movie.edit');
         Route::put('review/movie/{id}/update', 'ReviewMovieController@update')->name('admin.review.movie.update')->middleware('permission:review.movie.update');
     });
+});
+/*
+|--------------------------------------------------------------------------
+| 影片相关模块
+|--------------------------------------------------------------------------
+*/
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'permission:information', 'operate.log']], function () {
     //发行商
     Route::group(['middleware' => 'permission:movie.companies'], function () {
         Route::get('movie/companies', 'MovieFilmCompaniesController@index')->name('admin.movie.companies');
@@ -231,6 +247,90 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::post('movie/actor/store', 'MovieActorController@store')->name('admin.movie.actor.store')->middleware('permission:movie.actor.store');
         Route::get('movie/actor/{id}/edit', 'MovieActorController@edit')->name('admin.movie.actor.edit')->middleware('permission:movie.actor.edit');
         Route::put('movie/actor/{id}/update', 'MovieActorController@update')->name('admin.movie.actor.update')->middleware('permission:movie.actor.update');
+    });
+
+});
+
+
+
+/*
+|--------------------------------------------------------------------------
+| 网站管理模块
+|--------------------------------------------------------------------------
+*/
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'permission:conf', 'operate.log']], function () {
+    //广告招商
+    Route::group(['middleware' => 'permission:conf.ad_investment'], function () {
+        Route::get('conf/ad_investment', 'ConfController@adInvestment')->name('admin.conf.ad_investment');
+        Route::put('conf/save_ad_investment', 'ConfController@saveAdInVestMent')->name('admin.conf.save_ad_investment');
+    });
+    //下载本站APP
+    Route::group(['middleware' => 'permission:conf.download_app_setting'], function () {
+        Route::get('conf/download_app_setting', 'ConfController@downloadAppSettingView')->name('admin.conf.download_app_setting');
+        Route::put('conf/save_download_app_setting', 'ConfController@saveDownloadAppSetting')->name('admin.conf.save_download_app_setting');
+    });
+    //关于我们
+    Route::group(['middleware' => 'permission:conf.about_us'], function () {
+        Route::get('conf/about_us', 'ConfController@aboutUsView')->name('admin.conf.about_us');
+        Route::put('conf/save_about_us', 'ConfController@saveDownloadAppSetting')->name('admin.conf.save_about_us');
+    });
+    //意见反馈
+    Route::group(['middleware' => 'permission:conf.complaint'], function () {
+        Route::get('complaint/data', 'ComplaintController@data')->name('admin.complaint.data');
+        Route::get('complaint', 'ComplaintController@index')->name('admin.complaint');
+    });
+    //友情链接
+    Route::group(['middleware' => 'permission:conf.friend_link'], function () {
+        Route::get('conf/friend_link', 'ConfController@friendLinkView')->name('admin.conf.friend_link');
+        Route::put('conf/save_friend_link', 'ConfController@saveFriendLink')->name('admin.conf.save_friend_link');
+    });
+    //隐私条款
+    Route::group(['middleware' => 'permission:conf.private_item'], function () {
+        Route::get('conf/private_item', 'ConfController@privateItemView')->name('admin.conf.private_item');
+        Route::put('conf/save_private_item', 'ConfController@saveprivateItem')->name('admin.conf.save_private_item');
+    });
+    //磁力教程
+    Route::group(['middleware' => 'permission:conf.magnet_link'], function () {
+        Route::get('conf/magnet_link', 'ConfController@magnetLinkView')->name('admin.conf.magnet_link');
+        Route::put('conf/save_magnet_link', 'ConfController@saveMagnetLink')->name('admin.conf.save_magnet_link');
+    });
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| 公告管理模块
+|--------------------------------------------------------------------------
+*/
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'permission:announcement', 'operate.log']], function () {
+
+    Route::get('top/data', 'AnnouncementController@data')->name('admin.top.data');
+
+    //顶部轮播图
+    Route::group(['middleware' => 'permission:announcement.top'], function () {
+        Route::get('top/index', 'AnnouncementController@topIndex')->name('admin.top.index');
+        //添加
+        Route::get('top/create_top', 'AnnouncementController@createTopView')->name('admin.top.create_top')->middleware('permission:announcement.top.create_top');
+        Route::post('top/store_top', 'AnnouncementController@storeTop')->name('admin.top.store_top')->middleware('permission:announcement.top.create_top');
+        //编辑
+        Route::get('top/{id}/edit_top', 'AnnouncementController@editTopView')->name('admin.top.edit_top')->middleware('permission:announcement.top.edit_top');
+        Route::put('top/{id}/update_top', 'AnnouncementController@updateTop')->name('admin.top.update_top')->middleware('permission:announcement.top.edit_top');
+        //删除
+        Route::delete('top/destroy_top', 'AnnouncementController@destroyTop')->name('admin.top.destroy_top')->middleware('permission:announcement.top.destroy_top');
+
+    });
+    //内容轮播图
+    Route::group(['middleware' => 'permission:announcement.content'], function () {
+        Route::get('content/index', 'AnnouncementController@contentIndex')->name('admin.content.index');
+        //添加
+        Route::get('content/create_content', 'AnnouncementController@createContentView')->name('admin.content.create_content')->middleware('permission:announcement.content.create_content');
+        Route::post('content/store_content', 'AnnouncementController@storeContent')->name('admin.content.store_content')->middleware('permission:announcement.content.create_content');
+        //编辑
+        Route::get('content/{id}/edit_content', 'AnnouncementController@editContentView')->name('admin.content.edit_content')->middleware('permission:announcement.content.edit_content');
+        Route::put('content/{id}/update_content', 'AnnouncementController@updateContent')->name('admin.content.edit_content')->middleware('permission:announcement.content.edit_content');
+        //删除
+        Route::delete('content/destroy_content', 'AnnouncementController@destroyContent')->name('admin.content.destroy_content')->middleware('permission:announcement.content.destroy_content');
+
     });
 
 });
