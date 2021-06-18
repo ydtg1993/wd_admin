@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\CollectionMovie;
+use App\Models\Movie;
 use App\Models\MovieFilmCompanies;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -80,6 +81,12 @@ class MovieFilmCompaniesController extends Controller
             }else{
                 DB::table('movie_film_companies_category_associate')->insert(['film_companies_id'=>$id,'cid'=>$data['category']]);
             }
+
+            $numbers = explode("\r\n",$data['numbers']);
+            $movie_ids = Movie::whereIn('number',$numbers)->pluck('id')->all();
+            foreach ($movie_ids as $movie_id){
+                DB::table('movie_film_companies_associate')->insert(['film_companies_id'=>$id,'mid'=>$movie_id]);
+            }
         }catch (\Exception $exception){
             return Redirect::back()->withErrors('添加失败');
         }
@@ -98,7 +105,10 @@ class MovieFilmCompaniesController extends Controller
         $company = MovieFilmCompanies::leftJoin('movie_film_companies_category_associate','movie_film_companies.id','=','movie_film_companies_category_associate.film_companies_id')
             ->select('movie_film_companies.*','movie_film_companies_category_associate.film_companies_id','movie_film_companies_category_associate.cid')
             ->findOrFail($id);
-        return View::make('admin.movie_companies.edit', compact('company','categories'));
+        /*关联影片*/
+        $movie_ids = DB::table('movie_film_companies_associate')->where('film_companies_id',$id)->pluck('mid')->all();
+        $numbers = Movie::whereIn('id',$movie_ids)->pluck('number');
+        return View::make('admin.movie_companies.edit', compact('company','categories','numbers'));
     }
 
     /**
@@ -118,6 +128,20 @@ class MovieFilmCompaniesController extends Controller
             }else{
                 DB::table('movie_film_companies_category_associate')->insert(['film_companies_id'=>$id,'cid'=>$data['category']]);
             }
+            /*关联影片*/
+            $has_movie_ids = DB::table('movie_film_companies_associate')->where('film_companies_id',$id)->pluck('mid')->all();
+            $numbers = explode("\r\n",$data['numbers']);
+            $movie_ids = Movie::whereIn('number',$numbers)->pluck('id')->all();
+            foreach ($movie_ids as $movie_id){
+                $index = array_search($movie_id,$has_movie_ids);
+                if($index !== false){
+                    array_splice($has_movie_ids,$index,1);
+                    continue;
+                }
+                //insert
+                DB::table('movie_film_companies_associate')->insert(['film_companies_id'=>$id,'mid'=>$movie_id]);
+            }
+            !empty($has_movie_ids) && DB::table('movie_film_companies_associate')->where('film_companies_id',$id)->whereIn('mid',$has_movie_ids)->delete();
         }catch (\Exception $e){
             return Redirect::back()->withErrors('更新失败:'.$e->getMessage());
         }

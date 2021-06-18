@@ -36,6 +36,12 @@
                         </select>
                     </div>
                 </div>
+                <div class="layui-form-item">
+                    <label for="" class="layui-form-label">关联影片(换行分割)</label>
+                    <div class="layui-input-block">
+                        <textarea name="numbers" placeholder="请输入影片番号 换行分割" class="layui-textarea"></textarea>
+                    </div>
+                </div>
 
                 <div class="layui-form-item">
                     <div class="layui-input-block">

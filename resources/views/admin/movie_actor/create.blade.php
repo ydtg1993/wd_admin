@@ -48,6 +48,24 @@
                     </div>
                 </div>
 
+                <blockquote class="layui-elem-quote" style="margin-top: 30px;margin-bottom: 0">社交账户</blockquote>
+                <table class="layui-table" lay-even="" lay-skin="row">
+                    <thead>
+                        <tr>
+                          <th>渠道</th>
+                          <th>地址</th>
+                          <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="social_accounts_content">
+                    <tbody>
+                    <tr>
+                        <td colspan="3">
+                            <button id="add_account" type="button" class="layui-btn">新增</button>
+                        </td>
+                    </tr>
+                </table>
+
                 <div class="layui-col-md4">
                     <label class="control-label">头像</label>
                     <div class="file-loading">
@@ -72,6 +90,39 @@
         layui.use(['element','form'],function () {
 
         });
+        var accounts = {
+            delApply: function () {
+                $('#social_accounts_content').on('click','.delete_account',function(){
+                    var r = confirm("确定删除？");
+                    if (r != true) {
+                        return;
+                    }
+                    $(this).parent().parent().remove();
+                    accounts.rearrange();
+                });
+            },
+            insert: function () {
+                $('#add_account').click(function () {
+                    $('#social_accounts_content').append("<tr class=accounts_content data-key=>\n" +
+                        "<td>\n" +
+                        "<input name=account_name[] value='' class=layui-input>\n" +
+                        "</td>\n" +
+                        "<td>\n" +
+                        "<input name=account_url[] value='' class=layui-input \n" +
+                        "</td>\n" +
+                        "<td><button type=button class='layui-btn layui-btn-normal layui-btn-sm delete_account'><i class=layui-icon></i></button></td>\n" +
+                        "</tr>");
+                    accounts.rearrange();
+                });
+                return this;
+            },
+            rearrange: function () {
+                document.querySelectorAll('.accounts_content').forEach(function (element, index, array) {
+                    element.setAttribute('data-key', index + '');
+                });
+            }
+        };
+        accounts.insert().delApply();
         addFileInput('photo',true);
     </script>
 @endsection

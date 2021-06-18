@@ -280,7 +280,12 @@ echo '</tbody>';
                 </div>
                 <hr/>
 
-                <button type="submit" class="layui-btn layui-btn-fluid">确认发布</button>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">确认发布</button>
+                        <a  class="layui-btn" href="{{route('admin.review.movie')}}" >返 回</a>
+                    </div>
+                </div>
             </form>
         </div>
     </div>

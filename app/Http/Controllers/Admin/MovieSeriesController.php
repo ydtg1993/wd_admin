@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Movie;
 use App\Models\MovieSeries;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -58,8 +59,7 @@ class MovieSeriesController extends Controller
      */
     public function create()
     {
-        $category = DB::table('movie_series_category')->pluck( 'name','id');
-        $categories = $category->all();
+        $categories = DB::table('movie_series_category')->pluck( 'name','id')->all();
         return View::make('admin.movie_series.create',compact('categories'));
     }
 
@@ -79,6 +79,13 @@ class MovieSeriesController extends Controller
             }else{
                 DB::table('movie_series_category_associate')->insert(['series_id'=>$id,'cid'=>$data['category']]);
             }
+
+            $numbers = explode("\r\n",$data['numbers']);
+            $movie_ids = Movie::whereIn('number',$numbers)->pluck('id')->all();
+            foreach ($movie_ids as $movie_id){
+                //insert
+                DB::table('movie_series_associate')->insert(['series_id'=>$id,'mid'=>$movie_id]);
+            }
         }catch (\Exception $exception){
             return Redirect::back()->withErrors('添加失败');
         }
@@ -92,11 +99,13 @@ class MovieSeriesController extends Controller
      */
     public function edit($id)
     {
-        $category = DB::table('movie_series_category')->pluck( 'name','id');
-        $categories = $category->all();
+        $categories = DB::table('movie_series_category')->pluck( 'name','id')->all();
         $series = MovieSeries::leftJoin('movie_series_category_associate','movie_series.id','=','movie_series_category_associate.series_id')
             ->select('movie_series.*','movie_series_category_associate.series_id','movie_series_category_associate.cid')->findOrFail($id);
-        return View::make('admin.movie_series.edit', compact('series','categories'));
+        /*关联影片*/
+        $movie_ids = DB::table('movie_series_associate')->where('series_id',$id)->pluck('mid')->all();
+        $numbers = Movie::whereIn('id',$movie_ids)->pluck('number');
+        return View::make('admin.movie_series.edit', compact('series','categories','numbers'));
     }
 
     /**
@@ -110,12 +119,27 @@ class MovieSeriesController extends Controller
         $data = $request->all();
         try {
             MovieSeries::where('id', $id)->update(['name' => $data['name'], 'status' => $data['status']]);
+            /*分类*/
             $check = DB::table('movie_series_category_associate')->where('series_id',$id)->first();
             if($check){
                 DB::table('movie_series_category_associate')->where(['id'=>$check->id])->update(['cid'=>$data['category']]);
             }else{
                 DB::table('movie_series_category_associate')->insert(['series_id'=>$id,'cid'=>$data['category']]);
             }
+            /*关联影片*/
+            $has_movie_ids = DB::table('movie_series_associate')->where('series_id',$id)->pluck('mid')->all();
+            $numbers = explode("\r\n",$data['numbers']);
+            $movie_ids = Movie::whereIn('number',$numbers)->pluck('id')->all();
+            foreach ($movie_ids as $movie_id){
+                $index = array_search($movie_id,$has_movie_ids);
+                if($index !== false){
+                    array_splice($has_movie_ids,$index,1);
+                    continue;
+                }
+                //insert
+                DB::table('movie_series_associate')->insert(['series_id'=>$id,'mid'=>$movie_id]);
+            }
+            !empty($has_movie_ids) && DB::table('movie_series_associate')->where('series_id',$id)->whereIn('mid',$has_movie_ids)->delete();
         }catch (\Exception $e){
             return Redirect::back()->withErrors('更新失败:'.$e->getMessage());
         }

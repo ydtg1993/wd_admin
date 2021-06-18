@@ -3,24 +3,24 @@
 @section('content')
     <div class="layui-card">
         <div class="layui-card-header layuiadmin-card-header-auto">
-            <h2>更新标签</h2>
+            <h2>更新分类</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.movie.companies.update',['id'=>$label->id])}}" method="post">
+            <form class="layui-form" action="{{route('admin.movie.category.update',['id'=>$category->id])}}" method="post">
                 {{ method_field('put') }}
                 {{csrf_field()}}
                 <div class="layui-form-item">
                     <label for="" class="layui-form-label">名称</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="name" value="{{ $label->name ?? old('name') }}" lay-verify="required" placeholder="请输公司名称" class="layui-input" >
+                        <input type="text" name="name" value="{{ $category->name ?? old('name') }}" lay-verify="required" disabled class="layui-input" >
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label for="" class="layui-form-label">状态</label>
                     <div class="layui-input-inline">
                         <select name="status" lay-search  lay-filter="parent_id">
-                            <option value="1" <?=$label->status==1?'selected':'' ?>>正常</option>
-                            <option value="2" <?=$label->status==2?'selected':'' ?>>弃用</option>
+                            <option value="1" <?=$category->status==1?'selected':'' ?>>正常</option>
+                            <option value="2" <?=$category->status==2?'selected':'' ?>>弃用</option>
                         </select>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
                 <div class="layui-form-item">
                     <div class="layui-input-block">
                         <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">确 认</button>
-                        <a  class="layui-btn" href="{{route('admin.movie.companies')}}" >返 回</a>
+                        <a  class="layui-btn" href="{{route('admin.movie.category')}}" >返 回</a>
                     </div>
                 </div>
             </form>

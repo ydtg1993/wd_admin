@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\CollectActor;
 use App\Models\CollectionMovie;
 use App\Models\MovieActor;
 use Illuminate\Http\Request;
@@ -23,6 +24,7 @@ class ActorFileController extends Controller
 
         $name = $request->name;
         $id = $request->id;
+        $is_collect = $request->is_collect;
         if (!isset($_FILES[$name]) || empty($_FILES[$name])) {
             return response()->json($data);
         }
@@ -53,7 +55,11 @@ class ActorFileController extends Controller
             throw new \Exception("文件上传失败:无文件操作权限");
         }
         if ($res) {
-            MovieActor::where('id', $id)->update(['photo' => $new_dir . $newFile]);
+            if($is_collect){
+                CollectActor::where('id', $id)->update(['photo' => $new_dir . $newFile]);
+            }else {
+                MovieActor::where('id', $id)->update(['photo' => $new_dir . $newFile]);
+            }
             $data = [
                 'code' => 0,
                 'msg' => '上传成功',
