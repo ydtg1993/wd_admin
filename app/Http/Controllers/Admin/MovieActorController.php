@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\CollectActor;
 use App\Models\MovieActor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -40,6 +41,9 @@ class MovieActorController extends Controller
             if(isset($categories[$record['cid']])){
                 $record['category'] = $categories[$record['cid']];
             }
+
+            $names = DB::table('movie_actor_name')->where('aid',$record['id'])->pluck('name')->all();
+            $record['names'] = join(',',$names);
         }
 
         $data = [
@@ -124,12 +128,16 @@ class MovieActorController extends Controller
                 'photo' => $new_dir . $newFile,
                 'social_accounts'=>json_encode($social_accounts)
             ]);
-            $check = DB::table('movie_actor_category_associate')->where('aid',$id)->first();
-            if($check){
-                DB::table('movie_actor_category_associate')->where(['id'=>$check->id])->update(['cid'=>$data['category']]);
-            }else{
-                DB::table('movie_actor_category_associate')->insert(['aid'=>$id,'cid'=>$data['category']]);
+            /*names*/
+            $insertData = [];
+            $names = explode("\r\n",$data['names']);
+            foreach ($names as $name){
+                $insertData[] = ['aid'=>$id,'name'=>$name];
             }
+            DB::table('movie_actor_name')->insert($insertData);
+            /*category*/
+            DB::table('movie_actor_category_associate')->insert(['aid'=>$id,'cid'=>$data['category']]);
+
         } catch (\Exception $exception) {
             return Redirect::back()->withErrors('添加失败 ' . $exception->getMessage());
         }
@@ -143,12 +151,18 @@ class MovieActorController extends Controller
      */
     public function edit($id)
     {
-        $category = DB::table('movie_actor_category')->pluck( 'name','id');
-        $categories = $category->all();
+        $categories = DB::table('movie_actor_category')->pluck( 'name','id')->all();
         $actor = MovieActor::leftJoin('movie_actor_category_associate','movie_actor.id','=','movie_actor_category_associate.aid')
             ->select('movie_actor.*','movie_actor_category_associate.aid','movie_actor_category_associate.cid')
             ->findOrFail($id);
-        return View::make('admin.movie_actor.edit', compact('actor','categories'));
+
+        $actor_names = DB::table('movie_actor_name')->where('aid',$id)->pluck('name')->all();
+        $names = '';
+        foreach ($actor_names as $actor_name){
+            $names.= trim($actor_name)."\r\n";
+        }
+
+        return View::make('admin.movie_actor.edit', compact('actor','categories','names'));
     }
 
     /**
@@ -161,6 +175,7 @@ class MovieActorController extends Controller
     {
         $data = $request->all();
         try {
+            DB::beginTransaction();
             /*social app*/
             $social_accounts = [];
             if(isset($data['account_name'])) {
@@ -178,18 +193,41 @@ class MovieActorController extends Controller
                 }
             }
             MovieActor::where('id', $id)->update(['name' => $data['name'], 'status' => $data['status'],'sex'=>$data['sex'],'social_accounts'=>json_encode($social_accounts)]);
-
+            /*names*/
+            $this->associateNames($id,explode("\r\n",$data['names']));
             /*category*/
             $check = DB::table('movie_actor_category_associate')->where('aid',$id)->first();
-            if($check){
+            if($check && ($check->cid !== $data['category'])){
                 DB::table('movie_actor_category_associate')->where(['id'=>$check->id])->update(['cid'=>$data['category']]);
             }else{
                 DB::table('movie_actor_category_associate')->insert(['aid'=>$id,'cid'=>$data['category']]);
             }
         } catch (\Exception $e) {
+            DB::rollBack();
             return Redirect::back()->withErrors('更新失败:' . $e->getMessage());
         }
+        DB::commit();
         return Redirect::to(URL::route('admin.movie.actor'))->with(['success' => '更新成功']);
+    }
+
+    private function associateNames($actor_id,$data)
+    {
+        $associate_ids = DB::table('movie_actor_name')->where('aid', $actor_id)->pluck('name','id')->all();
+        foreach ($associate_ids as $id=>$associate){
+            $index = array_search($associate,$data);
+            if($index !== false){
+                array_splice($data,$index,1);
+                continue;
+            }
+            DB::table('movie_actor_name')->where('id', $id)->delete();
+        }
+        if(!empty($data)){
+            $insertData = [];
+            foreach ($data as $item){
+                $insertData[] = ['aid'=>$actor_id,'name'=>$item];
+            }
+            DB::table('movie_actor_name')->insert($insertData);
+        }
     }
 
 

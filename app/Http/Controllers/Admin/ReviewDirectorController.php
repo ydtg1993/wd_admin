@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\MovieActor;
+use App\Models\MovieDirector;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
@@ -63,7 +65,11 @@ class ReviewDirectorController extends Controller
     {
         $data = $request->all();
         try {
-            DB::table('collection_director')->where('id', $id)->update(['name' => $data['name'], 'status' => 2]);
+            if(MovieDirector::where('name',$data['name'])->exists()){
+                throw new \Exception('导演重复');
+            }
+            DB::table('collection_director')->where('id', $id)->update(['status' => 2,'admin_id'=>Auth::id()]);
+            MovieDirector::insert(['name'=>$data['name'],'oid'=>$id]);
         } catch (\Exception $e) {
             return Redirect::back()->withErrors('更新失败:' . $e->getMessage());
         }

@@ -32,6 +32,7 @@
                     , cols: [[ //表头
                         {field: 'id', title: 'ID', sort: true, width: 80}
                         , {field: 'name', title: '名称'}
+                        , {field: 'names', title:'别名'}
                         , {field: 'sex', title:'性别'}
                         , {field: 'status', title:'状态'}
                         , {field: 'category2', title:'类别'}
@@ -60,7 +61,11 @@
                     var data = obj.data //获得当前行数据
                         , layEvent = obj.event; //获得 lay-event 对应的值
                     if (layEvent === 'edit') {
-                        location.href = '/admin/review/actor/' + data.id + '/edit';
+                        if(data.status == 2){
+                            alert('已经发布')
+                        }else {
+                            location.href = '/admin/review/actor/' + data.id + '/edit';
+                        }
                     }
                 });
             })

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\MovieLabel;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
@@ -44,7 +46,8 @@ class MovieLabelController extends Controller
      */
     public function create()
     {
-        return View::make('admin.movie_label.create');
+        $parent_labels = MovieLabel::where('cid',0)->get();
+        return View::make('admin.movie_label.create',compact('parent_labels'));
     }
 
     /**
@@ -56,7 +59,7 @@ class MovieLabelController extends Controller
     {
         $data = $request->all();
         try{
-            MovieLabel::insert(['name'=>$data['name'],'status'=>$data['status']]);
+            MovieLabel::insert(['name'=>$data['name'],'status'=>$data['status'],'cid'=>$data['cid']]);
         }catch (\Exception $exception){
             return Redirect::back()->withErrors('添加失败');
         }
@@ -71,7 +74,8 @@ class MovieLabelController extends Controller
     public function edit($id)
     {
         $label = MovieLabel::findOrFail($id);
-        return View::make('admin.movie_label.edit', compact('label'));
+        $parent_labels = MovieLabel::where('cid',0)->get();
+        return View::make('admin.movie_label.edit', compact('label','parent_labels'));
     }
 
     /**
@@ -84,7 +88,7 @@ class MovieLabelController extends Controller
     {
         $data = $request->all();
         try {
-            MovieLabel::where('id', $id)->update(['name' => $data['name'], 'status' => $data['status']]);
+            MovieLabel::where('id', $id)->update(['name' => $data['name'], 'status' => $data['status'],'cid'=>$data['cid']]);
         }catch (\Exception $e){
             return Redirect::back()->withErrors('更新失败:'.$e->getMessage());
         }

@@ -1,7 +1,7 @@
 @extends('admin.base')
 <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
 <link href="/bootfile/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
-@include('admin.review._upload')
+@include('admin.movie._upload')
 
 @section('content')
     <div class="layui-card">
@@ -9,7 +9,7 @@
             <h2>影片审核</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form layui-form-pane" action="{{route('admin.review.movie.update',['id'=>$movie->id])}}"
+            <form class="layui-form layui-form-pane" action="{{route('admin.movie.movie.update',['id'=>$movie->id])}}"
                   method="post">
                 {{ method_field('put') }}
                 {{csrf_field()}}
@@ -36,13 +36,6 @@
                         </div>
                     </div>
 
-                    <div class="layui-inline">
-                        <label class="layui-form-label" style="background-color: #dccbcb;">导演</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="director" value="{{$movie->director}}" readonly
-                                   class="layui-input">
-                        </div>
-                    </div>
                     <div class="layui-inline">
                         <label class="layui-form-label" style="background-color: #dccbcb;">卖家</label>
                         <div class="layui-input-block">
@@ -75,49 +68,85 @@
                     </div>
 
                     <div class="layui-inline">
+                        <label class="layui-form-label" >导演</label>
+                        <div class="layui-input-inline">
+                            <select name="director" lay-search  lay-filter="parent_id">
+                                <?php
+                                 foreach ($directors as $id=>$director){
+                                     $selected = '';
+                                     if($movie_director_associate && $movie_director_associate->did ==$id){
+                                         $selected = 'selected';
+                                     }
+                                     echo "<option value='{$id}' {$selected}>$director</option>";
+                                 }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
                         <label class="layui-form-label">影片系列</label>
                         <div class="layui-input-block">
-<input type="text" name="series" value="{{$movie->series}}" class="layui-input">
+                            <select name="series" lay-search  lay-filter="parent_id">
+                                <?php
+                                foreach ($series as $id=>$serie){
+                                    $selected = '';
+                                    if($movie_series_associate && $movie_series_associate->series_id ==$id){
+                                        $selected = 'selected';
+                                    }
+                                    echo "<option value='{$id}' {$selected}>$serie</option>";
+                                }
+                                ?>
+                            </select>
                         </div>
                     </div>
 
                     <div class="layui-inline">
                         <label class="layui-form-label">片商</label>
                         <div class="layui-input-block">
-<input type="text" name="film_companies" value="{{$movie->film_companies}}" class="layui-input">
+                            <select name="company" lay-search  lay-filter="parent_id">
+                                <?php
+                                foreach ($companies as $id=>$company){
+                                    $selected = '';
+                                    if($movie_film_companies_associate && $movie_film_companies_associate->film_companies_id ==$id){
+                                        $selected = 'selected';
+                                    }
+                                    echo "<option value='{$id}' {$selected}>$company</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">分类</label>
+                        <div class="layui-input-inline">
+                            <select name="category" lay-search  lay-filter="parent_id">
+                                <?php
+                                foreach ($categories as $id=>$category){
+                                    $selected = '';
+                                    if($movie_category_associate && $movie_category_associate->cid ==$id){
+                                        $selected = 'selected';
+                                    }
+                                    echo "<option value='{$id}' {$selected}>$category</option>";
+                                }
+                                ?>
+                            </select>
                         </div>
                     </div>
 
                     <div class="layui-inline">
                         <label class="layui-form-label">评分</label>
                         <div class="layui-input-block">
-                            <input type="text" name="title" value="{{$movie->score}}"
+                            <input type="text" name="score" value="{{$movie->score}}"
                                    class="layui-input">
                         </div>
                     </div>
                     <div class="layui-inline">
                         <label class="layui-form-label">评分人数</label>
                         <div class="layui-input-block">
-                            <input type="text" name="title" value="{{$movie->score_people}}"
+                            <input type="text" name="score_people" value="{{$movie->score_people}}"
                                    class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">评论人数</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="title" value="{{$movie->comment_num}}"
-                                   class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">分类</label>
-                        <div class="layui-input-inline">
-                            <select name="category" lay-search  lay-filter="parent_id">
-                                <option value="有码" <?=$movie->category == '有码'? 'selected':''  ?>>有码</option>
-                                <option value="无码" <?=$movie->category == '无码'? 'selected':''  ?>>无码</option>
-                                <option value="欧美" <?=$movie->category == '欧美'? 'selected':''  ?>>欧美</option>
-                                <option value="fc2" <?=$movie->category == 'fc2'? 'selected':''  ?>>fc2</option>
-                            </select>
                         </div>
                     </div>
 
@@ -134,7 +163,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">可否下载</label>
                         <div class="layui-input-inline">
-                            <select name="category" lay-search  lay-filter="parent_id">
+                            <select name="is_download" lay-search  lay-filter="parent_id">
                                 <option value="1" <?=$movie->is_download == 1? 'selected':''  ?>>不可下载</option>
                                 <option value="2" <?=$movie->is_download == 2? 'selected':''  ?>>可下载</option>
                             </select>
@@ -144,7 +173,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">含字幕</label>
                         <div class="layui-input-inline">
-                            <select name="category" lay-search  lay-filter="parent_id">
+                            <select name="is_subtitle" lay-search  lay-filter="parent_id">
                                 <option value="1" <?=!$movie->is_subtitle == 1? 'selected':''  ?>>不含字幕</option>
                                 <option value="2" <?=!$movie->is_subtitle == 2? 'selected':''  ?>>含字幕</option>
                             </select>
@@ -152,47 +181,11 @@
                     </div>
                 </div>
 
-                <blockquote class="layui-elem-quote" style="margin-top: 30px;margin-bottom: 0">标签</blockquote>
+                <blockquote class="layui-elem-quote" style="margin-top: 30px;margin-bottom: 0">标签列表</blockquote>
                 <div id="labels"></div>
 
                 <blockquote class="layui-elem-quote" style="margin-top: 30px;margin-bottom: 0">演员列表</blockquote>
-                <input type="hidden" name="actor" value="{{$movie->actor}}}">
-                <table class="layui-table" lay-even="" lay-skin="row">
-                        <?php
-                    echo <<<EOF
-<thead>
-    <tr>
-      <th>名子</th>
-      <th>性别</th>
-      <th>操作</th>
-    </tr>
-</thead>
-<tbody>
-EOF;
-                    $actors = (array)json_decode($movie->actor);
-                    foreach ($actors as $k=>$actor){
-                        if($actor[1] == '♀'){
-                            $option_string = "女";
-                        }else{
-                            $option_string = "男";
-                        }
-
-                        echo <<<EOF
-<tr class="movie_actor_content" data-key={$k}>
-<td>
-{$actor[0]}
-</td>
-<td>
-{$option_string}
-</select>
-</td>
-    <td><button type="button" class="layui-btn layui-btn-normal layui-btn-sm delete_actor"><i class="layui-icon"></i></button></td>
-</tr>
-EOF;
-
-                    }
-                        ?>
-                </table>
+                <div id="actors"></div>
 
                 <blockquote class="layui-elem-quote" style="margin-top: 30px;margin-bottom: 0">种子链接</blockquote>
                 <input type="hidden" name="flux_linkage" value="{{$movie->flux_linkage}}}">
@@ -276,8 +269,8 @@ echo '</tbody>';
 
                 <div class="layui-form-item">
                     <div class="layui-input-block">
-                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">确认发布</button>
-                        <a  class="layui-btn" href="{{route('admin.review.movie')}}" >返 回</a>
+                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">确 认</button>
+                        <a  class="layui-btn" href="{{route('admin.movie.movie')}}" >返 回</a>
                     </div>
                 </div>
             </form>
@@ -309,25 +302,28 @@ echo '</tbody>';
             function addVal() {
                 var val = '';
                 $('#'+name+'-select').children().each(function(i,n){
-                    if(val){
-                        val+= ","+n.getAttribute('data-id');
-                    }else {
-                        val = n.getAttribute('data-id');
-                    }
+                    val += parseInt(n.getAttribute('data-id'))+",";
                 });
+                val = val.replace(/,$/g, '');
                 $("input[name="+name+"]").val(val);
             }
 
             var selected_dom = '';
             var options_dom = '';
             var selected_tag = '';
+
             for(var i in options){
+                var tag_name = options[i];
+                if(name=='actors'){
+                    tag_name = decodeURI(tag_name);
+                }
+
                 if(selected.indexOf(parseInt(i)) > -1){
-                    selected_dom+= "<div class='btn btn-success v-tag' data-id="+i+" style='margin-right: 8px;margin-bottom: 8px'>"+options[i]+"</div>";
+                    selected_dom+= "<div class='btn btn-success v-tag' data-id='"+i+"'  style='margin-right: 8px;margin-bottom: 8px'>"+tag_name+"</div>";
                     selected_tag+= i + ',';
                     continue;
                 }
-                options_dom+= "<div class='btn btn-primary v-tag' data-id="+i+" style='margin-right: 8px;margin-bottom: 8px'>"+options[i]+"</div>";
+                options_dom+= "<div class='btn btn-primary v-tag' data-id='"+i+"'  style='margin-right: 8px;margin-bottom: 8px'>"+tag_name+"</div>";
             }
             selected_tag = selected_tag.replace(/,$/g, '');
 
@@ -338,15 +334,15 @@ echo '</tbody>';
                 '                    <div id="'+name+'-content" style="overflow-y: auto;padding: 5px">\n' +
                 options_dom +
                 '                    </div>\n' +
-                '                    <input type="hidden" name="'+name+'" value='+selected_tag+'">\n' +
+                '                    <input type="hidden" name="'+name+'" value='+selected_tag+'>\n' +
                 '                </div>';
             document.getElementById(name).innerHTML = html;
 
             $('#'+name+'-select .v-tag').click(tagCancel);
             $('#'+name+'-content .v-tag').click(tagSelect);
         }
-        componentSelect('labels',JSON.parse('<?=$movie->label?>'),JSON.parse('<?=json_encode($labels)?>'));
-
+        componentSelect('labels',JSON.parse('<?=json_encode($selected_labels);?>'),JSON.parse('<?=json_encode($labels);?>'));
+        componentSelect('actors',JSON.parse('<?=json_encode($selected_actors);?>'),JSON.parse('<?=json_encode($actors);?>'));
 
         var linkpage = {
             data:JSON.parse('<?=$movie->flux_linkage?>'),
@@ -385,29 +381,6 @@ echo '</tbody>';
             }
         };
         linkpage.delApply();
-
-        var actor = {
-            data:JSON.parse('<?=$movie->actor?>'),
-            delApply:function () {
-                $(".delete_actor").click(function(){
-                    var r = confirm("确定删除演员？");
-                    if (r != true) {
-                        return;
-                    }
-                    var key = $(this).parent().parent().attr('data-key');
-                    actor.data.splice(key,1);
-                    $(this).parent().parent().remove();
-                    actor.rearrange();
-                    $("input[name='actor']").val(JSON.stringify(actor.data).toString());
-                });
-            },
-            rearrange:function () {
-                document.querySelectorAll('.movie_actor_content').forEach(function(element, index, array) {
-                    element.setAttribute('data-key',index+'');
-                });
-            }
-        };
-        actor.delApply();
 
         addFileInput("{{$movie->id}}",'big_cove','<?=$movie->big_cove?>');
         addFileInput("{{$movie->id}}",'small_cover','<?=$movie->small_cover?>');

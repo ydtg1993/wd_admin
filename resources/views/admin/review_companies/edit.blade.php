@@ -22,10 +22,10 @@
                             <?php
                             foreach ($categories as $id=>$category){
                                 if($company->category == $category){
-                                    echo "<option value=$category selected>$category</option>";
+                                    echo "<option value=$id selected>$category</option>";
                                     continue;
                                 }
-                                echo "<option value=$category >$category</option>";
+                                echo "<option value=$id >$category</option>";
                             }
                             ?>
                         </select>

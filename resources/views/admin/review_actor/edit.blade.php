@@ -15,7 +15,14 @@
                     <label for="" class="layui-form-label">名称</label>
                     <div class="layui-input-inline">
                         <input type="text" name="name" value="{{ $actor->name ?? old('name') }}" lay-verify="required"
-                               placeholder="请输公司名称" class="layui-input">
+                               placeholder="请输演员名称" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label for="" class="layui-form-label">别名</label>
+                    <div class="layui-input-block">
+                        <textarea name="names" placeholder="请输入名称换行分割" class="layui-textarea"><?=$names;?></textarea>
                     </div>
                 </div>
                 <div class="layui-form-item">

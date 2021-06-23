@@ -2,6 +2,11 @@
 
 @section('content')
     <div class="layui-card">
+        <div class="layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-btn-group">
+                <a class="layui-btn layui-btn-sm" href="{{route('admin.movie.director.create')}}" >添 加</a>
+            </div>
+        </div>
         <div class="layui-card-body">
             <table id="dataTable" lay-filter="dataTable"></table>
             <script type="text/html" id="options">
@@ -27,26 +32,24 @@
                 var dataTable = table.render({
                     elem: '#dataTable'
                     , height: 500
-                    , url: "{{ route('admin.review_label.data') }}" //数据接口
+                    , url: "{{ route('admin.movie_director.data') }}" //数据接口
                     , page: true //开启分页
                     , cols: [[ //表头
                         {field: 'id', title: 'ID', sort: true, width: 80}
-                        , {field: 'name', title: '父级标签'}
-                        , {field: 'name_child', title: '名称'}
+                        , {field: 'name', title: '名称'}
                         , {field: 'status', title:'状态'}
+                        , {field: 'movie_sum', title:'影片数量'}
+                        , {field: 'like_sum', title:'收藏数量'}
                         , {field: 'created_at', title: '创建时间'}
                         , {field: 'updated_at', title: '更新时间'}
                         , {fixed: 'right', width: 260, align: 'center', toolbar: '#options'}
                     ]],
                     done: function(res, curr, count){
                         $("[data-field='status']").children().each(function(){
-                            // 1.未处理  2.已处理【人工处理】 3.系统处理 4.舍弃 5.异常数据需要人工处理'
                             if($(this).text()=='1'){
-                                $(this).text("未处理")
+                                $(this).text("正常")
                             }else if($(this).text()=='2'){
-                                $(this).text("人工处理")
-                            }else if($(this).text()=='3'){
-                                $(this).text("系统处理")
+                                $(this).text("弃用")
                             }
                         });
                     }
@@ -57,7 +60,7 @@
                     var data = obj.data //获得当前行数据
                         , layEvent = obj.event; //获得 lay-event 对应的值
                     if (layEvent === 'edit') {
-                        location.href = '/admin/review/label/' + data.id + '/edit';
+                        location.href = '/admin/movie/director/' + data.id + '/edit';
                     }
                 });
             })

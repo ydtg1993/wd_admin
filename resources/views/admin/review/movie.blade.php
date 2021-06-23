@@ -85,7 +85,11 @@
                     var data = obj.data //获得当前行数据
                         , layEvent = obj.event; //获得 lay-event 对应的值
                     if (layEvent === 'edit') {
-                        location.href = '/admin/review/movie/' + data.id + '/edit';
+                        if(data.status == 2){
+                            alert('已经发布');
+                        }else {
+                            location.href = '/admin/review/movie/' + data.id + '/edit';
+                        }
                     }
                 });
             })

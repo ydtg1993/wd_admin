@@ -38,7 +38,7 @@ class ReviewMovieController extends Controller
     {
         $model = CollectionMovie::query();
         $res = $model->where('resources_status', '>', 1)->
-        whereIn('status', [1, 5])->
+        where('status',1)->
         orderBy('id', 'desc')->paginate($request->get('limit', 30));
         $data = [
             'code' => 0,
@@ -83,7 +83,8 @@ class ReviewMovieController extends Controller
             $film_companies['name'] = $movie_film_companies->name;
         }
 
-        return View::make('admin.review.movie_edit', compact('movie', 'series', 'film_companies'));
+        $labels = MovieLabel::where('cid','>',0)->pluck('name', 'id')->all();
+        return View::make('admin.review.movie_edit', compact('movie', 'series', 'film_companies','labels'));
     }
 
     /**

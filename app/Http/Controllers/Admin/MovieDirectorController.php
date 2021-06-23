@@ -2,27 +2,25 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\CollectNumber;
 use App\Models\MovieActor;
-use App\Models\MovieNumbers;
+use App\Models\MovieDirector;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
-class ReviewNumbersController extends Controller
+class MovieDirectorController extends Controller
 {
     /**
-     * 采集演员管理
+     * 影片演员管理
      * @return \Illuminate\Contracts\View\View
      */
     public function index()
     {
-        return View::make('admin.review_numbers.index');
+        return View::make('admin.movie_director.index');
     }
 
     /**
@@ -32,8 +30,7 @@ class ReviewNumbersController extends Controller
      */
     public function data(Request $request)
     {
-        $res = CollectNumber::where('status',1)->orderBy('id', 'desc')
-            ->paginate($request->get('limit', 30));
+        $res = MovieDirector::orderBy('id', 'desc')->paginate($request->get('limit', 30));
 
         $data = [
             'code' => 0,
@@ -45,15 +42,39 @@ class ReviewNumbersController extends Controller
     }
 
     /**
+     * 添加
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function create()
+    {
+        return View::make('admin.movie_director.create');
+    }
+
+    /**
+     * 添加
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
+    {
+        $data = $request->all();
+        try {
+            MovieDirector::insert(['name'=>$data['name'],'status'=>$data['status']]);
+        } catch (\Exception $exception) {
+            return Redirect::back()->withErrors('添加失败 ' . $exception->getMessage());
+        }
+        return Redirect::to(URL::route('admin.movie.director'))->with(['success' => '添加成功']);
+    }
+
+    /**
      * 更新
      * @param $id
      * @return \Illuminate\Contracts\View\View
      */
     public function edit($id)
     {
-        $number = CollectNumber::findOrFail($id);
-
-        return View::make('admin.review_numbers.edit', compact('number'));
+        $director = MovieDirector::findOrFail($id);
+        return View::make('admin.movie_director.edit', compact('director'));
     }
 
     /**
@@ -66,15 +87,11 @@ class ReviewNumbersController extends Controller
     {
         $data = $request->all();
         try {
-            if(MovieNumbers::where('name',$data['name'])->exists()){
-                throw new \Exception('番号名重复');
-            }
-            CollectNumber::where('id', $id)->update(['status' => 2,'admin_id'=>Auth::id()]);
-            MovieNumbers::insert(['name'=>$data['name'],'oid'=>$id]);
+            MovieDirector::where('id',$id)->update(['name'=>$data['name'],'status'=>$data['status']]);
         } catch (\Exception $e) {
             return Redirect::back()->withErrors('更新失败:' . $e->getMessage());
         }
-        return Redirect::to(URL::route('admin.review.numbers'))->with(['success' => '更新成功']);
+        return Redirect::to(URL::route('admin.movie.director'))->with(['success' => '更新成功']);
     }
 
 

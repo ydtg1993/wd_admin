@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\CollectFilmCompanies;
 use App\Models\MovieActor;
+use App\Models\MovieFilmCompanies;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
@@ -75,7 +77,19 @@ class ReviewFilmCompaniesController extends Controller
     {
         $data = $request->all();
         try {
-            CollectFilmCompanies::where('id', $id)->update(['name' => $data['name'], 'status' => 2,'category'=>$data['category']]);
+            $companies = MovieFilmCompanies::where('name' ,$data['name'])->get();
+            foreach ($companies as $company){
+                if(DB::table('movie_film_companies_category_associate')
+                    ->where(['film_companies_id'=>$company->id,'cid'=>$data['category']])
+                    ->exists()){
+                    throw new \Exception('公司重复');
+                }
+            }
+
+            CollectFilmCompanies::where('id', $id)->update(['status' => 2,'admin_id'=>Auth::id()]);
+            $company_id = MovieFilmCompanies::insertGetId(['name' => $data['name'],'oid'=>$id]);
+            DB::table('movie_film_companies_category_associate')->insert(['film_companies_id'=>$company_id,'cid'=>$data['category']]);
+
         } catch (\Exception $e) {
             return Redirect::back()->withErrors('更新失败:' . $e->getMessage());
         }

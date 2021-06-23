@@ -18,6 +18,12 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
+                    <label for="" class="layui-form-label">别名</label>
+                    <div class="layui-input-block">
+                        <textarea name="names" placeholder="请输入名称换行分割" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
                     <label for="" class="layui-form-label">状态</label>
                     <div class="layui-input-inline">
                         <select name="status" lay-search  lay-filter="parent_id">

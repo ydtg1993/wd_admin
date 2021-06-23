@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\CollectSeries;
+use App\Models\MovieSeries;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
@@ -65,7 +67,19 @@ class ReviewSeriesController extends Controller
     {
         $data = $request->all();
         try {
-            CollectSeries::where('id', $id)->update(['name' => $data['name'], 'status' =>2,'category'=>$data['category']]);
+            $series = MovieSeries::where('name',$data['name'])->get();
+            foreach ($series as $serie){
+                if(DB::table('movie_series_category_associate')
+                    ->where(['series_id'=>$serie->id,'cid'=>$data['category']])
+                    ->exists()){
+                    throw new \Exception('系列重复');
+                }
+            }
+
+            CollectSeries::where('id', $id)->update(['status' =>2,'admin_id'=>Auth::id()]);
+            $series_id = MovieSeries::insertGetId(['name'=>$data['name'],'oid'=>$id]);
+            /*category*/
+            DB::table('movie_series_category_associate')->insert(['series_id'=>$series_id,'cid'=>$data['category']]);
         } catch (\Exception $e) {
             return Redirect::back()->withErrors('更新失败:' . $e->getMessage());
         }

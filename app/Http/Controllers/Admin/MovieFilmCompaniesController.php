@@ -60,8 +60,7 @@ class MovieFilmCompaniesController extends Controller
      */
     public function create()
     {
-        $category = DB::table('movie_film_companies_category')->pluck( 'name','id');
-        $categories = $category->all();
+        $categories = DB::table('movie_film_companies_category')->pluck( 'name','id')->all();
         return View::make('admin.movie_companies.create',compact('categories'));
     }
 
@@ -100,8 +99,7 @@ class MovieFilmCompaniesController extends Controller
      */
     public function edit($id)
     {
-        $category = DB::table('movie_film_companies_category')->pluck( 'name','id');
-        $categories = $category->all();
+        $categories = DB::table('movie_film_companies_category')->pluck( 'name','id')->all();
         $company = MovieFilmCompanies::leftJoin('movie_film_companies_category_associate','movie_film_companies.id','=','movie_film_companies_category_associate.film_companies_id')
             ->select('movie_film_companies.*','movie_film_companies_category_associate.film_companies_id','movie_film_companies_category_associate.cid')
             ->findOrFail($id);

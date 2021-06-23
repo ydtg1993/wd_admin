@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\CollectLabel;
 use App\Models\MovieActor;
+use App\Models\MovieLabel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
@@ -29,22 +32,14 @@ class ReviewLabelController extends Controller
      */
     public function data(Request $request)
     {
-        $categories = DB::table('movie_actor_category')->pluck('name', 'id')->all();
-        $res = DB::table('collection_actor')->where('status',1)->orderBy('id', 'desc')
+        $res = CollectLabel::where('status',1)->orderBy('id', 'desc')
             ->paginate($request->get('limit', 30));
-        $records = $res->toArray();
-        foreach ($records['data'] as &$record) {
-            $record['category'] = '';
-            if(isset($categories[$record['cid']])){
-                $record['category'] = $categories[$record['cid']];
-            }
-        }
 
         $data = [
             'code' => 0,
             'msg' => '正在请求中...',
             'count' => $res->total(),
-            'data' => $records['data'],
+            'data' => $res->items(),
         ];
         return Response::json($data);
     }
@@ -56,10 +51,10 @@ class ReviewLabelController extends Controller
      */
     public function edit($id)
     {
-        $categories = DB::table('movie_actor_category')->pluck('name', 'id')->all();
-        $actor = DB::table('collection_actor')->findOrFail($id);
+        $categories = DB::table('movie_label_category')->pluck('name', 'id')->all();
+        $label = CollectLabel::findOrFail($id);
 
-        return View::make('admin.review_label.edit', compact('actor', 'categories'));
+        return View::make('admin.review_label.edit', compact('label', 'categories'));
     }
 
     /**
@@ -72,21 +67,26 @@ class ReviewLabelController extends Controller
     {
         $data = $request->all();
         try {
-            /*social app*/
-            $account_name = $data['account_name'];
-            $account_url = $data['account_url'];
-            $social_accounts = [];
-            foreach ($account_name as $k=>$name){
-                if(!$name){
-                    continue;
-                }
-                $url = $account_url[$k];
-                if(!$url){
-                    continue;
-                }
-                $social_accounts[$name] = $url;
+            if(MovieLabel::where('name',$data['name_child'])->exists()){
+                throw new \Exception('标签名重复');
             }
-            DB::table('collection_actor')->where('id', $id)->update(['name' => $data['name'], 'status' => $data['status'],'sex'=>$data['sex'],'social_accounts'=>json_encode($social_accounts)]);
+            CollectLabel::where('id',$id)->update(['status'=>2,'admin_id'=>Auth::id()]);
+            $parent = MovieLabel::where('name',$data['name'])->where('cid',0)->first();
+            if(!$parent){
+                $parent_id = MovieLabel::insertGetId(['name'=>$data['name'],'cid'=>0,'oid'=>$id]);
+            }else {
+                $parent_id = $parent->id;
+            }
+
+            MovieLabel::insert(['name'=>$data['name_child'],'cid'=>$parent_id,'oid'=>$id]);
+
+            /*category*/
+            $check = DB::table('movie_label_category_associate')->where(['lid'=>$id])->first();
+            if($check && ($check->cid !== $data['category'])){
+                DB::table('movie_label_category_associate')->where('id',$check->id)->update(['cid'=>$data['category']]);
+            }else{
+                DB::table('movie_label_category_associate')->insert(['lid'=>$id,'cid'=>$data['category']]);
+            }
         } catch (\Exception $e) {
             return Redirect::back()->withErrors('更新失败:' . $e->getMessage());
         }
