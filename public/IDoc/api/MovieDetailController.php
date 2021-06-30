@@ -287,4 +287,24 @@ class MovieDetailController extends  BaseController
 
     }
 
+    /**
+     * @api {Post} /api/movie/detail 影片发评论
+     * @apiName 影片发评论
+     * @apiGroup 影片
+     * @apiDescription 发评论
+     *
+     * @apiParam {Number} id  【影片id】
+     * @apiParam {Number} uid  【用户id】
+     * @apiParam {Number} comment_id  【直接发评论0 如果是回复为回复的评论id】
+     * @apiParam {String} comment  【内容6-255字】
+     *
+     * @apiSuccess {String} code 响应码 200 正确 其他错误
+     * @apiSuccessExample  {json} success-example
+
+     */
+    public function reply()
+    {
+
+    }
+
 }
