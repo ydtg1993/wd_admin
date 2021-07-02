@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\CollectionMovie;
+use App\Models\MovieActor;
+use App\Models\MovieCategory;
 use App\Models\MovieComment;
+use App\Models\MovieDirector;
 use App\Models\MovieLabel;
 use App\Models\Movie;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
@@ -38,7 +42,7 @@ class ReviewMovieController extends Controller
     {
         $model = CollectionMovie::query();
         $res = $model->where('resources_status', '>', 1)->
-        where('status',1)->
+        where('status', 1)->
         orderBy('id', 'desc')->paginate($request->get('limit', 30));
         $data = [
             'code' => 0,
@@ -69,22 +73,68 @@ class ReviewMovieController extends Controller
     {
         $movie = CollectionMovie::findOrFail($id);
 
-        $series = ['id' => 0, 'name' => $movie->series];
-        $movie_series = DB::table('movie_series')->where('name', $movie->series)->first();
-        if ($movie_series) {
-            $series['id'] = $movie_series->id;
-            $series['name'] = $movie_series->name;
+        $categories = MovieCategory::pluck('name', 'id')->all();
+        /*寻找类别*/
+        $index = array_search($movie->category, $categories);
+        $category = ($index !== false) ? $categories[$index] : $categories[0];
+
+        $series = $this->categorySelect('series', 'series_id', $category);
+
+        $companies = $this->categorySelect('film_companies', 'film_companies_id', $category);
+
+        $directors = MovieDirector::pluck('name', 'id')->all();
+
+        $labels = $this->categoryMultiSelect('label','lid',$category,[['cid','>',0]]);
+
+        $actors = $this->categoryMultiSelect('actor','aid',$category);
+        $selected_actors = [];
+        foreach ((array)json_decode($movie->actor) as $ac){
+            $selected_actors[] = $ac[0];
+        };
+
+        return View::make('admin.review.movie_edit', compact(
+            'movie',
+            'categories',
+            'movie_category_associate',
+            'series',
+            'movie_series_associate',
+            'companies',
+            'labels',
+            'directors',
+            'actors',
+            'selected_actors'));
+    }
+
+    private function categorySelect($table, $column, $category,$where=[])
+    {
+        $movie_n_category = DB::table('movie_' . $table . '_category')->where('name', $category)->first();
+        $movie_n_category_associate = DB::table('movie_' . $table . '_category_associate');
+        $movie_n_category_id = -1;
+        if($movie_n_category){
+            $movie_n_category_id = $movie_n_category->id;
+        }
+        $movie_n_category_associate_ids = $movie_n_category_associate->where('cid', $movie_n_category_id)->pluck($column)->all();
+        return DB::table('movie_' . $table)->where($where)->whereIn('id', $movie_n_category_associate_ids)->pluck('name', 'id')->all();
+    }
+
+    private function categoryMultiSelect($table,$column,$category,$where=[])
+    {
+        $movie_n_category = DB::table('movie_'.$table.'_category')->where('name',$category)->first();
+        $select = [];
+        $movie_n_model = DB::table('movie_'.$table)->where('status', 1)->where($where);
+        $chunk = [];
+        $movie_n_category && ($chunk = DB::table('movie_'.$table.'_category_associate')->where('cid',$movie_n_category->id)->pluck($column)->all());
+        $records = $movie_n_model->whereIn('id',$chunk)->orderBy('id','DESC')->get();
+        foreach ($records as $record) {
+            if($table == 'actor'){
+                $sex = $record->sex == '♂' ? '(男)':'';
+                $select[$record->id] = urlencode($record->name).' '.$sex;
+                continue;
+            }
+            $select[$record->id] = urlencode($record->name);
         }
 
-        $film_companies = ['id' => 0, 'name' => $movie->series];
-        $movie_film_companies = DB::table('movie_film_companies')->where('name', $movie->film_companies)->first();
-        if ($movie_film_companies) {
-            $film_companies['id'] = $movie_film_companies->id;
-            $film_companies['name'] = $movie_film_companies->name;
-        }
-
-        $labels = MovieLabel::where('cid','>',0)->pluck('name', 'id')->all();
-        return View::make('admin.review.movie_edit', compact('movie', 'series', 'film_companies','labels'));
+        return $select;
     }
 
     /**
@@ -113,7 +163,7 @@ class ReviewMovieController extends Controller
                 throw new \Exception('番号:' . $collect_movie->number . '已经上架');
             }
 
-            CollectionMovie::where('id', $id)->update(['status' => 2, 'admin_id' => '']);
+            CollectionMovie::where('id', $id)->update(['status' => 2, 'admin_id' => Auth::id()]);
             $flux_linkage = (array)json_decode($data['flux_linkage'], true);
             $flux_linkage_num = count($flux_linkage);
             $movie_id = Movie::insertGetId([
@@ -173,14 +223,14 @@ class ReviewMovieController extends Controller
             $this->actorAssociate($movie_id, (array)json_decode($data['actor'], true));
 
             /*评论生成*/
-            foreach ((array)json_decode($collect_movie->comment,true) as $comment){
+            foreach ((array)json_decode($collect_movie->comment, true) as $comment) {
                 MovieComment::firstOrCreate([
-                    'mid'=>$movie_id,
-                    'collection_id'=>$collect_movie->id,
-                    'source_type'=>3,
-                    'nickname'=>$comment['commentator'],
-                    'comment'=>$comment['comment_text']
-                ],['comment_time'=>$comment['comment_time']]);
+                    'mid' => $movie_id,
+                    'collection_id' => $collect_movie->id,
+                    'source_type' => 3,
+                    'nickname' => $comment['commentator'],
+                    'comment' => $comment['comment_text']
+                ], ['comment_time' => $comment['comment_time']]);
             }
 
             /*关联------------------------*/

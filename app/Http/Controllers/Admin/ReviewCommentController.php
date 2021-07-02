@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\CollectSeries;
-use App\Models\MovieSeries;
+use App\Models\CollectComment;
+use App\Models\Movie;
+use App\Models\MovieActor;
+use App\Models\MovieComment;
+use App\Models\MovieDirector;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -13,15 +16,15 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
-class ReviewSeriesController extends Controller
+class ReviewCommentController extends Controller
 {
     /**
-     * 采集演员管理
+     * 采集管理
      * @return \Illuminate\Contracts\View\View
      */
     public function index()
     {
-        return View::make('admin.review_series.index');
+        return View::make('admin.review_comment.index');
     }
 
     /**
@@ -31,7 +34,7 @@ class ReviewSeriesController extends Controller
      */
     public function data(Request $request)
     {
-        $res = CollectSeries::where('status',1)->orderBy('id', 'desc')
+        $res = CollectComment::where('status',1)->orderBy('id', 'desc')
             ->paginate($request->get('limit', 30));
         $records = $res->toArray();
 
@@ -51,10 +54,8 @@ class ReviewSeriesController extends Controller
      */
     public function edit($id)
     {
-        $categories = DB::table('movie_series_category')->pluck('name', 'id')->all();
-        $series = CollectSeries::findOrFail($id);
-
-        return View::make('admin.review_series.edit', compact('series', 'categories'));
+        $comment = CollectComment::find($id);
+        return View::make('admin.review_comment.edit', compact('comment'));
     }
 
     /**
@@ -67,23 +68,28 @@ class ReviewSeriesController extends Controller
     {
         $data = $request->all();
         try {
-            $series = MovieSeries::where('name',$data['name'])->get();
-            foreach ($series as $serie){
-                if(DB::table('movie_series_category_associate')
-                    ->where(['series_id'=>$serie->id,'cid'=>$data['category']])
-                    ->exists()){
-                    throw new \Exception('系列重复');
-                }
+            $movie = Movie::where('number',$data['number'])->first();
+            if(!$movie){
+                throw new \Exception('影片番号不存在');
             }
-
-            CollectSeries::where('id', $id)->update(['status' =>2,'admin_id'=>Auth::id()]);
-            $series_id = MovieSeries::insertGetId(['name'=>$data['name'],'oid'=>$id]);
-            /*category*/
-            DB::table('movie_series_category_associate')->insert(['series_id'=>$series_id,'cid'=>$data['category']]);
+            CollectComment::where('id',$id)->update(['status' => 2,'admin_id'=>Auth::id()]);
+            $collect = CollectComment::where('id',$id)->first();
+            MovieComment::insert([
+                'nickname'=>$data['user_name'],
+                'source_type'=>3,
+                'mid'=>$movie->id,
+                'comment_time'=>$data['comment_time'],
+                'comment'=>$data['comment'],
+                'oid'=>$id,
+                'collection_id' => $collect->collection_id
+            ]);
+            Movie::where('id',$movie->id)->update([
+                'new_comment_time' => date('Y-m-d H:i:s'),
+                'comment_num' => DB::raw('comment_num+1')]);
         } catch (\Exception $e) {
             return Redirect::back()->withErrors('更新失败:' . $e->getMessage());
         }
-        return Redirect::to(URL::route('admin.review.series'))->with(['success' => '更新成功']);
+        return Redirect::to(URL::route('admin.review.comment'))->with(['success' => '更新成功']);
     }
 
 

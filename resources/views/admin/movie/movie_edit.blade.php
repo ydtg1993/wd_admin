@@ -119,23 +119,6 @@
                     </div>
 
                     <div class="layui-inline">
-                        <label class="layui-form-label">分类</label>
-                        <div class="layui-input-inline">
-                            <select name="category" lay-search  lay-filter="parent_id">
-                                <?php
-                                foreach ($categories as $id=>$category){
-                                    $selected = '';
-                                    if($movie_category_associate && $movie_category_associate->cid ==$id){
-                                        $selected = 'selected';
-                                    }
-                                    echo "<option value='{$id}' {$selected}>$category</option>";
-                                }
-                                ?>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="layui-inline">
                         <label class="layui-form-label">评分</label>
                         <div class="layui-input-block">
                             <input type="text" name="score" value="{{$movie->score}}"
@@ -314,9 +297,7 @@ echo '</tbody>';
 
             for(var i in options){
                 var tag_name = options[i];
-                if(name=='actors'){
-                    tag_name = decodeURI(tag_name);
-                }
+                tag_name = decodeURI(tag_name);
 
                 if(selected.indexOf(parseInt(i)) > -1){
                     selected_dom+= "<div class='btn btn-success v-tag' data-id='"+i+"'  style='margin-right: 8px;margin-bottom: 8px'>"+tag_name+"</div>";

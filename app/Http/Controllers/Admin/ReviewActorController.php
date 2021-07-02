@@ -32,7 +32,7 @@ class ReviewActorController extends Controller
     public function data(Request $request)
     {
         $categories = DB::table('movie_actor_category')->pluck('name', 'id')->all();
-        $res = CollectActor::whereIn('status', [1, 2])->orderBy('id', 'desc')
+        $res = CollectActor::where('status', 1)->orderBy('id', 'desc')
             ->paginate($request->get('limit', 30));
         $records = $res->toArray();
         foreach ($records['data'] as &$record) {

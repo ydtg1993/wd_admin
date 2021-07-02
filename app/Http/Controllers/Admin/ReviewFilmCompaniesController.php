@@ -33,7 +33,7 @@ class ReviewFilmCompaniesController extends Controller
     public function data(Request $request)
     {
         $categories = DB::table('movie_film_companies_category')->pluck('name')->all();
-        $res = CollectFilmCompanies::whereIn('status',[1,2])
+        $res = CollectFilmCompanies::where('status',1)
             ->orderBy('id', 'desc')
             ->paginate($request->get('limit', 30));
         $records = $res->toArray();

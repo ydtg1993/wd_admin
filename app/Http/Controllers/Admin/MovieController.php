@@ -83,28 +83,18 @@ class MovieController extends Controller
 
         $categories = MovieCategory::pluck('name', 'id')->all();
         $movie_category_associate = DB::table('movie_category_associate')->where('mid', $movie->id)->first();
+        $category = MovieCategory::where('id',$movie_category_associate->cid)->first();
 
-        $series = MovieSeries::pluck('name', 'id')->all();
-        $movie_series_associate = DB::table('movie_series_associate')->where('mid', $movie->id)->first();
+        list($series, $movie_series_associate) = $this->categorySelect('series','series_id',$category->name,$movie->id);
 
-        $companies = MovieFilmCompanies::pluck('name', 'id')->all();
-        $movie_film_companies_associate = DB::table('movie_film_companies_associate')->where('mid', $movie->id)->first();
-
-        $labels = MovieLabel::where('cid', '>', 0)->pluck('name', 'id')->all();
-        $selected_labels = DB::table('movie_label_associate')->where('mid', $movie->id)->pluck('cid')->all();
+        list($companies,$movie_film_companies_associate) = $this->categorySelect('film_companies','film_companies_id',$category->name,$movie->id);
 
         $directors = MovieDirector::pluck('name', 'id')->all();
         $movie_director_associate = DB::table('movie_director_associate')->where('mid', $movie->id)->first();
 
+        list($labels,$selected_labels) = $this->categoryMultiSelect('label','lid',$category->name,$movie->id,[['cid','>',0]]);
 
-        $actors = [];
-        $movie_actors = MovieActor::where('status', 1)->orderBy('id','DESC')->get();
-        foreach ($movie_actors as $record) {
-            $sex = $record->sex == '♂' ? '(男)':'';
-            $actors[$record->id] = urlencode($record->name.''.$sex);
-        }
-
-        $selected_actors = DB::table('movie_actor_associate')->where('mid', $movie->id)->pluck('aid')->all();
+        list($actors,$selected_actors) = $this->categoryMultiSelect('actor','aid',$category->name,$movie->id);
 
         return View::make('admin.movie.movie_edit',
             compact('movie',
@@ -122,6 +112,41 @@ class MovieController extends Controller
                 'selected_actors'
             )
         );
+    }
+
+    private function categorySelect($table,$column,$category,$movie_id,$where=[])
+    {
+        $movie_n_category = DB::table('movie_'.$table.'_category')->where('name',$category)->first();
+        $movie_n_category_associate = DB::table('movie_'.$table.'_category_associate');
+        $movie_n_category && ($movie_n_category_associate = $movie_n_category_associate->where('cid',$movie_n_category->id));
+        $movie_n_category_associate_ids = $movie_n_category_associate->pluck($column)->all();
+        $select = DB::table('movie_'.$table)->where($where)->whereIn('id',$movie_n_category_associate_ids)->pluck('name', 'id')->all();
+        $option= DB::table('movie_'.$table.'_associate')->where('mid', $movie_id)->first();
+        return [$select,$option];
+    }
+
+    private function categoryMultiSelect($table,$column,$category,$movie_id,$where=[])
+    {
+        $movie_n_category = DB::table('movie_'.$table.'_category')->where('name',$category)->first();
+        $select = [];
+        $movie_n_model = DB::table('movie_'.$table)->where('status', 1)->where($where);
+        $chunk = [];
+        $movie_n_category && ($chunk = DB::table('movie_'.$table.'_category_associate')->where('cid',$movie_n_category->id)->pluck($column)->all());
+        !empty($chunk) && ($records = $movie_n_model->whereIn('id',$chunk));
+        $records = $movie_n_model->orderBy('id','DESC')->get();
+        foreach ($records as $record) {
+            if($table == 'actor'){
+                $sex = $record->sex == '♂' ? '(男)':'';
+                $select[$record->id] = urlencode($record->name).' '.$sex;
+                continue;
+            }
+            $select[$record->id] = urlencode($record->name);
+        }
+        if($table == 'label') {
+            $column = 'cid';
+        }
+        $selected = DB::table('movie_'.$table.'_associate')->where('mid', $movie_id)->pluck($column)->all();
+        return [$select,$selected];
     }
 
     /**

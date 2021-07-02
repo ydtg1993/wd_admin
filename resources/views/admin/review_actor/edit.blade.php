@@ -5,7 +5,7 @@
 @section('content')
     <div class="layui-card">
         <div class="layui-card-header layuiadmin-card-header-auto">
-            <h2>更新演员</h2>
+            <h2>采集-更新演员</h2>
         </div>
         <div class="layui-card-body">
             <form class="layui-form" action="{{route('admin.review.actor.update',['id'=>$actor->id])}}" method="post">

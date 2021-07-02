@@ -249,6 +249,20 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::get('review/label/{id}/edit', 'ReviewLabelController@edit')->name('admin.review.label.edit')->middleware('permission:review.label.edit');
         Route::put('review/label/{id}/update', 'ReviewLabelController@update')->name('admin.review.label.update')->middleware('permission:review.label.update');
     });
+    //评论
+    Route::group(['middleware' => 'permission:review.comment'], function () {
+        Route::get('review/comment', 'ReviewCommentController@index')->name('admin.review.comment');
+        Route::get('review/comment/data', 'ReviewCommentController@data')->name('admin.review_comment.data');
+        Route::get('review/comment/{id}/edit', 'ReviewCommentController@edit')->name('admin.review.comment.edit')->middleware('permission:review.comment.edit');
+        Route::put('review/comment/{id}/update', 'ReviewCommentController@update')->name('admin.review.comment.update')->middleware('permission:review.comment.update');
+    });
+    //评分
+    Route::group(['middleware' => 'permission:review.score'], function () {
+        Route::get('review/score', 'ReviewScoreController@index')->name('admin.review.score');
+        Route::get('review/score/data', 'ReviewScoreController@data')->name('admin.review_score.data');
+        Route::get('review/score/{id}/edit', 'ReviewScoreController@edit')->name('admin.review.score.edit')->middleware('permission:review.score.edit');
+        Route::put('review/score/{id}/update', 'ReviewScoreController@update')->name('admin.review.score.update')->middleware('permission:review.score.update');
+    });
 });
 /*
 |--------------------------------------------------------------------------
