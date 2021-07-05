@@ -407,6 +407,6 @@ echo '</tbody>';
         addFileInput("{{$movie->id}}",'small_cover','<?=$movie->small_cover?>');
         addFileInput("{{$movie->id}}",'trailer','<?=$movie->trailer?>',1,'video');
 
-        addFileInput("{{$movie->id}}",'map','<?=$movie->map?>',20,'image');
+        addFileInput("{{$movie->id}}",'map',JSON.parse('<?=$movie->map?>'),20,'image');
     });
 </script>

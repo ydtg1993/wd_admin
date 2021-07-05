@@ -94,6 +94,14 @@ class MovieDirectorController extends Controller
         return Redirect::to(URL::route('admin.movie.director'))->with(['success' => '更新成功']);
     }
 
+    public function list(Request $request)
+    {
 
+    }
+
+    public function like(Request $request)
+    {
+
+    }
 }
 

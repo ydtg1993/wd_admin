@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Movie;
 use App\Models\Movienumber;
+use App\Models\MovieNumberAss;
 use App\Models\MovieNumbers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -120,6 +121,27 @@ class MovieNumbersController extends Controller
     }
 
 
+    public function list(Request $request)
+    {
+        $res = MovieNumberAss::orderBy('movie_number_associate.id', 'desc')
+            ->join('movie','movie.id','=','movie_number_associate.mid')
+            ->leftJoin('movie_category_associate','movie_category_associate.mid','=','movie_number_associate.mid')
+            ->select('movie_number_associate.*','movie.number','movie.name','movie.small_cover','movie.release_time','movie.score','movie_category_associate.cid')
+            ->paginate($request->get('limit', 30));
+
+        $data = [
+            'code' => 0,
+            'msg' => '正在请求中...',
+            'count' => $res->total(),
+            'data' => $res->items(),
+        ];
+        return Response::json($data);
+    }
+
+    public function like(Request $request)
+    {
+
+    }
 
 }
 

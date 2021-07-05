@@ -146,7 +146,14 @@ class MovieSeriesController extends Controller
         return Redirect::to(URL::route('admin.movie.series'))->with(['success' => '更新成功']);
     }
 
+    public function list(Request $request)
+    {
 
+    }
 
+    public function like(Request $request)
+    {
+
+    }
 }
 

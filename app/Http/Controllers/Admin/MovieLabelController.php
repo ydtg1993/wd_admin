@@ -95,7 +95,9 @@ class MovieLabelController extends Controller
         return Redirect::to(URL::route('admin.movie.label'))->with(['success' => '更新成功']);
     }
 
+    public function list(Request $request)
+    {
 
-
+    }
 }
 

@@ -38,9 +38,11 @@
                          {field: 'id', title: 'ID', sort: true, width: 80}
                         , {field:'number',title:'番号'}
                         , {field: 'name', title: '名称'}
+                        , {field: 'time', title:'时长'}
                         , {field: 'resources_status', title:'资源状态'}
+                        , {field: 'small_cover', title:'封面图'}
                         , {field: 'status', title:'审核状态'}
-                        , {field:'source_site',title:'来源网站'}
+                        , {field:'release_time',title:'发布时间'}
                         , {field: 'created_at', title: '创建时间'}
                         , {field: 'updated_at', title: '更新时间'}
                         , {fixed: 'right', width: 260, align: 'center', toolbar: '#options'}
@@ -60,15 +62,12 @@
                                 $(this).text("异常数据")
                             }
                         });
-
-                        $("[data-field='resources_status']").children().each(function(){
-                            if($(this).text()=='1'){
-                                $(this).text("未处理")
-                            }else if($(this).text()=='2'){
-                                $(this).text("已下载")
-                            }else if($(this).text()=='3'){
-                                $(this).text("数据异常")
+                        $("[data-field='small_cover']").children().each(function(){
+                            var val = "<img src={{config('app.url')}}resources/"+$(this).text()+" />";
+                            if($(this).text() == '封面图'){
+                                return;
                             }
+                            $(this).html(val)
                         });
                     }
                 });

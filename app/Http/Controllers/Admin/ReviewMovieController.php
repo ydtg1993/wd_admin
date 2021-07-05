@@ -44,6 +44,7 @@ class ReviewMovieController extends Controller
         $res = $model->where('resources_status', '>', 1)->
         where('status', 1)->
         orderBy('id', 'desc')->paginate($request->get('limit', 30));
+
         $data = [
             'code' => 0,
             'msg' => '正在请求中...',
@@ -76,7 +77,7 @@ class ReviewMovieController extends Controller
         $categories = MovieCategory::pluck('name', 'id')->all();
         /*寻找类别*/
         $index = array_search($movie->category, $categories);
-        $category = ($index !== false) ? $categories[$index] : $categories[0];
+        $category = ($index !== false) ? $categories[$index] : current($categories);
 
         $series = $this->categorySelect('series', 'series_id', $category);
 
@@ -148,7 +149,7 @@ class ReviewMovieController extends Controller
         $data = $request->all();
         /*判断*/
         $lock_path = storage_path('review_movie');
-        if (is_dir($lock_path)) {
+        if (!is_dir($lock_path)) {
             mkdir($lock_path, 0777);
         }
         if (file_exists($lock_path . "/$id")) {

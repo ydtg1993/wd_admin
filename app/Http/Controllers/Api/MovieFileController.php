@@ -14,9 +14,9 @@ class MovieFileController extends Controller
     public function upload(Request $request)
     {
         //上传文件最大大小,单位M
-        $maxSize = 50;
+        $maxSize = 10;
         //支持的上传图片类型
-        $allowed_extensions = ["png", "jpg", "jpeg", "gif"];
+        $allowed_extensions = ["png", "jpg", "jpeg", "gif","mp4", "mpg", "mpeg","avi","rmvb"];
         //返回信息json
         $data = ['code' => 1, 'msg' => '上传失败', 'data' => ''];
 
@@ -64,7 +64,7 @@ class MovieFileController extends Controller
     public function batchUpload(Request $request)
     {
         //上传文件最大大小,单位M
-        $maxSize = 10;
+        $maxSize = 5;
         //支持的上传图片类型
         $allowed_extensions = ["png", "jpg", "jpeg", "gif"];
         //返回信息json
