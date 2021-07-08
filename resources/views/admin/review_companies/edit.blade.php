@@ -6,7 +6,7 @@
             <h2>采集-更新公司</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.review.companies.update',['id'=>$company->id])}}" method="post">
+            <form class="layui-form" action="{{route('admin.review.companies.edit',['id'=>$company->id])}}" method="post">
                 {{ method_field('put') }}
                 {{csrf_field()}}
                 <div class="layui-form-item">

@@ -6,7 +6,7 @@
             <h2>更新标签</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.movie.label.update',['id'=>$label->id])}}" method="post">
+            <form class="layui-form" action="{{route('admin.movie.label.edit',['id'=>$label->id])}}" method="post">
                 {{ method_field('put') }}
                 {{csrf_field()}}
                 <div class="layui-form-item">

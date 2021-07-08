@@ -6,7 +6,7 @@
             <h2>更新分类</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.movie.category.update',['id'=>$category->id])}}" method="post">
+            <form class="layui-form" action="{{route('admin.movie.category.edit',['id'=>$category->id])}}" method="post">
                 {{ method_field('put') }}
                 {{csrf_field()}}
                 <div class="layui-form-item">

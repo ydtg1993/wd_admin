@@ -17,22 +17,36 @@ use Illuminate\Support\Facades\View;
 class ReviewNumbersController extends Controller
 {
     /**
-     * 采集演员管理
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function index()
-    {
-        return View::make('admin.review_numbers.index');
-    }
-
-    /**
-     * 数据接口
+     * 番号采集
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function data(Request $request)
+    public function index(Request $request)
     {
-        $res = CollectNumber::where('status',1)->orderBy('id', 'desc')
+        if($request->method() == 'GET') {
+            return View::make('admin.review_numbers.index');
+        }
+
+        $model = CollectNumber::query();
+        $table = 'collection_number';
+        /*search*/
+        $data = explode('~', $request->input('date'));
+        if (isset($data[0]) && isset($data[1])) {
+            $model = $model->whereBetween($table.'.created_at', [trim($data[0]), trim($data[1])]);
+        }
+        if($request->input('status')){
+            $model = $model->where($table.'.status', $request->input('status'));
+        }
+        if($request->input('name')){
+            $model = $model->where($table.'.name', $request->input('name'));
+        }
+        if($request->input('nickname')){
+            $model = $model->where('users.nickname', $request->input('nickname'));
+        }
+        $res = $model->whereIn($table.'.status',[1,2])
+            ->leftJoin('users', 'users.id', '=', $table.'.admin_id')
+            ->orderBy($table.'.id', 'desc')
+            ->select($table.'.*','users.nickname')
             ->paginate($request->get('limit', 30));
 
         $data = [
@@ -46,24 +60,17 @@ class ReviewNumbersController extends Controller
 
     /**
      * 更新
-     * @param $id
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function edit($id)
-    {
-        $number = CollectNumber::findOrFail($id);
-
-        return View::make('admin.review_numbers.edit', compact('number'));
-    }
-
-    /**
-     * 更新
      * @param Request $request
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function edit(Request $request,$id)
     {
+        if($request->method() == 'GET') {
+            $number = CollectNumber::findOrFail($id);
+            return View::make('admin.review_numbers.edit', compact('number'));
+        }
+
         $data = $request->all();
         try {
             if(MovieNumbers::where('name',$data['name'])->exists()){
@@ -76,7 +83,6 @@ class ReviewNumbersController extends Controller
         }
         return Redirect::to(URL::route('admin.review.numbers'))->with(['success' => '更新成功']);
     }
-
 
 }
 

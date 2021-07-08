@@ -6,7 +6,7 @@
             <h2>添加系列</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.movie.series.store')}}" method="post">
+            <form class="layui-form" action="{{route('admin.movie.series.create')}}" method="post">
                 {{ method_field('post') }}
                 {{csrf_field()}}
                 <div class="layui-form-item">

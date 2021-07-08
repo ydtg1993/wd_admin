@@ -6,7 +6,7 @@
             <h2>采集-修改评分</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.review.score.update',['id'=>$score->id])}}" method="post">
+            <form class="layui-form" action="{{route('admin.review.score.edit',['id'=>$score->id])}}" method="post">
                 {{ method_field('put') }}
                 {{csrf_field()}}
                 <div class="layui-form-item">

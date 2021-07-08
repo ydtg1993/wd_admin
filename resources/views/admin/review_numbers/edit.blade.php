@@ -6,7 +6,7 @@
             <h2>采集-更新番号组</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.review.numbers.update',['id'=>$number->id])}}" method="post">
+            <form class="layui-form" action="{{route('admin.review.numbers.edit',['id'=>$number->id])}}" method="post">
                 {{ method_field('put') }}
                 {{csrf_field()}}
                 <div class="layui-form-item">

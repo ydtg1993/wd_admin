@@ -17,54 +17,60 @@ class ReviewSeriesController extends Controller
 {
     /**
      * 采集演员管理
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function index()
-    {
-        return View::make('admin.review_series.index');
-    }
-
-    /**
-     * 数据接口
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function data(Request $request)
+    public function index(Request $request)
     {
-        $res = CollectSeries::where('status',1)->orderBy('id', 'desc')
+        if($request->method() == 'GET'){
+            return View::make('admin.review_series.index');
+        }
+
+        $model = CollectSeries::query();
+        $table = 'collection_series';
+        /*search*/
+        $data = explode('~', $request->input('date'));
+        if (isset($data[0]) && isset($data[1])) {
+            $model = $model->whereBetween($table.'.created_at', [trim($data[0]), trim($data[1])]);
+        }
+        if($request->input('status')){
+            $model = $model->where($table.'.status', $request->input('status'));
+        }
+        if($request->input('name')){
+            $model = $model->where($table.'.name', $request->input('name'));
+        }
+        if($request->input('nickname')){
+            $model = $model->where('users.nickname', $request->input('nickname'));
+        }
+        $res = $model->whereIn($table.'.status',[1,2])
+            ->leftJoin('users', 'users.id', '=', $table.'.admin_id')
+            ->orderBy($table.'.id', 'desc')
+            ->select($table.'.*','users.nickname')
             ->paginate($request->get('limit', 30));
-        $records = $res->toArray();
 
         $data = [
             'code' => 0,
             'msg' => '正在请求中...',
             'count' => $res->total(),
-            'data' => $records['data'],
+            'data' => $res->items(),
         ];
         return Response::json($data);
     }
 
     /**
      * 更新
+     * @param Request $request
      * @param $id
      * @return \Illuminate\Contracts\View\View
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
-        $categories = DB::table('movie_series_category')->pluck('name', 'id')->all();
-        $series = CollectSeries::findOrFail($id);
+        if($request->method() == 'GET') {
+            $categories = DB::table('movie_series_category')->pluck('name', 'id')->all();
+            $series = CollectSeries::findOrFail($id);
 
-        return View::make('admin.review_series.edit', compact('series', 'categories'));
-    }
-
-    /**
-     * 更新
-     * @param Request $request
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(Request $request, $id)
-    {
+            return View::make('admin.review_series.edit', compact('series', 'categories'));
+        }
         $data = $request->all();
         try {
             $series = MovieSeries::where('name',$data['name'])->get();

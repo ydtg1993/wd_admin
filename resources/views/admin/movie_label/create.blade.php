@@ -6,7 +6,7 @@
             <h2>添加标签</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.movie.label.store')}}" method="post">
+            <form class="layui-form" action="{{route('admin.movie.label.create')}}" method="post">
                 {{ method_field('post') }}
                 {{csrf_field()}}
                 <div class="layui-form-item">

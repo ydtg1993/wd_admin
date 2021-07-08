@@ -8,7 +8,7 @@
             <h2>采集-更新演员</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.review.actor.update',['id'=>$actor->id])}}" method="post">
+            <form class="layui-form" action="{{route('admin.review.actor.edit',['id'=>$actor->id])}}" method="post">
                 {{ method_field('put') }}
                 {{csrf_field()}}
                 <div class="layui-form-item">
@@ -103,7 +103,7 @@ EOF;
                 <div class="layui-form-item">
                     <div class="layui-input-block">
                         <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">确 认</button>
-                        <a class="layui-btn" href="{{route('admin.review.actor')}}">返 回</a>
+                        <a class="layui-btn" href="javascript:history.back()">返 回</a>
                     </div>
                 </div>
             </form>

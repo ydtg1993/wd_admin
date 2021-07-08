@@ -9,7 +9,7 @@
             <h2>采集-影片审核</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form layui-form-pane" action="{{route('admin.review.movie.update',['id'=>$movie->id])}}"
+            <form class="layui-form layui-form-pane" action="{{route('admin.review.movie.edit',['id'=>$movie->id])}}"
                   method="post">
                 {{ method_field('put') }}
                 {{csrf_field()}}
@@ -270,7 +270,7 @@ echo '</tbody>';
                 <div class="layui-form-item">
                     <div class="layui-input-block">
                         <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">确认发布</button>
-                        <a  class="layui-btn" href="{{route('admin.review.movie')}}" >返 回</a>
+                        <a  class="layui-btn" href="javascript:history.back()" >返 回</a>
                     </div>
                 </div>
             </form>

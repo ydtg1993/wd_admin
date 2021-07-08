@@ -9,7 +9,7 @@
             <h2>影片审核</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form layui-form-pane" action="{{route('admin.movie.movie.update',['id'=>$movie->id])}}"
+            <form class="layui-form layui-form-pane" action="{{route('admin.movie.movie.edit',['id'=>$movie->id])}}"
                   method="post">
                 {{ method_field('put') }}
                 {{csrf_field()}}

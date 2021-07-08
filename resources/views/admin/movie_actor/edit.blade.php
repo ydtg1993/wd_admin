@@ -8,7 +8,7 @@
             <h2>更新演员</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.movie.actor.update',['id'=>$actor->id])}}" method="post">
+            <form class="layui-form" action="{{route('admin.movie.actor.edit',['id'=>$actor->id])}}" method="post">
                 {{ method_field('put') }}
                 {{csrf_field()}}
                 <div class="layui-form-item">

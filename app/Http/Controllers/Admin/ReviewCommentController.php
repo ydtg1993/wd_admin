@@ -19,43 +19,44 @@ use Illuminate\Support\Facades\View;
 class ReviewCommentController extends Controller
 {
     /**
-     * 采集管理
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function index()
-    {
-        return View::make('admin.review_comment.index');
-    }
-
-    /**
-     * 数据接口
+     * 评论采集
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function data(Request $request)
+    public function index(Request $request)
     {
-        $res = CollectComment::where('status',1)->orderBy('id', 'desc')
+        if($request->method() == 'GET') {
+            return View::make('admin.review_comment.index');
+        }
+        $model = CollectComment::query();
+        $table = 'collection_comments';
+        /*search*/
+        $data = explode('~', $request->input('date'));
+        if (isset($data[0]) && isset($data[1])) {
+            $model = $model->whereBetween($table.'.created_at', [trim($data[0]), trim($data[1])]);
+        }
+        if($request->input('status')){
+            $model = $model->where($table.'.status', $request->input('status'));
+        }
+        if($request->input('number')){
+            $model = $model->where($table.'.number', $request->input('number'));
+        }
+        if($request->input('nickname')){
+            $model = $model->where('users.nickname', $request->input('nickname'));
+        }
+        $res = $model->whereIn($table.'.status',[1,2])
+            ->leftJoin('users', 'users.id', '=', $table.'.admin_id')
+            ->orderBy($table.'.id', 'desc')
+            ->select($table.'.*','users.nickname')
             ->paginate($request->get('limit', 30));
-        $records = $res->toArray();
 
         $data = [
             'code' => 0,
             'msg' => '正在请求中...',
             'count' => $res->total(),
-            'data' => $records['data'],
+            'data' => $res->items(),
         ];
         return Response::json($data);
-    }
-
-    /**
-     * 更新
-     * @param $id
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function edit($id)
-    {
-        $comment = CollectComment::find($id);
-        return View::make('admin.review_comment.edit', compact('comment'));
     }
 
     /**
@@ -64,8 +65,12 @@ class ReviewCommentController extends Controller
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function edit(Request $request, $id)
     {
+        if($request->method() == 'GET') {
+            $comment = CollectComment::find($id);
+            return View::make('admin.review_comment.edit', compact('comment'));
+        }
         $data = $request->all();
         try {
             $movie = Movie::where('number',$data['number'])->first();

@@ -8,7 +8,7 @@
             <h2>添加公司</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.movie.actor.store')}}" method="post" enctype="multipart/form-data">
+            <form class="layui-form" action="{{route('admin.movie.actor.create')}}" method="post" enctype="multipart/form-data">
                 {{ method_field('post') }}
                 {{csrf_field()}}
                 <div class="layui-form-item">

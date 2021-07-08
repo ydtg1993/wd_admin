@@ -23,7 +23,7 @@
 @section('script')
     @can('system.role')
         <script>
-            layui.use(['layer', 'table', 'form'], function () {
+            layui.use(['layer', 'table', 'form','laydate'], function () {
                 var $ = layui.jquery;
                 var layer = layui.layer;
                 var form = layui.form;
@@ -31,8 +31,10 @@
                 //用户表格初始化
                 var dataTable = table.render({
                     elem: '#dataTable'
+                    ,id:'table'
                     , height: 500
-                    , url: "{{ route('admin.movie_category.data') }}" //数据接口
+                    , url: "{{ route('admin.movie.category') }}" //数据接口
+                    , method:'POST'
                     , page: true //开启分页
                     , cols: [[ //表头
                         {field: 'id', title: 'ID', sort: true, width: 80}

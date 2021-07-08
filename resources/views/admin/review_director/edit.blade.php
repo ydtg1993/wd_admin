@@ -6,7 +6,7 @@
             <h2>采集-修改导演名</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.review.director.update',['id'=>$director->id])}}" method="post">
+            <form class="layui-form" action="{{route('admin.review.director.edit',['id'=>$director->id])}}" method="post">
                 {{ method_field('put') }}
                 {{csrf_field()}}
                 <div class="layui-form-item">

@@ -6,7 +6,7 @@
             <h2>采集-更新系列</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.review.series.update',['id'=>$series->id])}}" method="post">
+            <form class="layui-form" action="{{route('admin.review.series.edit',['id'=>$series->id])}}" method="post">
                 {{ method_field('put') }}
                 {{csrf_field()}}
                 <div class="layui-form-item">

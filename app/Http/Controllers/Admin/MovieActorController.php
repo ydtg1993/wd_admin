@@ -16,32 +16,40 @@ class MovieActorController extends Controller
 {
     /**
      * 影片演员管理
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function index()
-    {
-        return View::make('admin.movie_actor.index');
-    }
-
-    /**
-     * 数据接口
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function data(Request $request)
+    public function index(Request $request)
     {
-        $categories = DB::table('movie_actor_category')->pluck( 'name','id')->all();
-        $res = MovieActor::orderBy('id', 'desc')
-            ->leftJoin('movie_actor_category_associate','movie_actor.id','=','movie_actor_category_associate.aid')
-            ->select('movie_actor.*','movie_actor_category_associate.aid','movie_actor_category_associate.cid')
+        if($request->method() == 'GET') {
+            $categories = DB::table('movie_actor_category')->pluck( 'name','id')->all();
+            return View::make('admin.movie_actor.index',compact('categories'));
+        }
+
+        $model = MovieActor::query();
+        $table = 'movie_actor';
+        /*search*/
+        $data = explode('~',$request->input('date'));
+        if(isset($data[0]) && isset($data[1])){
+            $model = $model->whereBetween($table.'.created_at',[trim($data[0]),trim($data[1])]);
+        }
+        if($request->input('status')){
+            $model = $model->where($table.'.status', $request->input('status'));
+        }
+        if($request->input('name')){
+            $model = $model->where($table.'.name', $request->input('name'));
+        }
+        if($request->input('category')){
+            $model = $model->where('movie_actor_category.name', $request->input('category'));
+        }
+
+        $res = $model->leftJoin('movie_actor_category_associate',$table.'.id','=','movie_actor_category_associate.aid')
+            ->join('movie_actor_category','movie_actor_category.id','=','movie_actor_category_associate.cid')
+            ->select($table.'.*','movie_actor_category.name as category')
             ->paginate($request->get('limit', 30));
+
         $records = $res->toArray();
         foreach ($records['data'] as &$record){
-            $record['category'] = '';
-            if(isset($categories[$record['cid']])){
-                $record['category'] = $categories[$record['cid']];
-            }
-
             $names = DB::table('movie_actor_name')->where('aid',$record['id'])->pluck('name')->all();
             $record['names'] = join(',',$names);
         }
@@ -57,21 +65,15 @@ class MovieActorController extends Controller
 
     /**
      * 添加
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function create()
-    {
-        $categories = DB::table('movie_actor_category')->pluck( 'name','id')->all();
-        return View::make('admin.movie_actor.create',compact('categories'));
-    }
-
-    /**
-     * 添加
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
+        if($request->method() == 'GET') {
+            $categories = DB::table('movie_actor_category')->pluck( 'name','id')->all();
+            return View::make('admin.movie_actor.create',compact('categories'));
+        }
         $data = $request->all();
         try {
             if(MovieActor::where('name',$data['name'])->exists()){
@@ -146,33 +148,26 @@ class MovieActorController extends Controller
 
     /**
      * 更新
-     * @param $id
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function edit($id)
-    {
-        $categories = DB::table('movie_actor_category')->pluck( 'name','id')->all();
-        $actor = MovieActor::leftJoin('movie_actor_category_associate','movie_actor.id','=','movie_actor_category_associate.aid')
-            ->select('movie_actor.*','movie_actor_category_associate.aid','movie_actor_category_associate.cid')
-            ->findOrFail($id);
-
-        $actor_names = DB::table('movie_actor_name')->where('aid',$id)->pluck('name')->all();
-        $names = '';
-        foreach ($actor_names as $actor_name){
-            $names.= trim($actor_name)."\r\n";
-        }
-
-        return View::make('admin.movie_actor.edit', compact('actor','categories','names'));
-    }
-
-    /**
-     * 更新
      * @param Request $request
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
+        if($request->method() == 'GET') {
+            $categories = DB::table('movie_actor_category')->pluck( 'name','id')->all();
+            $actor = MovieActor::leftJoin('movie_actor_category_associate','movie_actor.id','=','movie_actor_category_associate.aid')
+                ->select('movie_actor.*','movie_actor_category_associate.aid','movie_actor_category_associate.cid')
+                ->findOrFail($id);
+
+            $actor_names = DB::table('movie_actor_name')->where('aid',$id)->pluck('name')->all();
+            $names = '';
+            foreach ($actor_names as $actor_name){
+                $names.= trim($actor_name)."\r\n";
+            }
+
+            return View::make('admin.movie_actor.edit', compact('actor','categories','names'));
+        }
         $data = $request->all();
         try {
             DB::beginTransaction();

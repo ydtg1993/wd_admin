@@ -2,9 +2,36 @@
 
 @section('content')
     <div class="layui-card">
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px" id="btn">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">时间范围</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="date" placeholder=" ~ ">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">导演名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="name">
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <button type="button" class="layui-btn layui-btn-primary"  lay-submit data-type="reload" lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
         <div class="layui-card-header layuiadmin-card-header-auto">
             <div class="layui-btn-group">
                 <a class="layui-btn layui-btn-sm" href="{{route('admin.movie.director.create')}}" >添 加</a>
+                <a class="layui-btn layui-btn-normal layui-btn-radius" target="_blank" href="{{route('admin.movie.director.list')}}" style="margin-left: 10px!important;">影片列表</a>
+                <a class="layui-btn layui-btn-normal layui-btn-radius" target="_blank" href="{{route('admin.movie.director.like')}}" style="margin-left: 10px!important;">收藏列表</a>
             </div>
         </div>
         <div class="layui-card-body">
@@ -23,7 +50,7 @@
 @section('script')
     @can('system.role')
         <script>
-            layui.use(['layer', 'table', 'form'], function () {
+            layui.use(['layer', 'table', 'form','laydate'], function () {
                 var $ = layui.jquery;
                 var layer = layui.layer;
                 var form = layui.form;
@@ -31,8 +58,10 @@
                 //用户表格初始化
                 var dataTable = table.render({
                     elem: '#dataTable'
+                    ,id:'table'
                     , height: 500
-                    , url: "{{ route('admin.movie_director.data') }}" //数据接口
+                    , url: "{{ route('admin.movie.director') }}" //数据接口
+                    , method:'POST'
                     , page: true //开启分页
                     , cols: [[ //表头
                         {field: 'id', title: 'ID', sort: true, width: 80}
@@ -41,7 +70,6 @@
                         , {field: 'movie_sum', title:'影片数量'}
                         , {field: 'like_sum', title:'收藏数量'}
                         , {field: 'created_at', title: '创建时间'}
-                        , {field: 'updated_at', title: '更新时间'}
                         , {fixed: 'right', width: 260, align: 'center', toolbar: '#options'}
                     ]],
                     done: function(res, curr, count){
@@ -62,6 +90,32 @@
                     if (layEvent === 'edit') {
                         location.href = '/admin/movie/director/' + data.id + '/edit';
                     }
+                });
+
+                //搜索
+                var laydate = layui.laydate;
+                laydate.render({
+                    elem: '#date'
+                    ,type: 'datetime'
+                    ,range: '~'
+                });
+                var active = {
+                    reload: function(){
+                        //执行重载
+                        table.reload('table', {
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                            ,where: {
+                                date: $('#date').val(),
+                                name:$('#name').val()
+                            }
+                        });
+                    }
+                };
+                $('#btn .layui-btn').on('click', function(){
+                    var type = $(this).data('type');
+                    active[type] ? active[type].call(this) : '';
                 });
             })
         </script>
