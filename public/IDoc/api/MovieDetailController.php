@@ -16,6 +16,7 @@ class MovieDetailController extends  BaseController
      * @apiDescription 详情
      *
      * @apiParam {Number} id  【影片id】
+     * @apiParam {Number} uid  【用户id 可不传或0】
      *
      * @apiSuccess {String} code 响应码 200 正确 其他错误
      * @apiSuccessExample  {json} success-example
@@ -23,87 +24,57 @@ class MovieDetailController extends  BaseController
     "code": 200,
     "msg": "成功！",
     "data": {
-    "id": 1,
-    "number": "BangBus.21.05.05",
-    "name": "Young and Innocent on the Bus",
-    "time": 194400,
-    "release_time": "2021-05-30 02:20:27",
-    "small_cover": "/javdb/small_cover/85f3020a8f42d8613bcd3261cc82cd93.jpg",
-    "big_cove": "/javdb/big_cove/f85add990cdf586de23fad132afb7897.jpg",
+    "id": 15,
+    "number": "IMadePorn.21.05.04",
+    "name": "Change Of Plans",
+    "time": null,
+    "release_time": "2021-05-30 02:20:28",
+    "small_cover": "/javdb/small_cover/d576bbdbc81d0e21f23ae48334cecb55.jpg",
+    "big_cove": "/javdb/big_cove/28bcc64ee14a186eb3b02119a5d081e1.jpg",
     "trailer": "",
     "score": 0,
-    "score_people": 2,
-    "comment_num": 2,
-    "wan_see": 0,
-    "seen": 0,
-    "flux_linkage_num": 5,
+    "score_people": 0,
+    "comment_num": 0,
+    "flux_linkage_num": 3,
     "flux_linkage": [
     {
-    "name": "BangBus.21.05.05.Emma.Sirus.XXX.480p.MP4-XXX",
-    "url": "magnet:?xt=urn:btih:5a4c4ae79a057571f7d7659702f0ac9846df92bc&dn=[javdb.com]BangBus.21.05.05.Emma.Sirus.XXX.480p.MP4-XXX",
-    "is-small": null,
-    "is-warning": null,
-    "tooltip": null,
-    "meta": "(440MB,1個文件)"
-    },
-    {
-    "name": "BangBus.21.05.05.Emma.Sirus.XXX.1080p.MP4-WRB[XvX]",
-    "url": "magnet:?xt=urn:btih:8fd24b477b2cc5fed9234396ba8334226e9c8ba0&dn=[javdb.com]BangBus.21.05.05.Emma.Sirus.XXX.1080p.MP4-WRB[XvX]",
+    "name": "IMadePorn.21.05.04.Alexia.Anders.Change.Of.Plans.XXX.1080p.MP4-WRB[rarbg]",
+    "url": "magnet:?xt=urn:btih:30edf0fc48e60089453b3537d1e89e747760a46f&dn=[javdb.com]IMadePorn.21.05.04.Alexia.Anders.Change.Of.Plans.XXX.1080p.MP4-WRB[rarbg]",
     "is-small": "高清",
     "is-warning": null,
     "tooltip": null,
-    "meta": "(3.81GB,2個文件)"
+    "meta": "(3.35GB,4個文件)"
     },
     {
-    "name": "BangBus.21.05.05.Emma.Sirus.XXX.1080p.MP4-WRB[rarbg]",
-    "url": "magnet:?xt=urn:btih:91a8bb06f4ad0b9b27528a4be6d7721d01109657&dn=[javdb.com]BangBus.21.05.05.Emma.Sirus.XXX.1080p.MP4-WRB[rarbg]",
-    "is-small": "高清",
-    "is-warning": null,
-    "tooltip": null,
-    "meta": "(3.81GB,4個文件)"
-    },
-    {
-    "name": "BangBus.21.05.05.Emma.Sirus.XXX.720p.HEVC.x265.PRT",
-    "url": "magnet:?xt=urn:btih:5e56f10235e8ac74cb160b8a4f2c2f89e0313e37&dn=[javdb.com]BangBus.21.05.05.Emma.Sirus.XXX.720p.HEVC.x265.PRT",
+    "name": "IMadePorn.21.05.04.Alexia.Anders.Change.Of.Plans.XXX.720p.WEB.x264-GalaXXXy[XvX]",
+    "url": "magnet:?xt=urn:btih:54861ceedf360f946fe6aad76c706f92f5730e5b&dn=[javdb.com]IMadePorn.21.05.04.Alexia.Anders.Change.Of.Plans.XXX.720p.WEB.x264-GalaXXXy[XvX]",
     "is-small": null,
     "is-warning": null,
     "tooltip": null,
-    "meta": "(835MB,2個文件)"
+    "meta": "(376MB,2個文件)"
     },
     {
-    "name": "BangBus.21.05.05.Emma.Sirus.XXX.SD.MP4-KLEENEX",
-    "url": "magnet:?xt=urn:btih:2e52a1a97edba910744c1a8be526ae9a766d7d81&dn=[javdb.com]BangBus.21.05.05.Emma.Sirus.XXX.SD.MP4-KLEENEX",
+    "name": "IMadePorn.21.05.04.Alexia.Anders.Change.Of.Plans.XXX.SD.MP4-KLEENEX",
+    "url": "magnet:?xt=urn:btih:5565222e48da4812497cf1450a12a4c1f26cf854&dn=[javdb.com]IMadePorn.21.05.04.Alexia.Anders.Change.Of.Plans.XXX.SD.MP4-KLEENEX",
     "is-small": null,
     "is-warning": null,
     "tooltip": null,
-    "meta": "(438MB,3個文件)"
+    "meta": "(322MB,3個文件)"
     }
     ],
-    "flux_linkage_time": "2021-05-30 02:28:22",
-    "created_at": "2021-05-30T02:28:22.000000Z",
-    "labels": {
-    "198": "顏射",
-    "200": "口交",
-    "461": "業餘",
-    "473": "貧乳",
-    "474": "金髮",
-    "479": "大屁股",
-    "488": "白虎",
-    "501": "背入式",
-    "502": "騎乘位",
-    "504": "傳教士",
-    "506": "射精",
-    "587": "少女"
-    },
+    "flux_linkage_time": "2021-05-30 02:28:23",
+    "created_at": "2021-05-30T02:28:23.000000Z",
+    "labels": [],
     "actors": {
-    "1257": "Tyler Steel",
-    "1258": "Emma Sirus"
+    "1286": "Alexia Anders"
     },
     "director": [],
     "company": [],
     "series": {
     "719": "レズビアン大乱交"
     },
+    "seen": 0,
+    "want_see": 0,
     "map": []
     }
     }
@@ -251,6 +222,7 @@ class MovieDetailController extends  BaseController
      *
      * @apiParam {Number} id  【影片id】
      * @apiParam {Number} page  【分页】
+     * @apiParam {Number} pageSize  【分页长度】
      *
      * @apiSuccess {String} code 响应码 200 正确 其他错误
      * @apiSuccessExample  {json} success-example
@@ -259,25 +231,30 @@ class MovieDetailController extends  BaseController
     "code": 200,
     "msg": "成功！",
     "data": {
-    "2": {
-    "id": 2,
-    "comment": "白妞也有奶子这么小的，长见识了",
-    "nickname": "lo***r",
+    "page": "1",
+    "pageSize": "2",
+    "sum": 5,
+    "list": {
+    "7524": {
+    "id": 7524,
+    "comment": "sjhdkjshdkjsdkjsdh",
+    "nickname": "hk",
     "avatar": "",
     "type": 1,
     "reply_uid": 0,
-    "comment_time": "2021-05-30 02:28:22",
+    "comment_time": "2021-06-30 16:16:13",
     "reply_comments": []
     },
-    "1": {
-    "id": 1,
-    "comment": "这妹纸屁股顶逼粉上位骑乘那段nice",
-    "nickname": "sy***_",
+    "7523": {
+    "id": 7523,
+    "comment": "sjhdkjshdkjsdkjsdh",
+    "nickname": "hk",
     "avatar": "",
     "type": 1,
     "reply_uid": 0,
-    "comment_time": "2021-05-30 02:28:22",
+    "comment_time": "2021-06-30 16:14:34",
     "reply_comments": []
+    }
     }
     }
     }

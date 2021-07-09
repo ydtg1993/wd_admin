@@ -23,19 +23,21 @@ class ActorDetailController extends  BaseController
     "code": 200,
     "msg": "成功！",
     "data": {
-    "id": 1,
-    "name": "楓可憐",
-    "photo": "/javdb_actor/avatar/36a1b3da742ab899c6fa129a27e667a8.jpg",
+    "id": 263,
+    "name": "森菜菜子",
+    "photo": "/javdb_actor/avatar/68d7456eb3ed08c59e1300538a6c503c.jpg",
     "sex": "",
     "social_accounts": {
-    "Twitter": "https://twitter.com/karenkaede_"
+    "Twitter": "https://twitter.com/mori7ko"
     },
     "movie_sum": 0,
     "like_sum": 0,
     "names": {
-    "1": "楓可憐",
-    "2": " 楓カレン"
-    }
+    "871": "森菜菜子",
+    "872": " 森ななこ",
+    "873": " 森nanako"
+    },
+    "is_like": 0
     }
     }
      */
@@ -54,8 +56,9 @@ class ActorDetailController extends  BaseController
      *
      * @apiParam {Number} id  【演员id】
      * @apiParam {Number} page  【分页】
-     * @apiParam {String} filter  【1.subtitle字幕 2.download已下载 3.comment新评】
-     * @apiParam {String} sort  【1.release发布时间排序 2.linkage链接更新排序】
+     * @apiParam {Number} pageSize  【分页长度】
+     * @apiParam {Number} filter  【1.subtitle字幕 2.download已下载 3.comment新评】
+     * @apiParam {Number} sort  【1.release发布时间排序 2.linkage链接更新排序】
      *
      * @apiSuccess {String} code 响应码 200 正确 其他错误
      * @apiSuccessExample  {json} success-example
@@ -64,12 +67,16 @@ class ActorDetailController extends  BaseController
     "code": 200,
     "msg": "成功！",
     "data": {
-    "0": {
-    "id": 5815,
-    "name": "Shelter-in-pussy",
-    "number": "AssParade.20.06.29",
-    "release_time": "2021-05-30 02:28:34",
-    "created_at": "2021-05-30T02:37:46.000000Z",
+    "page": "1",
+    "pageSize": "2",
+    "sum": 36,
+    "list": [
+    {
+    "id": 9278,
+    "name": "House Keeper",
+    "number": "RKPrime.20.01.29",
+    "release_time": "2021-05-30 02:31:43",
+    "created_at": "2021-05-30T02:41:34.000000Z",
     "is_download": 2,
     "is_subtitle": 1,
     "is_hot": 1,
@@ -77,15 +84,15 @@ class ActorDetailController extends  BaseController
     "is_flux_linkage": 2,
     "comment_num": 0,
     "score": 0,
-    "small_cover": "/javdb/small_cover/fd3fd725516b25724409d2faad9eb739.jpg",
-    "big_cove": "/javdb/big_cove/3520b9683c98bac720ad9107f866fa9c.jpg"
+    "small_cover": "/javdb/small_cover/d9981d98b84fba0b68674a678619b951.jpg",
+    "big_cove": "/javdb/big_cove/260d65aa1d4b98f2ef7d6c4c4cd28473.jpg"
     },
-    "1": {
-    "id": 5782,
-    "name": "Horny Neighbor Valentina Jewels",
-    "number": "AssParade.20.07.20",
-    "release_time": "2021-05-30 02:28:31",
-    "created_at": "2021-05-30T02:37:42.000000Z",
+    {
+    "id": 12431,
+    "name": "Graduation",
+    "number": "vixen.20.02.03",
+    "release_time": "2021-05-30 02:31:43",
+    "created_at": "2021-05-30T02:45:23.000000Z",
     "is_download": 2,
     "is_subtitle": 1,
     "is_hot": 1,
@@ -93,25 +100,10 @@ class ActorDetailController extends  BaseController
     "is_flux_linkage": 2,
     "comment_num": 0,
     "score": 0,
-    "small_cover": "/javdb/small_cover/7c9b546c4ec6af67b6e76cde47064785.jpg",
-    "big_cove": "/javdb/big_cove/dddb6edf60152a0a440cffe734380fa4.jpg"
-    },
-    "2": {
-    "id": 5732,
-    "name": "GOT",
-    "number": "TeamSkeetXCamSoda.20.07.23",
-    "release_time": "2021-05-30 02:28:27",
-    "created_at": "2021-05-30T02:37:39.000000Z",
-    "is_download": 2,
-    "is_subtitle": 1,
-    "is_hot": 1,
-    "is_new_comment": 2,
-    "is_flux_linkage": 2,
-    "comment_num": 0,
-    "score": 0,
-    "small_cover": "/javdb/small_cover/f3e5fc0cbfcf556562d371ff097a13d3.jpg",
-    "big_cove": "/javdb/big_cove/a1d9ba6c4cdd76a71769fb7febc79d27.jpg"
+    "small_cover": "/javdb/small_cover/3fcf48013c67ac3e8c5b6b01f7b52fc6.jpg",
+    "big_cove": "/javdb/big_cove/837792894077b74638c1ff775e9bb7c0.jpg"
     }
+    ]
     }
     }
      */
