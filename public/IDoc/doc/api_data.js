@@ -1,5 +1,2691 @@
 define({ "api": [
   {
+    "type": "Get",
+    "url": "/api/user/add/action",
+    "title": "浏览影片记录",
+    "name": "浏览影片记录",
+    "group": "个人中心相关",
+    "description": "<p>浏览影片记录</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传1【必须是1】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "mid",
+            "description": "<p>浏览的影片列表</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>收藏ID</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/add/action",
+    "title": "用户导演操作【收藏或者取消收藏】",
+    "name": "用户导演操作【收藏或者取消收藏】",
+    "group": "个人中心相关",
+    "description": "<p>用户导演操作【收藏或者取消收藏】</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传6【必须是6】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "did",
+            "description": "<p>收藏或者取消收藏的导演ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>操作动作【1.收藏、2.取消收藏】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>收藏ID.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/add/action",
+    "title": "用户想看操作【取消或者添加】",
+    "name": "用户想看操作【取消或者添加】",
+    "group": "个人中心相关",
+    "description": "<p>用户想看操作【取消或者添加】</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传2【必须是2】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "mid",
+            "description": "<p>想看或者取消想看的影片ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>操作动作【1.想看、2.取消想看】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>收藏ID</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/add/action",
+    "title": "用户演员操作【收藏或者取消收藏】",
+    "name": "用户演员操作【收藏或者取消收藏】",
+    "group": "个人中心相关",
+    "description": "<p>用户演员操作【收藏或者取消收藏】</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传5【必须是5】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "aid",
+            "description": "<p>收藏或者取消收藏的演员ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>操作动作【1.收藏、2.取消收藏】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>收藏ID.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/add/action",
+    "title": "用户片单操作【创建、修改、收藏、删除】",
+    "name": "用户片单操作【收藏或者取消收藏】",
+    "group": "个人中心相关",
+    "description": "<p>用户片单操作【收藏或者取消收藏】</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传10【必须是10】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>创建方式【0.其他、1.简易创建、2.详细创建。仅status=1可用】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>操作动作【1.新增、2.删除、3.修改、4.收藏】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "intro",
+            "description": "<p>片单简介【可选】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "cover",
+            "description": "<p>片单图【可选】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "authority",
+            "description": "<p>权限【1.公开、2.仅自己可见】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "plid",
+            "description": "<p>片单ID【修改、删除、收藏必须存在】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "bool",
+            "optional": false,
+            "field": "data",
+            "description": "<p>true成功</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/add/action",
+    "title": "用户片商操作【收藏或者取消收藏】",
+    "name": "用户片商操作【收藏或者取消收藏】",
+    "group": "个人中心相关",
+    "description": "<p>用户片商操作【收藏或者取消收藏】</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传7【必须是7】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "film_companies_id",
+            "description": "<p>收藏或者取消收藏的片商ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>操作动作【1.收藏、2.取消收藏】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>收藏ID</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/add/action",
+    "title": "用户番号操作【收藏或者取消收藏】",
+    "name": "用户番号操作【收藏或者取消收藏】",
+    "group": "个人中心相关",
+    "description": "<p>用户番号操作【收藏或者取消收藏】</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传8【必须是8】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "nid",
+            "description": "<p>收藏或者取消收藏的番号ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>操作动作【1.收藏、2.取消收藏】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>收藏ID</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/add/action",
+    "title": "用户粉丝操作【关注或者取消关注】",
+    "name": "用户粉丝操作【关注或者取消关注】",
+    "group": "个人中心相关",
+    "description": "<p>用户粉丝操作【关注或者取消关注】</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传4【必须是4】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "goal_id",
+            "description": "<p>关注或者取消关注的用户ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>操作动作【1.关注、2.取消关注】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>关注ID.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/add/action",
+    "title": "用户系列操作【收藏或者取消收藏】",
+    "name": "用户系列操作【收藏或者取消收藏】",
+    "group": "个人中心相关",
+    "description": "<p>用户系列操作【收藏或者取消收藏】</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传9【必须是9】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "series_id",
+            "description": "<p>收藏或者取消收藏的番号ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>操作动作【1.收藏、2.取消收藏】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>收藏ID</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/add/action",
+    "title": "看过操作【取消或者添加】",
+    "name": "看过操作【取消或者添加】",
+    "group": "个人中心相关",
+    "description": "<p>看过操作【取消或者添加】</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传3【必须是3】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "mid",
+            "description": "<p>操作的影片</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>浏览的影片列表</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "score",
+            "description": "<p>评分1-10【status=1必须传】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "comment",
+            "description": "<p>评论【status=1必须传】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>操作的ID</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/get/action/list",
+    "title": "获取其他用户浏览记录列表",
+    "name": "获取其他用户浏览记录列表",
+    "group": "个人中心相关",
+    "description": "<p>获取其他用户浏览记录列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传1【必须是1】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>影片ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>影片ID名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.number",
+            "description": "<p>影片番号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.release_time",
+            "description": "<p>发行时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.created_at",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_download",
+            "description": "<p>状态：1.不可下载、2.可下载</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_subtitle",
+            "description": "<p>状态：1.不含字幕、2.含字幕</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_short_comment",
+            "description": "<p>状态：1.不含短评、2.含短评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_hot",
+            "description": "<p>是否热门待定</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_new_comment",
+            "description": "<p>0.无状态、1.今日新评、2.无状态、3.昨日新评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_flux_linkage",
+            "description": "<p>0.无状态1.今日新种、2.无状态、3.昨日新种</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.comment_num",
+            "description": "<p>评论数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.score",
+            "description": "<p>评分</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.small_cover",
+            "description": "<p>小图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.big_cove",
+            "description": "<p>大图</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/getHomeUserAction",
+    "title": "获取其他用户片单列表",
+    "name": "获取其他用户片单列表",
+    "group": "个人中心相关",
+    "description": "<p>获取其他用户片单列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传10【必须是10】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>0.全部、1.创建、2.收藏</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeListSum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "likeList",
+            "description": "<p>收藏片单列表</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeList.id",
+            "description": "<p>id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeList.uid",
+            "description": "<p>创建的用户ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "likeList.name",
+            "description": "<p>片单名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "likeList.cover",
+            "description": "<p>片单图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeList.movie_sum",
+            "description": "<p>影片数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeList.like_sum",
+            "description": "<p>收藏数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeList.pv_browse_sum",
+            "description": "<p>浏览次数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "likeList.intro",
+            "description": "<p>片单描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeList.is_hot",
+            "description": "<p>是否热门【暂时好像没用】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeList.authority",
+            "description": "<p>权限1公开2私有</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeList.type",
+            "description": "<p>类型1.用户创建.2.系统管理员创建、3.用户默认</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "likeList.created_at",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeList.a_id",
+            "description": "<p>关联ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createListsum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "createList",
+            "description": "<p>创建片单列表</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createList.id",
+            "description": "<p>id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createList.uid",
+            "description": "<p>创建的用户ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "createList.name",
+            "description": "<p>片单名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "createList.cover",
+            "description": "<p>片单图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createList.movie_sum",
+            "description": "<p>影片数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createList.like_sum",
+            "description": "<p>收藏数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createList.pv_browse_sum",
+            "description": "<p>浏览次数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "createList.intro",
+            "description": "<p>片单描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createList.is_hot",
+            "description": "<p>是否热门【暂时好像没用】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createList.authority",
+            "description": "<p>权限1公开2私有</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createList.type",
+            "description": "<p>类型1.用户创建.2.系统管理员创建、3.用户默认</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "createList.created_at",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createList.a_id",
+            "description": "<p>关联ID</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/movie/attributes/actor/list",
+    "title": "获取用户主页信息",
+    "name": "获取用户主页信息",
+    "group": "个人中心相关",
+    "description": "<p>获取用户主页信息</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>要获取的用户ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "userInfo",
+            "description": "<p>用户列表.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "userInfo.phone",
+            "description": "<p>手机</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "userInfo.email",
+            "description": "<p>邮箱</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "userInfo.nickname",
+            "description": "<p>昵称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "userInfo.sex",
+            "description": "<p>性别 0.未知 1.男 2.女</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "userInfo.age",
+            "description": "<p>年龄</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "userInfo.attention",
+            "description": "<p>关注数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "userInfo.fans",
+            "description": "<p>粉丝数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "userInfo.avatar",
+            "description": "<p>头像</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "userInfo.intro",
+            "description": "<p>简介</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "userInfo.user_id",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "userInfo.user_attention",
+            "description": "<p>是否被该用户关注【1.是、2.否】</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/get/action/list",
+    "title": "获取用户关注/粉丝列表",
+    "name": "获取用户关注/粉丝列表",
+    "group": "个人中心相关",
+    "description": "<p>获取用户关注/粉丝列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传4【必须是4】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "mid",
+            "description": "<p>想看或者取消想看的影片ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>获取动作【1.关注列表、2.粉丝列表】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>关注或者粉丝列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.nickname",
+            "description": "<p>昵称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.avatar",
+            "description": "<p>头像</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.piece_list_num",
+            "description": "<p>片单数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.seen_num",
+            "description": "<p>看过数量</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/get/action/list",
+    "title": "获取用户想看记录列表",
+    "name": "获取用户想看记录列表",
+    "group": "个人中心相关",
+    "description": "<p>获取用户想看记录列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传2【必须是2】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>分类ID【1.有码、2.无码、3.欧美、4.FC2】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>排序0.默认排序、1.加入时间排序、2.发布日期排序</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sortType",
+            "description": "<p>排序方式【desc、asc】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>影片ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>影片ID名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.number",
+            "description": "<p>影片番号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.release_time",
+            "description": "<p>发行时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.created_at",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_download",
+            "description": "<p>状态：1.不可下载、2.可下载</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_subtitle",
+            "description": "<p>状态：1.不含字幕、2.含字幕</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_short_comment",
+            "description": "<p>状态：1.不含短评、2.含短评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_hot",
+            "description": "<p>是否热门待定</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_new_comment",
+            "description": "<p>0.无状态、1.今日新评、2.无状态、3.昨日新评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_flux_linkage",
+            "description": "<p>0.无状态1.今日新种、2.无状态、3.昨日新种</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.comment_num",
+            "description": "<p>评论数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.score",
+            "description": "<p>评分</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.small_cover",
+            "description": "<p>小图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.big_cove",
+            "description": "<p>大图</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/get/action/list",
+    "title": "获取用户收藏导演列表",
+    "name": "获取用户收藏导演列表",
+    "group": "个人中心相关",
+    "description": "<p>获取用户收藏导演列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传6【必须是6】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>导演列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>导演名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>导演ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.movie_sum",
+            "description": "<p>影片数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.like_sum",
+            "description": "<p>收藏数量</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/get/action/list",
+    "title": "获取用户收藏演员列表",
+    "name": "获取用户收藏演员列表",
+    "group": "个人中心相关",
+    "description": "<p>获取用户收藏演员列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传5【必须是5】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>关注或者粉丝列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>演员名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>演员ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.sex",
+            "description": "<p>演员性别</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.movie_sum",
+            "description": "<p>影片数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.like_sum",
+            "description": "<p>收藏数量</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/get/action/list",
+    "title": "获取用户收藏片商列表",
+    "name": "获取用户收藏片商列表",
+    "group": "个人中心相关",
+    "description": "<p>获取用户收藏片商列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传7【必须是7】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>片商列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>片商名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>片商ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.movie_sum",
+            "description": "<p>影片数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.like_sum",
+            "description": "<p>收藏数量</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/get/action/list",
+    "title": "获取用户收藏番号列表",
+    "name": "获取用户收藏番号列表",
+    "group": "个人中心相关",
+    "description": "<p>获取用户收藏番号列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传8【必须是8】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>番号列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>番号名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>番号ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.movie_sum",
+            "description": "<p>影片数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.like_sum",
+            "description": "<p>收藏数量</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/get/action/list",
+    "title": "获取用户收藏系列列表",
+    "name": "获取用户收藏系列列表",
+    "group": "个人中心相关",
+    "description": "<p>获取用户收藏系列列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传9【必须是9】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>系列列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>系列名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>系列ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.movie_sum",
+            "description": "<p>影片数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.like_sum",
+            "description": "<p>收藏数量</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/get/action/list",
+    "title": "获取用户浏览记录列表",
+    "name": "获取用户浏览记录列表",
+    "group": "个人中心相关",
+    "description": "<p>获取用户浏览记录列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传1【必须是1】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>影片ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>影片ID名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.number",
+            "description": "<p>影片番号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.release_time",
+            "description": "<p>发行时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.created_at",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_download",
+            "description": "<p>状态：1.不可下载、2.可下载</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_subtitle",
+            "description": "<p>状态：1.不含字幕、2.含字幕</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_short_comment",
+            "description": "<p>状态：1.不含短评、2.含短评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_hot",
+            "description": "<p>是否热门待定</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_new_comment",
+            "description": "<p>0.无状态、1.今日新评、2.无状态、3.昨日新评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_flux_linkage",
+            "description": "<p>0.无状态1.今日新种、2.无状态、3.昨日新种</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.comment_num",
+            "description": "<p>评论数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.score",
+            "description": "<p>评分</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.small_cover",
+            "description": "<p>小图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.big_cove",
+            "description": "<p>大图</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/get/action/list",
+    "title": "获取用户片单列表",
+    "name": "获取用户片单列表",
+    "group": "个人中心相关",
+    "description": "<p>获取用户片单列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传10【必须是10】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>0.全部、1.创建、2.收藏</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeListSum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "likeList",
+            "description": "<p>收藏片单列表</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeList.id",
+            "description": "<p>id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeList.uid",
+            "description": "<p>创建的用户ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "likeList.name",
+            "description": "<p>片单名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "likeList.cover",
+            "description": "<p>片单图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeList.movie_sum",
+            "description": "<p>影片数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeList.like_sum",
+            "description": "<p>收藏数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeList.pv_browse_sum",
+            "description": "<p>浏览次数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "likeList.intro",
+            "description": "<p>片单描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeList.is_hot",
+            "description": "<p>是否热门【暂时好像没用】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeList.authority",
+            "description": "<p>权限1公开2私有</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeList.type",
+            "description": "<p>类型1.用户创建.2.系统管理员创建、3.用户默认</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "likeList.created_at",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "likeList.a_id",
+            "description": "<p>关联ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createListsum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "createList",
+            "description": "<p>创建片单列表</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createList.id",
+            "description": "<p>id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createList.uid",
+            "description": "<p>创建的用户ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "createList.name",
+            "description": "<p>片单名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "createList.cover",
+            "description": "<p>片单图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createList.movie_sum",
+            "description": "<p>影片数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createList.like_sum",
+            "description": "<p>收藏数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createList.pv_browse_sum",
+            "description": "<p>浏览次数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "createList.intro",
+            "description": "<p>片单描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createList.is_hot",
+            "description": "<p>是否热门【暂时好像没用】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createList.authority",
+            "description": "<p>权限1公开2私有</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createList.type",
+            "description": "<p>类型1.用户创建.2.系统管理员创建、3.用户默认</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "createList.created_at",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "createList.a_id",
+            "description": "<p>关联ID</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/get/action/list",
+    "title": "获取用户看过记录列表",
+    "name": "获取用户看过记录列表",
+    "group": "个人中心相关",
+    "description": "<p>获取用户看过记录列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传3【必须是3】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>分类ID【1.有码、2.无码、3.欧美、4.FC2】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>排序0.默认排序、1.加入时间排序、2.发布日期排序</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "score",
+            "description": "<p>评分：0全部、【1 1-2】、【2 2-3】、【3 3-4】、【4 4-5 】、【5 5】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sortType",
+            "description": "<p>排序方式【desc、asc】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>影片ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>影片ID名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.number",
+            "description": "<p>影片番号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.release_time",
+            "description": "<p>发行时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.created_at",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_download",
+            "description": "<p>状态：1.不可下载、2.可下载</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_subtitle",
+            "description": "<p>状态：1.不含字幕、2.含字幕</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_short_comment",
+            "description": "<p>状态：1.不含短评、2.含短评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_hot",
+            "description": "<p>是否热门待定</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_new_comment",
+            "description": "<p>0.无状态、1.今日新评、2.无状态、3.昨日新评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_flux_linkage",
+            "description": "<p>0.无状态1.今日新种、2.无状态、3.昨日新种</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.comment_num",
+            "description": "<p>评论数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.score",
+            "description": "<p>评分</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.small_cover",
+            "description": "<p>小图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.big_cove",
+            "description": "<p>大图</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Post",
+    "url": "/api/company/products",
+    "title": "公司作品列表",
+    "name": "公司作品列表",
+    "group": "公司详情",
+    "description": "<p>公司作品列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>【公司id】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>【分页】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>【分页长度】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "filter",
+            "description": "<p>【1.subtitle字幕 2.download已下载 3.comment新评】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>【1.release发布时间排序 2.linkage链接更新排序】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "\n{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"page\": \"1\",\n\"pageSize\": \"2\",\n\"sum\": 9380,\n\"list\": [\n{\n\"id\": 12894,\n\"name\": \"チーム木村番外編生挿入 -- 綺羅千沙斗\",\n\"number\": \"kb1599\",\n\"release_time\": \"2021-05-30 02:34:35\",\n\"created_at\": \"2021-05-30T02:46:16.000000Z\",\n\"is_download\": 2,\n\"is_subtitle\": 1,\n\"is_hot\": 1,\n\"is_new_comment\": 2,\n\"is_flux_linkage\": 2,\n\"comment_num\": 0,\n\"score\": 0,\n\"small_cover\": \"/javdb/small_cover/19a1d1391e24d38156f4d9963b303540.jpg\",\n\"big_cove\": \"/javdb/big_cove/1aff3c8a06de43155efcebd08dd3bcac.jpg\"\n},\n{\n\"id\": 11974,\n\"name\": \"オイル性感マッサージに嵌る人妻\",\n\"number\": \"122619_226\",\n\"release_time\": \"2021-05-30 02:34:35\",\n\"created_at\": \"2021-05-30T02:44:31.000000Z\",\n\"is_download\": 2,\n\"is_subtitle\": 1,\n\"is_hot\": 1,\n\"is_new_comment\": 2,\n\"is_flux_linkage\": 2,\n\"comment_num\": 0,\n\"score\": 0,\n\"small_cover\": \"/javdb/small_cover/cbd4dbe60597bc0275d80a1ada140ba0.jpg\",\n\"big_cove\": \"/javdb/big_cove/65b3d40d046c97620c4bbf68ea6ae05a.jpg\"\n}\n]\n}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/FilmCompaniesDetailController.php",
+    "groupTitle": "公司详情"
+  },
+  {
+    "type": "Post",
+    "url": "/api/company/detail",
+    "title": "公司信息",
+    "name": "公司信息",
+    "group": "公司详情",
+    "description": "<p>公司信息</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>【公司id】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"id\": 1,\n\"name\": \"Vixen Group\",\n\"movie_sum\": 336,\n\"like_sum\": 0,\n\"is_like\": 0\n}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/FilmCompaniesDetailController.php",
+    "groupTitle": "公司详情"
+  },
+  {
+    "type": "Post",
+    "url": "/api/actor/products",
+    "title": "作品列表",
+    "name": "作品列表",
+    "group": "导演详情",
+    "description": "<p>作品列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>【导演id】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>【分页】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>【分页长度】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "filter",
+            "description": "<p>【1.subtitle字幕 2.download已下载 3.comment新评】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>【1.release发布时间排序 2.linkage链接更新排序】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "\n{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"page\": \"1\",\n\"pageSize\": \"2\",\n\"sum\": 81,\n\"list\": [\n{\n\"id\": 9371,\n\"name\": \"In The Moment\",\n\"number\": \"blacked.20.10.17\",\n\"release_time\": \"2021-05-30 02:31:49\",\n\"created_at\": \"2021-05-30T02:41:43.000000Z\",\n\"is_download\": 2,\n\"is_subtitle\": 2,\n\"is_hot\": 1,\n\"is_new_comment\": 2,\n\"is_flux_linkage\": 2,\n\"comment_num\": 2,\n\"score\": 0,\n\"small_cover\": \"/javdb/small_cover/779a92979710ba7e6722f9d1f7ab9bb6.jpg\",\n\"big_cove\": \"/javdb/big_cove/7420d70cac02d921301bfd927bc2b7dc.jpg\"\n},\n{\n\"id\": 9362,\n\"name\": \"Wanna Chill?\",\n\"number\": \"blackedraw.18.11.18\",\n\"release_time\": \"2021-05-30 02:31:48\",\n\"created_at\": \"2021-05-30T02:41:42.000000Z\",\n\"is_download\": 2,\n\"is_subtitle\": 2,\n\"is_hot\": 1,\n\"is_new_comment\": 2,\n\"is_flux_linkage\": 2,\n\"comment_num\": 1,\n\"score\": 0,\n\"small_cover\": \"/javdb/small_cover/e4e0cc3cb425f18504a8b7f6e3e50a6f.jpg\",\n\"big_cove\": \"/javdb/big_cove/bbb31c1c5285482180637982c2497289.jpg\"\n}\n]\n}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/DirectorDetailController.php",
+    "groupTitle": "导演详情"
+  },
+  {
+    "type": "Post",
+    "url": "/api/director/detail",
+    "title": "导演信息",
+    "name": "导演信息",
+    "group": "导演详情",
+    "description": "<p>导演信息</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>【导演id】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"id\": 1,\n\"name\": \"Derek Dozer\",\n\"movie_sum\": 81,\n\"like_sum\": 0,\n\"is_like\": 0\n}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/DirectorDetailController.php",
+    "groupTitle": "导演详情"
+  },
+  {
     "type": "Post",
     "url": "/api/file/uploadProfilePhoto",
     "title": "上传头像",
@@ -51,6 +2737,57 @@ define({ "api": [
     "groupTitle": "工具接口"
   },
   {
+    "type": "Post",
+    "url": "/api/file/upload/piece/list",
+    "title": "上传片单图",
+    "name": "上传片单图",
+    "group": "工具接口",
+    "description": "<p>上传片单图</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "file",
+            "optional": false,
+            "field": "file",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>token</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": \"/public/uploads/local/profile_photo/2021-06-22_1624359988_60d1c434b68ce.png\"//头像图片路径\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/ToolController.php",
+    "groupTitle": "工具接口"
+  },
+  {
     "type": "Get",
     "url": "/captcha/api/math",
     "title": "图形验证码",
@@ -69,6 +2806,938 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "api/ToolController.php",
     "groupTitle": "工具接口"
+  },
+  {
+    "type": "Post",
+    "url": "/api/movie/show",
+    "title": "Ta还出演过",
+    "name": "Ta还出演过",
+    "group": "影片",
+    "description": "<p>Ta还出演过</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>【影片id】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "\n{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"0\": {\n\"id\": 260,\n\"name\": \"La Sirena 69’s Perfect Tits and Ass\",\n\"number\": \"BigTitsRoundAsses.20.12.12\",\n\"release_time\": \"2021-05-30 02:20:41\",\n\"created_at\": \"2021-05-30T02:28:57.000000Z\",\n\"is_download\": 2,\n\"is_subtitle\": 1,\n\"is_hot\": 1,\n\"is_new_comment\": 2,\n\"is_flux_linkage\": 2,\n\"comment_num\": 0,\n\"score\": 0,\n\"small_cover\": \"/javdb/small_cover/03c4bd9c2284138728e64570824c7922.jpg\",\n\"big_cove\": \"/javdb/big_cove/2f005a9e69166a8e7807ad714f4839de.jpg\"\n},\n\"1\": {\n\"id\": 834,\n\"name\": \"Fucking The Sitter\",\n\"number\": \"BangBros18.21.02.21\",\n\"release_time\": \"2021-05-30 02:21:49\",\n\"created_at\": \"2021-05-30T02:30:16.000000Z\",\n\"is_download\": 2,\n\"is_subtitle\": 1,\n\"is_hot\": 1,\n\"is_new_comment\": 2,\n\"is_flux_linkage\": 2,\n\"comment_num\": 0,\n\"score\": 0,\n\"small_cover\": \"/javdb/small_cover/ffa90cf17813db7d25cb0d2051baa456.jpg\",\n\"big_cove\": \"/javdb/big_cove/dbaaf3ac4556a4dd23e57cdad777f7f9.jpg\"\n},\n\"2\": {\n\"id\": 1147,\n\"name\": \"Clara's Suitcase Sex Surprise\",\n\"number\": \"BangBros18.20.12.20\",\n\"release_time\": \"2021-05-30 02:22:07\",\n\"created_at\": \"2021-05-30T02:30:57.000000Z\",\n\"is_download\": 2,\n\"is_subtitle\": 1,\n\"is_hot\": 1,\n\"is_new_comment\": 2,\n\"is_flux_linkage\": 2,\n\"comment_num\": 0,\n\"score\": 0,\n\"small_cover\": \"/javdb/small_cover/ceee6f6c6291716245d4d27c33c4e09f.jpg\",\n\"big_cove\": \"/javdb/big_cove/e4b2c7c386a71b79704d34f90b93a5b9.jpg\"\n}\n}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/MovieDetailController.php",
+    "groupTitle": "影片"
+  },
+  {
+    "type": "Post",
+    "url": "/api/movie/detail",
+    "title": "影片发评论",
+    "name": "影片发评论",
+    "group": "影片",
+    "description": "<p>发评论</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>【影片id】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "uid",
+            "description": "<p>【用户id】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "comment_id",
+            "description": "<p>【直接发评论0 如果是回复为回复的评论id】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "comment",
+            "description": "<p>【内容6-255字】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/MovieDetailController.php",
+    "groupTitle": "影片"
+  },
+  {
+    "type": "Post",
+    "url": "/api/movie/detail",
+    "title": "影片详情",
+    "name": "影片详情",
+    "group": "影片",
+    "description": "<p>详情</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>【影片id】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "uid",
+            "description": "<p>【用户id 可不传或0】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"id\": 15,\n\"number\": \"IMadePorn.21.05.04\",\n\"name\": \"Change Of Plans\",\n\"time\": null,\n\"release_time\": \"2021-05-30 02:20:28\",\n\"small_cover\": \"/javdb/small_cover/d576bbdbc81d0e21f23ae48334cecb55.jpg\",\n\"big_cove\": \"/javdb/big_cove/28bcc64ee14a186eb3b02119a5d081e1.jpg\",\n\"trailer\": \"\",\n\"score\": 0,\n\"score_people\": 0,\n\"comment_num\": 0,\n\"flux_linkage_num\": 3,\n\"flux_linkage\": [\n{\n\"name\": \"IMadePorn.21.05.04.Alexia.Anders.Change.Of.Plans.XXX.1080p.MP4-WRB[rarbg]\",\n\"url\": \"magnet:?xt=urn:btih:30edf0fc48e60089453b3537d1e89e747760a46f&dn=[javdb.com]IMadePorn.21.05.04.Alexia.Anders.Change.Of.Plans.XXX.1080p.MP4-WRB[rarbg]\",\n\"is-small\": \"高清\",\n\"is-warning\": null,\n\"tooltip\": null,\n\"meta\": \"(3.35GB,4個文件)\"\n},\n{\n\"name\": \"IMadePorn.21.05.04.Alexia.Anders.Change.Of.Plans.XXX.720p.WEB.x264-GalaXXXy[XvX]\",\n\"url\": \"magnet:?xt=urn:btih:54861ceedf360f946fe6aad76c706f92f5730e5b&dn=[javdb.com]IMadePorn.21.05.04.Alexia.Anders.Change.Of.Plans.XXX.720p.WEB.x264-GalaXXXy[XvX]\",\n\"is-small\": null,\n\"is-warning\": null,\n\"tooltip\": null,\n\"meta\": \"(376MB,2個文件)\"\n},\n{\n\"name\": \"IMadePorn.21.05.04.Alexia.Anders.Change.Of.Plans.XXX.SD.MP4-KLEENEX\",\n\"url\": \"magnet:?xt=urn:btih:5565222e48da4812497cf1450a12a4c1f26cf854&dn=[javdb.com]IMadePorn.21.05.04.Alexia.Anders.Change.Of.Plans.XXX.SD.MP4-KLEENEX\",\n\"is-small\": null,\n\"is-warning\": null,\n\"tooltip\": null,\n\"meta\": \"(322MB,3個文件)\"\n}\n],\n\"flux_linkage_time\": \"2021-05-30 02:28:23\",\n\"created_at\": \"2021-05-30T02:28:23.000000Z\",\n\"labels\": [],\n\"actors\": {\n\"1286\": \"Alexia Anders\"\n},\n\"director\": [],\n\"company\": [],\n\"series\": {\n\"719\": \"レズビアン大乱交\"\n},\n\"seen\": 0,\n\"want_see\": 0,\n\"map\": []\n}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/MovieDetailController.php",
+    "groupTitle": "影片"
+  },
+  {
+    "type": "Post",
+    "url": "/api/movie/guess",
+    "title": "猜你喜欢",
+    "name": "猜你喜欢",
+    "group": "影片",
+    "description": "<p>猜你喜欢</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>【影片id】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "\n{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"0\": {\n\"id\": 591,\n\"name\": \"Private Dancer\",\n\"number\": \"LookAtHerNow.20.09.20\",\n\"release_time\": \"2021-05-30 02:21:09\",\n\"created_at\": \"2021-05-30 02:29:43\",\n\"is_download\": 2,\n\"is_subtitle\": 1,\n\"is_hot\": 1,\n\"is_new_comment\": 2,\n\"is_flux_linkage\": 2,\n\"comment_num\": 0,\n\"score\": 0,\n\"small_cover\": \"/javdb/small_cover/c5ed651f1e9d8bd122292825419a9c9f.jpg\",\n\"big_cove\": \"/javdb/big_cove/0c631088ac3c46004ca7b0996cab910a.jpg\"\n},\n\"1\": {\n\"id\": 5850,\n\"name\": \"Untamed\",\n\"number\": \"tushyraw.20.06.24\",\n\"release_time\": \"2021-05-30 02:28:37\",\n\"created_at\": \"2021-05-30 02:37:49\",\n\"is_download\": 2,\n\"is_subtitle\": 1,\n\"is_hot\": 1,\n\"is_new_comment\": 2,\n\"is_flux_linkage\": 2,\n\"comment_num\": 0,\n\"score\": 0,\n\"small_cover\": \"/javdb/small_cover/f7149bdee56cc16558d5c18d40393764.jpg\",\n\"big_cove\": \"/javdb/big_cove/de85cf801601d27dfba6dd2976af8915.jpg\"\n}\n}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/MovieDetailController.php",
+    "groupTitle": "影片"
+  },
+  {
+    "type": "Get",
+    "url": "/api/movie/attributes/actor/list",
+    "title": "获取演员列表",
+    "name": "获取演员列表",
+    "group": "影片相关",
+    "description": "<p>获取演员列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "cid",
+            "description": "<p>类别ID【0.全部、1.有码、2.无码、3.欧美】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "actorList",
+            "description": "<p>演员列表.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "actorList.id",
+            "description": "<p>演员ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "actorList.name",
+            "description": "<p>演员名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "actorList.photo",
+            "description": "<p>演员头像</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "actorList.sex",
+            "description": "<p>演员性别</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "actorList.social_accounts",
+            "description": "<p>社交账号[]</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "actorList.social_accounts.Twitter",
+            "description": "<p>社交账号一一对应</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "actorList.movie_sum",
+            "description": "<p>影片数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "actorList.like_sum",
+            "description": "<p>关注数量</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/MovieAttributesController.php",
+    "groupTitle": "影片相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/movie/attributes/film/companies/list",
+    "title": "获取片商列表",
+    "name": "获取片商列表",
+    "group": "影片相关",
+    "description": "<p>获取片商列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "cid",
+            "description": "<p>类别ID【0.全部、1.有码、2.无码、3.欧美】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "filmCompaniesList",
+            "description": "<p>片商列表.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "filmCompaniesList.id",
+            "description": "<p>片商ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "filmCompaniesList.name",
+            "description": "<p>片商名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "filmCompaniesList.movie_sum",
+            "description": "<p>影片数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "filmCompaniesList.like_sum",
+            "description": "<p>关注数量</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/MovieAttributesController.php",
+    "groupTitle": "影片相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/movie/attributes/series/list",
+    "title": "获取系列列表",
+    "name": "获取系列列表",
+    "group": "影片相关",
+    "description": "<p>获取系列列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "cid",
+            "description": "<p>类别ID【0.全部、1.有码、2.无码、3.欧美】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "seriesList",
+            "description": "<p>系列列表.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "seriesList.id",
+            "description": "<p>系列ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "seriesList.name",
+            "description": "<p>系列名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "seriesList.movie_sum",
+            "description": "<p>影片数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "seriesList.like_sum",
+            "description": "<p>关注数量</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/MovieAttributesController.php",
+    "groupTitle": "影片相关"
+  },
+  {
+    "type": "Post",
+    "url": "/api/movie/comment",
+    "title": "评论列表",
+    "name": "评论列表",
+    "group": "影片",
+    "description": "<p>评论列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>【影片id】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>【分页】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>【分页长度】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "\n{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"page\": \"1\",\n\"pageSize\": \"2\",\n\"sum\": 5,\n\"list\": {\n\"7524\": {\n\"id\": 7524,\n\"comment\": \"sjhdkjshdkjsdkjsdh\",\n\"nickname\": \"hk\",\n\"avatar\": \"\",\n\"type\": 1,\n\"reply_uid\": 0,\n\"comment_time\": \"2021-06-30 16:16:13\",\n\"reply_comments\": []\n},\n\"7523\": {\n\"id\": 7523,\n\"comment\": \"sjhdkjshdkjsdkjsdh\",\n\"nickname\": \"hk\",\n\"avatar\": \"\",\n\"type\": 1,\n\"reply_uid\": 0,\n\"comment_time\": \"2021-06-30 16:14:34\",\n\"reply_comments\": []\n}\n}\n}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/MovieDetailController.php",
+    "groupTitle": "影片"
+  },
+  {
+    "type": "Post",
+    "url": "/api/comment/action",
+    "title": "评论赞踩",
+    "name": "评论赞踩",
+    "group": "影片",
+    "description": "<p>评论赞踩</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>【评论id】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "enum",
+            "optional": false,
+            "field": "action",
+            "description": "<p>like：赞 dislike:踩</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>token</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/MovieDetailController.php",
+    "groupTitle": "影片"
+  },
+  {
+    "type": "Get",
+    "url": "/api/home",
+    "title": "获取影片排行版",
+    "name": "获取影片排行版",
+    "group": "排行相关",
+    "description": "<p>获取影片排行版</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>类别id【0.全部、1.有码、2.无码、3.欧美】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "time",
+            "description": "<p>时间类型【0.全部、1.日版、2.周榜、3.月榜】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>影片ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>影片ID名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.number",
+            "description": "<p>影片番号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.release_time",
+            "description": "<p>发行时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.created_at",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_download",
+            "description": "<p>状态：1.不可下载、2.可下载</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_subtitle",
+            "description": "<p>状态：1.不含字幕、2.含字幕</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_short_comment",
+            "description": "<p>状态：1.不含短评、2.含短评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_hot",
+            "description": "<p>是否热门待定</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_new_comment",
+            "description": "<p>0.无状态、1.今日新评、2.无状态、3.昨日新评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_flux_linkage",
+            "description": "<p>0.无状态1.今日新种、2.无状态、3.昨日新种</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.comment_num",
+            "description": "<p>评论数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.score",
+            "description": "<p>评分</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.small_cover",
+            "description": "<p>小图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.big_cove",
+            "description": "<p>大图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.rank",
+            "description": "<p>排行版名词</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/HomeController.php",
+    "groupTitle": "排行相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/actor/rank",
+    "title": "获取演员月排行版",
+    "name": "获取演员月排行版",
+    "group": "排行相关",
+    "description": "<p>获取演员月排行版</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>类别id【0.全部、1.有码、2.无码、3.欧美】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>演员ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>演员名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.photo",
+            "description": "<p>演员头像</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.sex",
+            "description": "<p>演员性别</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list.social_accounts",
+            "description": "<p>社交账号[]</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.social_accounts.Twitter",
+            "description": "<p>社交账号一一对应</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.movie_sum",
+            "description": "<p>影片数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.like_sum",
+            "description": "<p>关注数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.rank",
+            "description": "<p>排行版名次</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/HomeController.php",
+    "groupTitle": "排行相关"
   },
   {
     "type": "Get",
@@ -157,6 +3826,727 @@ define({ "api": [
     "groupTitle": "测试相关【分组】"
   },
   {
+    "type": "Post",
+    "url": "/api/actor/products",
+    "title": "作品列表",
+    "name": "作品列表",
+    "group": "演员详情",
+    "description": "<p>作品列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>【演员id】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>【分页】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>【分页长度】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "filter",
+            "description": "<p>【1.subtitle字幕 2.download已下载 3.comment新评】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>【1.release发布时间排序 2.linkage链接更新排序】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "\n{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"page\": \"1\",\n\"pageSize\": \"2\",\n\"sum\": 36,\n\"list\": [\n{\n\"id\": 9278,\n\"name\": \"House Keeper\",\n\"number\": \"RKPrime.20.01.29\",\n\"release_time\": \"2021-05-30 02:31:43\",\n\"created_at\": \"2021-05-30T02:41:34.000000Z\",\n\"is_download\": 2,\n\"is_subtitle\": 1,\n\"is_hot\": 1,\n\"is_new_comment\": 2,\n\"is_flux_linkage\": 2,\n\"comment_num\": 0,\n\"score\": 0,\n\"small_cover\": \"/javdb/small_cover/d9981d98b84fba0b68674a678619b951.jpg\",\n\"big_cove\": \"/javdb/big_cove/260d65aa1d4b98f2ef7d6c4c4cd28473.jpg\"\n},\n{\n\"id\": 12431,\n\"name\": \"Graduation\",\n\"number\": \"vixen.20.02.03\",\n\"release_time\": \"2021-05-30 02:31:43\",\n\"created_at\": \"2021-05-30T02:45:23.000000Z\",\n\"is_download\": 2,\n\"is_subtitle\": 1,\n\"is_hot\": 1,\n\"is_new_comment\": 2,\n\"is_flux_linkage\": 2,\n\"comment_num\": 0,\n\"score\": 0,\n\"small_cover\": \"/javdb/small_cover/3fcf48013c67ac3e8c5b6b01f7b52fc6.jpg\",\n\"big_cove\": \"/javdb/big_cove/837792894077b74638c1ff775e9bb7c0.jpg\"\n}\n]\n}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/ActorDetailController.php",
+    "groupTitle": "演员详情"
+  },
+  {
+    "type": "Post",
+    "url": "/api/actor/detail",
+    "title": "演员信息",
+    "name": "演员信息",
+    "group": "演员详情",
+    "description": "<p>演员信息</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>【演员id】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"id\": 263,\n\"name\": \"森菜菜子\",\n\"photo\": \"/javdb_actor/avatar/68d7456eb3ed08c59e1300538a6c503c.jpg\",\n\"sex\": \"\",\n\"social_accounts\": {\n\"Twitter\": \"https://twitter.com/mori7ko\"\n},\n\"movie_sum\": 0,\n\"like_sum\": 0,\n\"names\": {\n\"871\": \"森菜菜子\",\n\"872\": \" 森ななこ\",\n\"873\": \" 森nanako\"\n},\n\"is_like\": 0\n}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/ActorDetailController.php",
+    "groupTitle": "演员详情"
+  },
+  {
+    "type": "Post",
+    "url": "/api/user/piece/list/add/movie",
+    "title": "添加或者给片单删除一个影片",
+    "name": "添加或者给片单删除一个影片",
+    "group": "片单相关",
+    "description": "<p>添加或者给片单删除一个影片</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pid",
+            "description": "<p>片单ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>操作类型1.添加 2.删除</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "mid",
+            "description": "<p>操作的影片</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>操作ID</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/PieceListController.php",
+    "groupTitle": "片单相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/piece/list",
+    "title": "获取片单列表",
+    "name": "获取片单列表",
+    "group": "片单相关",
+    "description": "<p>获取片单列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>1.全部、2.热门</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>片单列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.uid",
+            "description": "<p>创建的用户ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>片单名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.cover",
+            "description": "<p>片单图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.movie_sum",
+            "description": "<p>影片数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.like_sum",
+            "description": "<p>收藏数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.pv_browse_sum",
+            "description": "<p>浏览次数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.intro",
+            "description": "<p>片单描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_hot",
+            "description": "<p>是否热门【暂时好像没用】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.authority",
+            "description": "<p>权限1公开2私有</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.type",
+            "description": "<p>类型1.用户创建.2.系统管理员创建、3.用户默认</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.created_at",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.avatar",
+            "description": "<p>用户头像</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.nickname",
+            "description": "<p>用户昵称</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/PieceListController.php",
+    "groupTitle": "片单相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/piece/movie/list",
+    "title": "获取片单影片列表",
+    "name": "获取片单影片列表",
+    "group": "片单相关",
+    "description": "<p>获取片单影片列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pid",
+            "description": "<p>片单ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>影片ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>影片ID名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.number",
+            "description": "<p>影片番号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.release_time",
+            "description": "<p>发行时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.created_at",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_download",
+            "description": "<p>状态：1.不可下载、2.可下载</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_subtitle",
+            "description": "<p>状态：1.不含字幕、2.含字幕</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_short_comment",
+            "description": "<p>状态：1.不含短评、2.含短评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_hot",
+            "description": "<p>是否热门待定</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_new_comment",
+            "description": "<p>0.无状态、1.今日新评、2.无状态、3.昨日新评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_flux_linkage",
+            "description": "<p>0.无状态1.今日新种、2.无状态、3.昨日新种</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.comment_num",
+            "description": "<p>评论数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.score",
+            "description": "<p>评分</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.small_cover",
+            "description": "<p>小图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.big_cove",
+            "description": "<p>大图</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/PieceListController.php",
+    "groupTitle": "片单相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/piece/info",
+    "title": "获取片单详情",
+    "name": "获取片单详情",
+    "group": "片单相关",
+    "description": "<p>获取片单详情</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pid",
+            "description": "<p>片单ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>片单id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "uid",
+            "description": "<p>片单创建的用户</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>片单名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "cover",
+            "description": "<p>片单图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "movie_sum",
+            "description": "<p>影片数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "like_sum",
+            "description": "<p>收藏数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "pv_browse_sum",
+            "description": "<p>pv</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "intro",
+            "description": "<p>描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "is_hot",
+            "description": "<p>是否热门【待定】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "authority",
+            "description": "<p>权限1.公开、2.私有</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>片单类型1.用户创建、2.系统/管理员创建3.用户系统默认</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "userInfo",
+            "description": "<p>创建片单用户信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "userInfo.phone",
+            "description": "<p>手机</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "userInfo.email",
+            "description": "<p>邮箱</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "userInfo.nickname",
+            "description": "<p>昵称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "userInfo.sex",
+            "description": "<p>性别 0.未知 1.男 2.女</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "userInfo.age",
+            "description": "<p>年龄</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "userInfo.attention",
+            "description": "<p>关注数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "userInfo.fans",
+            "description": "<p>粉丝数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "userInfo.avatar",
+            "description": "<p>头像</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "userInfo.intro",
+            "description": "<p>简介</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "userInfo.user_id",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "userInfo.user_attention",
+            "description": "<p>是否被该用户关注【1.是、2.否】</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/PieceListController.php",
+    "groupTitle": "片单相关"
+  },
+  {
+    "type": "Post",
+    "url": "/api/notify/delete",
+    "title": "删除消息",
+    "name": "删除消息",
+    "group": "用户相关",
+    "description": "<p>删除消息</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>登录token</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "array",
+            "optional": false,
+            "field": "ids[]",
+            "description": "<p>主键id数组</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>错误提示</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserController.php",
+    "groupTitle": "用户相关"
+  },
+  {
     "type": "Get",
     "url": "/api/user/sendVerifyCode",
     "title": "发送验证码",
@@ -215,7 +4605,137 @@ define({ "api": [
     "groupTitle": "用户相关"
   },
   {
-    "type": "Get",
+    "type": "Post",
+    "url": "api/user/forgetPassword",
+    "title": "忘记密码",
+    "name": "忘记密码",
+    "group": "用户相关",
+    "description": "<p>忘记密码</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pwd",
+            "description": "<p>密码【明文】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>短信或者邮箱验证码</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>错误提示</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserController.php",
+    "groupTitle": "用户相关"
+  },
+  {
+    "type": "get",
+    "url": "/api/notify/getNotifyList",
+    "title": "消息通知列表",
+    "name": "消息通知列表",
+    "group": "用户相关",
+    "description": "<p>获取消息通知列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>登录token</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "type",
+            "description": "<p>消息类型 1.赞2.踩3.我的评论4.回复我的【5.关注99.公告内容 系统占时无】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "isRead",
+            "description": "<p>是否已读 0.未读 1.已读</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "page",
+            "description": "<p>页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>每页数量</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"list\": [\n    {\n        \"content\": [\n            \"我的评论：香肠嘴把\"//除去发送人一行的内容。当type=3 and type=4时数组长度位2 按原型顺序放置即可\n        ],\n        \"id\": 9,//批量删除和阅读传入\n        \"target_id\": 948,\n        \"target_id\": 948,\n        \"target_source_id\": 7512,\n        \"is_read\": 0,//是否已读\n        \"type\": 2,//赞和踩的content格式一样\n        \"sender_id\": 2,\n        \"sender_avatar\": 'uploads/avatar/my.jpg',//头像路径\n        \"sender_name\": \"user\"//发送人的昵称\n    },\n    {\n        \"content\": [\n            \"我的评论：封面很像橘波留\"\n        ],\n        \"target_id\": 949,\n        \"target_source_id\": 7513,\n        \"is_read\": 0,\n        \"type\": 4,//回复我的\n        \"sender_id\": 3,\n        \"sender_name\": \"user\"\n        },\n        {\n        \"content\": [\n            \"原以为是仓多真央，看完出演员名字才知道是大岛。\",\n            \"我的评论：那个负责清理的。。。看着有点恶心\"\n        ],\n        \"target_id\": 953,\n        \"target_source_id\": 7514,\n        \"is_read\": 0,\n        \"type\": 3,\n        \"sender_id\": 1,\n        \"sender_name\": \"user\"\n    },\n    {\n        \"content\": [\n            \"相马茜的长相真是长到我的审美上了。\",\n            \"影片番号：FC2-1729752 ※無※旦那様すいません( ;∀;)人妻KUREHA出産直前妊娠8か月！最後の濃厚不倫生ハメSEXで鬼イキ♡\"\n        ],\n        \"target_id\": 954,\n        \"target_source_id\": 7515,\n        \"is_read\": 0,\n        \"type\": 3,//评价\n        \"sender_id\": 2,\n        \"sender_name\": \"user\"\n        },\n        {\n        \"content\": [\n            \"我的评论：被艹时候的样子太丑了。\"\n        ],\n        \"target_id\": 955,\n        \"target_source_id\": 7516,\n        \"is_read\": 0,\n        \"type\": 2,\n        \"sender_id\": 2,\n        \"sender_name\": \"user\"\n    },\n    ],\n    \"count\": 10\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/UserController.php",
+    "groupTitle": "用户相关"
+  },
+  {
+    "type": "Post",
     "url": "/api/user/reg",
     "title": "用户注册",
     "name": "用户注册",
@@ -492,7 +5012,7 @@ define({ "api": [
     "groupTitle": "用户相关"
   },
   {
-    "type": "Get",
+    "type": "Post",
     "url": "/api/user/login",
     "title": "用户登录",
     "name": "用户登录",
@@ -686,6 +5206,363 @@ define({ "api": [
   },
   {
     "type": "Post",
+    "url": "/api/notify/setRead",
+    "title": "设置消息已读",
+    "name": "设置消息已读",
+    "group": "用户相关",
+    "description": "<p>设置消息已读</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>登录token</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>消息主键id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>错误提示</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserController.php",
+    "groupTitle": "用户相关"
+  },
+  {
+    "type": "Post",
+    "url": "/api/number/products",
+    "title": "番号作品列表",
+    "name": "番号作品列表",
+    "group": "番号详情",
+    "description": "<p>番号作品列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>【番号id】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>【分页】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>【分页长度】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "filter",
+            "description": "<p>【1.subtitle字幕 2.download已下载 3.comment新评】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>【1.release发布时间排序 2.linkage链接更新排序】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "\n{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"page\": \"1\",\n\"pageSize\": \"2\",\n\"sum\": 44,\n\"list\": [\n{\n\"id\": 12693,\n\"name\": \"Anal Approach\",\n\"number\": \"BangBus.21.05.19\",\n\"release_time\": \"2021-05-30 02:32:58\",\n\"created_at\": \"2021-05-30T02:46:03.000000Z\",\n\"is_download\": 2,\n\"is_subtitle\": 1,\n\"is_hot\": 1,\n\"is_new_comment\": 2,\n\"is_flux_linkage\": 2,\n\"comment_num\": 0,\n\"score\": 0,\n\"small_cover\": \"/javdb/small_cover/f88b0d90fc090edef5ea0e31fc66f74f.jpg\",\n\"big_cove\": \"/javdb/big_cove/73b2b712c23f4fc8c84ad2cb9099135e.jpg\"\n},\n{\n\"id\": 9361,\n\"name\": \"Hottie With Perfect Tits Fucks for Money\",\n\"number\": \"BangBus.21.03.24\",\n\"release_time\": \"2021-05-30 02:31:48\",\n\"created_at\": \"2021-05-30T02:41:41.000000Z\",\n\"is_download\": 2,\n\"is_subtitle\": 2,\n\"is_hot\": 1,\n\"is_new_comment\": 2,\n\"is_flux_linkage\": 2,\n\"comment_num\": 0,\n\"score\": 0,\n\"small_cover\": \"/javdb/small_cover/1c54f4cd99d37ca0412d2f5eb07153b9.jpg\",\n\"big_cove\": \"/javdb/big_cove/6e964d480c353edcac7c2847f5ae0cbc.jpg\"\n}\n]\n}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/NumberDetailController.php",
+    "groupTitle": "番号详情"
+  },
+  {
+    "type": "Post",
+    "url": "/api/number/detail",
+    "title": "番号信息",
+    "name": "番号信息",
+    "group": "番号详情",
+    "description": "<p>番号信息</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>【番号id】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"id\": 1,\n\"name\": \"BangBus\",\n\"movie_sum\": 0,\n\"like_sum\": 0,\n\"is_like\": 0\n}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/NumberDetailController.php",
+    "groupTitle": "番号详情"
+  },
+  {
+    "type": "Post",
+    "url": "/api/series/products",
+    "title": "系列作品列表",
+    "name": "系列作品列表",
+    "group": "系列详情",
+    "description": "<p>系列作品列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>【系列id】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>【分页】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>【分页长度】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "filter",
+            "description": "<p>【1.subtitle字幕 2.download已下载 3.comment新评】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>【1.release发布时间排序 2.linkage链接更新排序】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "\n{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"page\": \"1\",\n\"pageSize\": \"2\",\n\"sum\": 5979,\n\"list\": [\n{\n\"id\": 12894,\n\"name\": \"チーム木村番外編生挿入 -- 綺羅千沙斗\",\n\"number\": \"kb1599\",\n\"release_time\": \"2021-05-30 02:34:35\",\n\"created_at\": \"2021-05-30T02:46:16.000000Z\",\n\"is_download\": 2,\n\"is_subtitle\": 1,\n\"is_hot\": 1,\n\"is_new_comment\": 2,\n\"is_flux_linkage\": 2,\n\"comment_num\": 0,\n\"score\": 0,\n\"small_cover\": \"/javdb/small_cover/19a1d1391e24d38156f4d9963b303540.jpg\",\n\"big_cove\": \"/javdb/big_cove/1aff3c8a06de43155efcebd08dd3bcac.jpg\"\n},\n{\n\"id\": 11962,\n\"name\": \"ときめき ～もっと何々して…を連発する俺の彼女～\",\n\"number\": \"010720_956\",\n\"release_time\": \"2021-05-30 02:34:34\",\n\"created_at\": \"2021-05-30T02:44:30.000000Z\",\n\"is_download\": 2,\n\"is_subtitle\": 1,\n\"is_hot\": 1,\n\"is_new_comment\": 2,\n\"is_flux_linkage\": 2,\n\"comment_num\": 0,\n\"score\": 0,\n\"small_cover\": \"/javdb/small_cover/21d9072ece98b7ee91d35b61c887fdb3.jpg\",\n\"big_cove\": \"/javdb/big_cove/9e63f250d5a8b21baf6cbf24efd7c2e9.jpg\"\n}\n]\n}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/SeriesDetailController.php",
+    "groupTitle": "系列详情"
+  },
+  {
+    "type": "Post",
+    "url": "/api/series/detail",
+    "title": "系列信息",
+    "name": "系列信息",
+    "group": "系列详情",
+    "description": "<p>系列信息</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>【系列id】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"id\": 719,\n\"name\": \"レズビアン大乱交\",\n\"movie_sum\": 2,\n\"like_sum\": 0\n}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/SeriesDetailController.php",
+    "groupTitle": "系列详情"
+  },
+  {
+    "type": "Get",
+    "url": "/api/count/movie",
+    "title": "添加影片浏览记录",
+    "name": "添加影片浏览记录",
+    "group": "统计相关",
+    "description": "<p>添加影片浏览记录</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "mid",
+            "description": "<p>影片ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>统计ID.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "统计相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/count/actor",
+    "title": "添加演员浏览记录",
+    "name": "添加演员浏览记录",
+    "group": "统计相关",
+    "description": "<p>添加演员浏览记录</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "aid",
+            "description": "<p>演员ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>统计ID.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "统计相关"
+  },
+  {
+    "type": "Post",
     "url": "/api/report",
     "title": "举报信息",
     "name": "提交举报信息",
@@ -727,7 +5604,14 @@ define({ "api": [
             "type": "text",
             "optional": false,
             "field": "content",
-            "description": "<p>内容</p>"
+            "description": "<p>内容【格式用户昵称+冒号+评论内容】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "key",
+            "description": "<p>图形验证码key【开启了图形验证码】</p>"
           }
         ]
       }
@@ -782,6 +5666,13 @@ define({ "api": [
           },
           {
             "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "avid",
+            "description": "<p>AV番号</p>"
+          },
+          {
+            "group": "Parameter",
             "type": "content",
             "optional": false,
             "field": "content",
@@ -822,7 +5713,7 @@ define({ "api": [
     "groupTitle": "网站管理"
   },
   {
-    "type": "get",
+    "type": "Post",
     "url": "/api/announcement/getAnnouncement",
     "title": "公告管理",
     "name": "获取公告轮播",
@@ -833,10 +5724,10 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "int",
             "optional": false,
             "field": "type",
-            "description": "<p>top:顶部轮播 content：内容轮播 message:消息轮播</p>"
+            "description": "<p>1:顶部轮播 2：内容轮播 3:消息轮播</p>"
           },
           {
             "group": "Parameter",
@@ -844,13 +5735,6 @@ define({ "api": [
             "optional": false,
             "field": "page",
             "description": "<p>页码 默认20一页</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "token",
-            "description": "<p>token</p>"
           }
         ]
       }
@@ -923,11 +5807,42 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/api/conf/getAllConf",
+    "title": "基础信息",
+    "name": "获取基础信息",
+    "group": "网站管理",
+    "description": "<p>获取后台配置的招商广告等基础信</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "{\n      \"code\": 200,\n      \"msg\": \"成功！\",\n      \"data\": {\n      \"ad_investment\": {//广告招商 type=1\n          \"url\": \"222\",\n          \"email\": \"1133\"\n      },\n      \"download_setting\": {//下载本站app链接 type=2\n          \"url\": \"334\"\n      },\n      \"about_us\": {//关于我们 type=3\n          \"url\": \"4456\",\n          \"content\": \"<p>44</p>\"//内容 富文本形式\n      },\n      \"friend_link\": [//友情链接 type=4\n      {\n          \"name\": \"2\",//链接名字\n          \"url\": \"2\"//链接\n      },\n      {\n          \"name\": \"2\",//链接名字\n          \"url\": \"2\"//链接\n      },\n      {\n          \"name\": \"2\",//链接名字\n          \"url\": \"2\"//链接\n      }\n      ],\n      \"private_item\": {//隐私信息 type=5\n          \"url\": \"33555\",\n          \"content\": \"<p>444666</p>\"//内容富文本\n      },\n      \"magnet_link\": {//磁力使用教程 type=6\n          \"url\": \"55555566\",//url\n          \"content\": \"<p>55566</p>\"//内容富文本\n          }\n      }\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/ConfController.php",
+    "groupTitle": "网站管理"
+  },
+  {
+    "type": "get",
     "url": "/api/conf/getOneConf",
     "title": "获取单个信息",
     "name": "获取基础信息",
     "group": "网站管理",
-    "description": "<p>根据类型type获取单个信息 type=1 只返回一部分数据格式如上</p>",
+    "description": "<p>根据类型type获取单个信息 type=1 只返回一部分数据格式如上 example:/api/conf/getOneConf/1</p>",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -959,34 +5874,534 @@ define({ "api": [
     "groupTitle": "网站管理"
   },
   {
-    "type": "get",
-    "url": "/api/conf/getAllConf",
-    "title": "基础信息",
-    "name": "获取基础信息",
-    "group": "网站管理",
-    "description": "<p>获取后台配置的招商广告等基础信</p>",
+    "type": "Get",
+    "url": "/api/home",
+    "title": "获取首页关注信息",
+    "name": "获取首页关注信息",
+    "group": "首页相关",
+    "description": "<p>获取首页关注信息</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "home_type",
+            "description": "<p>首页类型2必须传2</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [
           {
             "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>影片ID</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "code",
-            "description": "<p>响应码 200 正确 其他错误</p>"
+            "field": "list.name",
+            "description": "<p>影片ID名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.number",
+            "description": "<p>影片番号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.release_time",
+            "description": "<p>发行时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.created_at",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_download",
+            "description": "<p>状态：1.不可下载、2.可下载</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_subtitle",
+            "description": "<p>状态：1.不含字幕、2.含字幕</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_short_comment",
+            "description": "<p>状态：1.不含短评、2.含短评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_hot",
+            "description": "<p>是否热门待定</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_new_comment",
+            "description": "<p>0.无状态、1.今日新评、2.无状态、3.昨日新评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_flux_linkage",
+            "description": "<p>0.无状态1.今日新种、2.无状态、3.昨日新种</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.comment_num",
+            "description": "<p>评论数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.score",
+            "description": "<p>评分</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.small_cover",
+            "description": "<p>小图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.big_cove",
+            "description": "<p>大图</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "success-example",
-          "content": "{\n      \"code\": 200,\n      \"msg\": \"成功！\",\n      \"data\": {\n      \"ad_investment\": {//广告招商 type=1\n          \"url\": \"222\",\n          \"email\": \"1133\"\n      },\n      \"download_setting\": {//下载本站app链接 type=2\n          \"url\": \"334\"\n      },\n      \"about_us\": {//关于我们 type=3\n          \"url\": \"4456\",\n          \"content\": \"<p>44</p>\"//内容 富文本形式\n      },\n      \"friend_link\": [//友情链接 type=4\n      {\n          \"name\": \"2\",//链接名字\n          \"url\": \"2\"//链接\n      },\n      {\n          \"name\": \"2\",//链接名字\n          \"url\": \"2\"//链接\n      },\n      {\n          \"name\": \"2\",//链接名字\n          \"url\": \"2\"//链接\n      }\n      ],\n      \"private_item\": {//隐私信息 type=5\n          \"url\": \"33555\",\n          \"content\": \"<p>444666</p>\"//内容富文本\n      },\n      \"magnet_link\": {//磁力使用教程 type=6\n          \"url\": \"55555566\",//url\n          \"content\": \"<p>55566</p>\"//内容富文本\n          }\n      }\n  }",
-          "type": "json"
-        }
-      ]
+      }
     },
     "version": "0.0.0",
-    "filename": "api/ConfController.php",
-    "groupTitle": "网站管理"
+    "filename": "api/HomeController.php",
+    "groupTitle": "首页相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/home",
+    "title": "获取首页热门信息",
+    "name": "获取首页热门信息",
+    "group": "首页相关",
+    "description": "<p>获取首页热门信息</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "home_type",
+            "description": "<p>首页类型1必须传1</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>影片ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>影片ID名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.number",
+            "description": "<p>影片番号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.release_time",
+            "description": "<p>发行时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.created_at",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_download",
+            "description": "<p>状态：1.不可下载、2.可下载</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_subtitle",
+            "description": "<p>状态：1.不含字幕、2.含字幕</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_short_comment",
+            "description": "<p>状态：1.不含短评、2.含短评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_hot",
+            "description": "<p>是否热门待定</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_new_comment",
+            "description": "<p>0.无状态、1.今日新评、2.无状态、3.昨日新评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_flux_linkage",
+            "description": "<p>0.无状态1.今日新种、2.无状态、3.昨日新种</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.comment_num",
+            "description": "<p>评论数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.score",
+            "description": "<p>评分</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.small_cover",
+            "description": "<p>小图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.big_cove",
+            "description": "<p>大图</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/HomeController.php",
+    "groupTitle": "首页相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/home",
+    "title": "获取首页类别信息",
+    "name": "获取首页类别信息",
+    "group": "首页相关",
+    "description": "<p>获取首页类别信息</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "home_type",
+            "description": "<p>首页类型3必须传3</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "cid",
+            "description": "<p>类别id【0.全部、1.有码、2.无码、3.欧美】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "is_subtitle",
+            "description": "<p>状态：1.不含字幕、2.含字幕</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "is_download",
+            "description": "<p>状态：1.不可下载、2.可下载</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "is_short_comment",
+            "description": "<p>状态：1.不含短评、2.含短评</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "release_time",
+            "description": "<p>发行时间排序：1.是asc、2.是desc</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "flux_linkage_time",
+            "description": "<p>磁链更新时间：1.是asc、2.是desc</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>影片ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>影片ID名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.number",
+            "description": "<p>影片番号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.release_time",
+            "description": "<p>发行时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.created_at",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_download",
+            "description": "<p>状态：1.不可下载、2.可下载</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_subtitle",
+            "description": "<p>状态：1.不含字幕、2.含字幕</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_short_comment",
+            "description": "<p>状态：1.不含短评、2.含短评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_hot",
+            "description": "<p>是否热门待定</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_new_comment",
+            "description": "<p>0.无状态、1.今日新评、2.无状态、3.昨日新评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_flux_linkage",
+            "description": "<p>0.无状态1.今日新种、2.无状态、3.昨日新种</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.comment_num",
+            "description": "<p>评论数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.score",
+            "description": "<p>评分</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.small_cover",
+            "description": "<p>小图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.big_cove",
+            "description": "<p>大图</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/HomeController.php",
+    "groupTitle": "首页相关"
   }
 ] });
