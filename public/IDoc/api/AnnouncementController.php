@@ -11,14 +11,13 @@ class AnnouncementController extends  BaseController
 {
 
     /**
-     * @api {get} /api/announcement/getAnnouncement 公告管理
+     * @api {Post} /api/announcement/getAnnouncement 公告管理
      * @apiName  获取公告轮播
      * @apiGroup 网站管理
      * @apiDescription 根据类型获取公告轮播
      *
-     * @apiParam {string} type  top:顶部轮播 content：内容轮播 message:消息轮播
+     * @apiParam {int} type  1:顶部轮播 2：内容轮播 3:消息轮播
      * @apiParam {int} page 页码 默认20一页
-     * @apiParam {String} token token
      *
      * @apiSuccess {String} code 响应码 200 正确 其他错误
      * @apiSuccess {String} msg 错误提示

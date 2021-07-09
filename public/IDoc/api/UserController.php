@@ -37,7 +37,7 @@ class UserController extends  BaseController
     }
 
     /**
-     * @api {Get} /api/user/login 用户登录
+     * @api {Post} /api/user/login 用户登录
      * @apiName 用户登录
      * @apiGroup 用户相关
      * @apiDescription 用户登录
@@ -54,7 +54,7 @@ class UserController extends  BaseController
     }
 
     /**
-     * @api {Get} /api/user/reg 用户注册
+     * @api {Post} /api/user/reg 用户注册
      * @apiName 用户注册
      * @apiGroup 用户相关
      * @apiDescription 用户注册
@@ -174,8 +174,154 @@ class UserController extends  BaseController
     }
 
 
+    /**
+     * @api {get} /api/notify/getNotifyList 消息通知列表
+     * @apiName  消息通知列表
+     * @apiGroup 用户相关
+     * @apiDescription 获取消息通知列表
+     *
+     * @apiParam {String} token 登录token
+     * @apiParam {int} type 消息类型 1.赞2.踩3.我的评论4.回复我的【5.关注99.公告内容 系统占时无】
+     * @apiParam {int} isRead 是否已读 0.未读 1.已读
+     * @apiParam {int} page 页码
+     * @apiParam {int} pageSize 每页数量
+     *
+     * @apiSuccess {String} code 响应码 200 正确 其他错误
+     * @apiSuccessExample  {json} success-example
+    {
+    "code": 200,
+    "msg": "成功！",
+    "data": {
+    "list": [
+        {
+            "content": [
+                "我的评论：香肠嘴把"//除去发送人一行的内容。当type=3 and type=4时数组长度位2 按原型顺序放置即可
+            ],
+            "id": 9,//批量删除和阅读传入
+            "target_id": 948,
+            "target_id": 948,
+            "target_source_id": 7512,
+            "is_read": 0,//是否已读
+            "type": 2,//赞和踩的content格式一样
+            "sender_id": 2,
+            "sender_avatar": 'uploads/avatar/my.jpg',//头像路径
+            "sender_name": "user"//发送人的昵称
+        },
+        {
+            "content": [
+                "我的评论：封面很像橘波留"
+            ],
+            "target_id": 949,
+            "target_source_id": 7513,
+            "is_read": 0,
+            "type": 4,//回复我的
+            "sender_id": 3,
+            "sender_name": "user"
+            },
+            {
+            "content": [
+                "原以为是仓多真央，看完出演员名字才知道是大岛。",
+                "我的评论：那个负责清理的。。。看着有点恶心"
+            ],
+            "target_id": 953,
+            "target_source_id": 7514,
+            "is_read": 0,
+            "type": 3,
+            "sender_id": 1,
+            "sender_name": "user"
+        },
+        {
+            "content": [
+                "相马茜的长相真是长到我的审美上了。",
+                "影片番号：FC2-1729752 ※無※旦那様すいません( ;∀;)人妻KUREHA出産直前妊娠8か月！最後の濃厚不倫生ハメSEXで鬼イキ♡"
+            ],
+            "target_id": 954,
+            "target_source_id": 7515,
+            "is_read": 0,
+            "type": 3,//评价
+            "sender_id": 2,
+            "sender_name": "user"
+            },
+            {
+            "content": [
+                "我的评论：被艹时候的样子太丑了。"
+            ],
+            "target_id": 955,
+            "target_source_id": 7516,
+            "is_read": 0,
+            "type": 2,
+            "sender_id": 2,
+            "sender_name": "user"
+        },
+        ],
+        "count": 10
+        }
+    }
+
+     */
 
 
+    /**
+     * @api {Post} /api/notify/setRead 设置消息已读
+     * @apiName 设置消息已读
+     * @apiGroup 用户相关
+     * @apiDescription 设置消息已读
+     *
+     * @apiParam {String} token 登录token
+     * @apiParam {int} id 消息主键id
+     *
+     * @apiSuccess {String} code 响应码 200 正确 其他错误
+     * @apiSuccess {String} msg 错误提示
+
+     *
+     *
+     */
+    public function setRead(Request $request)
+    {
+
+    }
+
+    /**
+     * @api {Post} /api/notify/delete 删除消息
+     * @apiName 删除消息
+     * @apiGroup 用户相关
+     * @apiDescription 删除消息
+     *
+     * @apiParam {String} token 登录token
+     * @apiParam {array} ids[] 主键id数组
+     *
+     * @apiSuccess {String} code 响应码 200 正确 其他错误
+     * @apiSuccess {String} msg 错误提示
+
+     *
+     *
+     */
+    public function delete(Request $request)
+    {
+
+    }
+
+
+    /**
+     * @api {Post} api/user/forgetPassword 忘记密码
+     * @apiName 忘记密码
+     * @apiGroup 用户相关
+     * @apiDescription 忘记密码
+     *
+     * @apiParam {String} account 账号
+     * @apiParam {String} pwd 密码【明文】
+     * @apiParam {String} code 短信或者邮箱验证码
+     *
+     * @apiSuccess {String} code 响应码 200 正确 其他错误
+     * @apiSuccess {String} msg 错误提示
+
+     *
+     *
+     */
+    public function forgetPassword(Request $request)
+    {
+
+    }
 
 
 

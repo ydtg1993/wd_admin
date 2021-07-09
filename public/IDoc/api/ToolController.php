@@ -54,8 +54,28 @@ class ToolController extends  BaseController
     }
 
 
+    /**
+     * @api {Post} /api/file/upload/piece/list 上传片单图
+     * @apiName  上传片单图
+     * @apiGroup 工具接口
+     * @apiDescription 上传片单图
+     *
+     * @apiParam {file} file
+     * @apiParam {String} token token
+     *
+     * @apiSuccess {String} code 响应码 200 正确 其他错误
+     *    * @apiSuccessExample  {json} success-example
+    {
+    "code": 200,
+    "msg": "成功！",
+    "data": "/public/uploads/local/profile_photo/2021-06-22_1624359988_60d1c434b68ce.png"//头像图片路径
+    }
 
+     */
+    public function uploadPieceList()
+    {
 
+    }
 
 
 

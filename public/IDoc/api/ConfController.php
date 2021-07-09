@@ -68,7 +68,7 @@ class ConfController extends  BaseController
    * @api {get} /api/conf/getOneConf 获取单个信息
    * @apiName  获取基础信息
    * @apiGroup 网站管理
-   * @apiDescription 根据类型type获取单个信息 type=1 只返回一部分数据格式如上
+   * @apiDescription 根据类型type获取单个信息 type=1 只返回一部分数据格式如上 example:/api/conf/getOneConf/1
    * @apiParam {int} type  type 1,2,3,4,5,6
    *
    * @apiSuccess {String} code 响应码 200 正确 其他错误 返回值格式参考如上

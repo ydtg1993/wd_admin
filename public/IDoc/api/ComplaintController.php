@@ -18,6 +18,7 @@ class ComplaintController extends  BaseController
      *
      * @apiParam {String} topic  主题
      * @apiParam {String} title 标题
+     * @apiParam {String} avid AV番号
      * @apiParam {content} content 内容
      * @apiParam {connect} connect 联系方式
      *

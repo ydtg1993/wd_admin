@@ -299,12 +299,31 @@ class MovieDetailController extends  BaseController
      * @apiParam {String} comment  【内容6-255字】
      *
      * @apiSuccess {String} code 响应码 200 正确 其他错误
-     * @apiSuccessExample  {json} success-example
 
      */
     public function reply()
     {
 
     }
+
+    /**
+     * @api {Post} /api/comment/action 评论赞踩
+     * @apiName 评论赞踩
+     * @apiGroup 影片
+     * @apiDescription 评论赞踩
+     *
+     * @apiParam {Number} id  【评论id】
+     * @apiParam {enum} action like：赞 dislike:踩
+     * @apiParam {String} token token
+     *
+     *
+     * @apiSuccess {String} code 响应码 200 正确 其他错误
+
+     */
+    public function action()
+    {
+
+    }
+
 
 }
