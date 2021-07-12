@@ -14,6 +14,7 @@ class FilmCompaniesDetailController extends  BaseController
      * @apiName 公司信息
      * @apiGroup 公司详情
      * @apiDescription 公司信息
+     * @apiHeader {String} token  【header头传输 可以不传】
      *
      * @apiParam {Number} id  【公司id】
      *

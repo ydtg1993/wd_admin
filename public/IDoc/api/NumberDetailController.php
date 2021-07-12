@@ -14,6 +14,7 @@ class NumberDetailController extends  BaseController
      * @apiName 番号信息
      * @apiGroup 番号详情
      * @apiDescription 番号信息
+     * @apiHeader {String} token  【header头传输 可以不传】
      *
      * @apiParam {Number} id  【番号id】
      *

@@ -2532,6 +2532,19 @@
     "name": "公司信息",
     "group": "公司详情",
     "description": "<p>公司信息</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>【header头传输 可以不传】</p>"
+          }
+        ]
+      }
+    },
     "parameter": {
       "fields": {
         "Parameter": [
@@ -2648,6 +2661,19 @@
     "name": "导演信息",
     "group": "导演详情",
     "description": "<p>导演信息</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>【header头传输 可以不传】</p>"
+          }
+        ]
+      }
+    },
     "parameter": {
       "fields": {
         "Parameter": [
@@ -2916,6 +2942,19 @@
     "name": "影片详情",
     "group": "影片",
     "description": "<p>详情</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>【header头传输 可以不传】</p>"
+          }
+        ]
+      }
+    },
     "parameter": {
       "fields": {
         "Parameter": [
@@ -2925,13 +2964,6 @@
             "optional": false,
             "field": "id",
             "description": "<p>【影片id】</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "uid",
-            "description": "<p>【用户id 可不传或0】</p>"
           }
         ]
       }
@@ -3003,6 +3035,148 @@
     "version": "0.0.0",
     "filename": "api/MovieDetailController.php",
     "groupTitle": "影片"
+  },
+  {
+    "type": "Get",
+    "url": "/api/movie/search",
+    "title": "获取影片搜索列表",
+    "name": "获取影片搜索列表",
+    "group": "影片相关",
+    "description": "<p>获取影片搜索列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "keyword",
+            "description": "<p>关键词</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "actors",
+            "description": "<p>演员列表.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "actors.id",
+            "description": "<p>演员ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "actors.name",
+            "description": "<p>演员名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "actors.photo",
+            "description": "<p>演员头像</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "actors.sex",
+            "description": "<p>演员性别</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "actors.social_accounts",
+            "description": "<p>社交账号[]</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "actors.social_accounts.Twitter",
+            "description": "<p>社交账号一一对应</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "actors.movie_sum",
+            "description": "<p>影片数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "actors.like_sum",
+            "description": "<p>关注数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "\n{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"more\": 1,\n\"total\": 1845,\n\"video\": [\n{\n\"id\": 13641,\n\"number\": \"NAD-003\",\n\"name\": \"このギャル、俺の乳首係り 氷堂りりあ\",\n\"time\": 460800,\n\"release_time\": \"2021-05-31 23:40:51\",\n\"issued\": \"\",\n\"sell\": \"\",\n\"small_cover\": \"/javdb/small_cover/22f4070db2756e22b95154464579e98d.jpg\",\n\"big_cove\": \"/javdb/big_cove/9bb4de69be65f31f9cbed4a253abf014.jpg\",\n\"trailer\": \"/javdb/trailer/cb5e1d1319ebd6d2eabe10f92956a952.mp4\",\n\"map\": \"[\\\"\\\\/javdb\\\\/map\\\\/1be03ae3ad1e6ea474a5044b069bb14e.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/46ffc100a5fefb8b968b76ea724503c8.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/658198ab3a702148779cb52d410ba321.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/2010b5bfdfa2f851baf46a187217d9fd.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/b317879638ef4740d98046ececb4aa33.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/fbeda9f4bac5d1609389b8f9cdc05a10.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/42cc62e130989c6f5e71556ea9ece840.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/b16cefda3fcc5d472caf285ae11c15fd.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/85266d1647ed74894391dbe355500ac5.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/6cc10a926615a42d5b97e7dfe541a464.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/a116fb83103277aba028dd1cb1897555.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/32e9d5381a53af08b6b3cd88f02c197c.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/8e958377b04c1d5c35946bc507c521dc.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/596d122d4f915667a343dbf9f7494e0d.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/441f86b1a692f50d683a4cbc31096784.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/874b27d646ef6499e14b66565ec085b8.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/8c60d8188da441e28e9c8866e868c4a0.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/3fa69cc1a645796d73414c7f5e69b6e7.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/3b2290ff788e8d633b2ce5b1fba0827e.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/f6e10e99573ce4a6f1c4a2a9562949a3.jpg\\\"]\",\n\"score\": 0,\n\"score_people\": 1,\n\"comment_num\": 1,\n\"collection_score\": 10,\n\"collection_score_people\": 4,\n\"collection_comment_num\": 1,\n\"wan_see\": 0,\n\"seen\": 0,\n\"flux_linkage_num\": 2,\n\"flux_linkage\":\"[{\\\"name\\\":\\\"NAD-003\\\",\\\"url\\\":\\\"magnet:?xt=urn:btih:c2af88bcc3e33e8e9bb0ac4571df9a59f5af0418&dn=[javdb.com]NAD-003\\\",\\\"is-small\\\":\\\"\\高\\清\\\",\\\"is-warning\\\":null,\\\"tooltip\\\":null,\\\"meta\\\":\\\"(5.33GB,3\\個\\文\\件)\\\"},{\\\"name\\\":\\\"nad-003.torrent\\\",\\\"url\\\":\\\"magnet:?xt=urn:btih:8f006a6af630199f25a65b6e0279a66d4e354745&dn=[javdb.com]nad-003.torrent\\\",\\\"is-small\\\":\\\"\\高\\清\\\",\\\"is-warning\\\":null,\\\"tooltip\\\":null,\\\"meta\\\":\\\"(5.23GB,6\\個\\文\\件)\\\"}]\",\n\"status\": 1,\n\"is_download\": 2,\n\"is_subtitle\": 1,\n\"is_hot\": 1,\n\"is_up\": 1,\n\"is_short_comment\": 1,\n\"new_comment_time\": \"2021-05-31 23:41:02\",\n\"flux_linkage_time\": \"2021-05-31 23:41:02\",\n\"oid\": 13641,\n\"created_at\": \"2021-05-31 23:41:02\",\n\"updated_at\": \"2021-05-31 23:41:02\",\n\"actors\": [\n{\n\"id\": 4047,\n\"name\": \"氷堂りりあ\",\n\"photo\": \"\",\n\"sex\": \"♀\",\n\"oid\": 4047,\n\"social_accounts\": \"[]\",\n\"movie_sum\": 15,\n\"like_sum\": 0,\n\"status\": 1,\n\"created_at\": \"2021-05-31 16:10:49\",\n\"updated_at\": \"2021-05-31 23:41:02\",\n\"pivot\": {\n\"mid\": 13641,\n\"aid\": 4047\n}\n}\n],\n\"directors\": [\n{\n\"id\": 567,\n\"name\": \"松方ピロム\",\n\"movie_sum\": 1,\n\"like_sum\": 0,\n\"status\": 1,\n\"oid\": 568,\n\"created_at\": \"2021-05-31 23:40:58\",\n\"updated_at\": \"2021-05-31 23:41:02\",\n\"pivot\": {\n\"mid\": 13641,\n\"did\": 567\n}\n}\n]\n},\n{\n\"id\": 10619,\n\"number\": \"TIKB-110\",\n\"name\": \"金玉からっぽ金曜日 りりたん 氷堂りりあ\",\n\"time\": 482400,\n\"release_time\": \"2021-05-31 16:15:35\",\n\"issued\": \"\",\n\"sell\": \"\",\n\"small_cover\": \"/javdb/small_cover/9f21fce784d9baac61b74e75d66776aa.jpg\",\n\"big_cove\": \"/javdb/big_cove/25a4028649ac7af4374f3ed124126e33.jpg\",\n\"trailer\": \"\",\n\"map\": \"[\\\"\\\\/javdb\\\\/map\\\\/d6e777b07d1fd02e0203273fad34f7d8.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/03ac88624fbc8ef2605935456d7aa746.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/d9925b1fd8628094e222f6813a655f87.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/e745f6452823907b67fdd5272d06abbe.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/16c12cd35dd183f3a6493c13538b928e.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/2b34bf304fefa6845628d58a6a6e4c75.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/d70c1b05d2df4306d5b22c845abda163.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/2a48d1a85ae456170afa50bb41ecc51f.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/53acf315eb4c607867f677d80e41d8a5.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/104b8da2e229c8918165259a397c9945.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/e5a068fb495033e7ca65ca6f0cb1235b.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/d6b4f096019fc38a62ae77528d75558e.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/62edc717573b7741e2afad64e11ce00e.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/455de9f5fd545f37b1d4506e6f322aba.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/25bda842092d6ad49513253909142515.jpg\\\",\\\"\\\\/javdb\\\\/map\\\\/8e751df071ac864bb7f68ab720f5006a.jpg\\\"]\",\n\"score\": 0,\n\"score_people\": 0,\n\"comment_num\": 0,\n\"collection_score\": 0,\n\"collection_score_people\": 0,\n\"collection_comment_num\": 0,\n\"wan_see\": 0,\n\"seen\": 0,\n\"flux_linkage_num\": 2,\n\"flux_linkage\":\"[{\\\"name\\\":\\\"TIKB-110\\\",\\\"url\\\":\\\"magnet:?xt=urn:btih:24c89a1538c95c3e0f2613552d67662e2c1a6664&dn=[javdb.com]TIKB-110\\\",\\\"is-small\\\":\\\"\\高\\清\\\",\\\"is-warning\\\":null,\\\"tooltip\\\":null,\\\"meta\\\":\\\"(5.60GB)\\\"},{\\\"name\\\":\\\"kpxvs-TIKB110\\\",\\\"url\\\":\\\"magnet:?xt=urn:btih:c79c25d8b8f961e4445dc4fe8ce06c3bd1779c71&dn=[javdb.com]kpxvs-TIKB110\\\",\\\"is-small\\\":null,\\\"is-warning\\\":null,\\\"tooltip\\\":null,\\\"meta\\\":\\\"(1.47GB)\\\"}]\",\n\"status\": 1,\n\"is_download\": 2,\n\"is_subtitle\": 1,\n\"is_hot\": 1,\n\"is_up\": 1,\n\"is_short_comment\": 1,\n\"new_comment_time\": \"2021-05-31 16:22:30\",\n\"flux_linkage_time\": \"2021-05-31 16:22:30\",\n\"oid\": 10619,\n\"created_at\": \"2021-05-31 16:22:30\",\n\"updated_at\": \"2021-05-31 16:22:30\",\n\"actors\": [\n{\n\"id\": 4047,\n\"name\": \"氷堂りりあ\",\n\"photo\": \"\",\n\"sex\": \"♀\",\n\"oid\": 4047,\n\"social_accounts\": \"[]\",\n\"movie_sum\": 15,\n\"like_sum\": 0,\n\"status\": 1,\n\"created_at\": \"2021-05-31 16:10:49\",\n\"updated_at\": \"2021-05-31 23:41:02\",\n\"pivot\": {\n\"mid\": 10619,\n\"aid\": 4047\n}\n}\n],\n\"directors\": []\n}\n]\n}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/MovieController.php",
+    "groupTitle": "影片相关"
   },
   {
     "type": "Get",
@@ -3639,6 +3813,13 @@
             "group": "Parameter",
             "type": "Number",
             "optional": false,
+            "field": "time",
+            "description": "<p>时间戳【例如：2021年5月1日的时间戳是1619798400】【备注最好加上】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
             "field": "page",
             "description": "<p>分页页码</p>"
           },
@@ -3904,6 +4085,19 @@
     "name": "演员信息",
     "group": "演员详情",
     "description": "<p>演员信息</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>【header头传输 可以不传】</p>"
+          }
+        ]
+      }
+    },
     "parameter": {
       "fields": {
         "Parameter": [
@@ -3912,7 +4106,7 @@
             "type": "Number",
             "optional": false,
             "field": "id",
-            "description": "<p>【演员id】</p>"
+            "description": "<p>【演员id】】</p>"
           }
         ]
       }
@@ -5334,6 +5528,19 @@
     "name": "番号信息",
     "group": "番号详情",
     "description": "<p>番号信息</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>【header头传输 可以不传】</p>"
+          }
+        ]
+      }
+    },
     "parameter": {
       "fields": {
         "Parameter": [
@@ -5872,6 +6079,248 @@
     "version": "0.0.0",
     "filename": "api/ConfController.php",
     "groupTitle": "网站管理"
+  },
+  {
+    "type": "Get",
+    "url": "/api/search",
+    "title": "搜索【简易】",
+    "name": "搜索【简易】",
+    "group": "首页相关",
+    "description": "<p>搜索【简易】</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "search",
+            "description": "<p>搜索内容</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "is_subtitle",
+            "description": "<p>状态：1.不含字幕、2.含字幕</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "is_download",
+            "description": "<p>状态：1.不可下载、2.可下载</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "is_short_comment",
+            "description": "<p>状态：1.不含短评、2.含短评</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>影片ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>影片ID名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.number",
+            "description": "<p>影片番号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.release_time",
+            "description": "<p>发行时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.created_at",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_download",
+            "description": "<p>状态：1.不可下载、2.可下载</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_subtitle",
+            "description": "<p>状态：1.不含字幕、2.含字幕</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_short_comment",
+            "description": "<p>状态：1.不含短评、2.含短评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_hot",
+            "description": "<p>是否热门待定</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_new_comment",
+            "description": "<p>0.无状态、1.今日新评、2.无状态、3.昨日新评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_flux_linkage",
+            "description": "<p>0.无状态1.今日新种、2.无状态、3.昨日新种</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.comment_num",
+            "description": "<p>评论数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.score",
+            "description": "<p>评分</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.small_cover",
+            "description": "<p>小图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.big_cove",
+            "description": "<p>大图</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/HomeController.php",
+    "groupTitle": "首页相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/search/log",
+    "title": "搜索历史【登录可用】",
+    "name": "搜索历史【登录可用】",
+    "group": "首页相关",
+    "description": "<p>搜索历史【登录可用】</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.content",
+            "description": "<p>搜索内容</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/HomeController.php",
+    "groupTitle": "首页相关"
   },
   {
     "type": "Get",

@@ -14,9 +14,9 @@ class MovieDetailController extends  BaseController
      * @apiName 影片详情
      * @apiGroup 影片
      * @apiDescription 详情
+     * @apiHeader {String} token  【header头传输 可以不传】
      *
      * @apiParam {Number} id  【影片id】
-     * @apiParam {Number} uid  【用户id 可不传或0】
      *
      * @apiSuccess {String} code 响应码 200 正确 其他错误
      * @apiSuccessExample  {json} success-example

@@ -14,6 +14,7 @@ class DirectorDetailController extends  BaseController
      * @apiName 导演信息
      * @apiGroup 导演详情
      * @apiDescription 导演信息
+     * @apiHeader {String} token  【header头传输 可以不传】
      *
      * @apiParam {Number} id  【导演id】
      *

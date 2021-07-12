@@ -14,8 +14,9 @@ class ActorDetailController extends  BaseController
      * @apiName 演员信息
      * @apiGroup 演员详情
      * @apiDescription 演员信息
+     * @apiHeader {String} token  【header头传输 可以不传】
      *
-     * @apiParam {Number} id  【演员id】
+     * @apiParam {Number} id  【演员id】】
      *
      * @apiSuccess {String} code 响应码 200 正确 其他错误
      * @apiSuccessExample  {json} success-example
