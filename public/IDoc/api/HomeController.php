@@ -156,6 +156,7 @@ class HomeController
      * @apiDescription 获取演员月排行版
      *
      * @apiParam {Number} type 类别id【0.全部、1.有码、2.无码、3.欧美】
+     * @apiParam {Number} time 时间戳【例如：2021年5月1日的时间戳是1619798400】【备注最好加上】
      * @apiParam {Number} page 分页页码
      * @apiParam {Number} pageSize 分页长度
      *
@@ -177,4 +178,63 @@ class HomeController
     {
 
     }
+
+    /**
+     * @api {Get} /api/search 搜索【简易】
+     * @apiName 搜索【简易】
+     * @apiGroup 首页相关
+     * @apiDescription 搜索【简易】
+     *
+     * @apiParam {String} search 搜索内容
+     * @apiParam {Number} is_subtitle 状态：1.不含字幕、2.含字幕
+     * @apiParam {Number} is_download 状态：1.不可下载、2.可下载
+     * @apiParam {Number} is_short_comment 状态：1.不含短评、2.含短评
+     * @apiParam {Number} page 分页页码
+     * @apiParam {Number} pageSize 分页长度
+     *
+     * @apiSuccess {Number} sum 数据总数
+     * @apiSuccess {Object} list 列表【数组】
+     * @apiSuccess {Number} list.id 影片ID
+     * @apiSuccess {String} list.name 影片ID名称
+     * @apiSuccess {String} list.number 影片番号
+     * @apiSuccess {String} list.release_time 发行时间
+     * @apiSuccess {String} list.created_at 创建时间
+     * @apiSuccess {Number} list.is_download 状态：1.不可下载、2.可下载
+     * @apiSuccess {Number} list.is_subtitle 状态：1.不含字幕、2.含字幕
+     * @apiSuccess {Number} list.is_short_comment 状态：1.不含短评、2.含短评
+     * @apiSuccess {Number} list.is_hot 是否热门待定
+     * @apiSuccess {Number} list.is_new_comment 0.无状态、1.今日新评、2.无状态、3.昨日新评
+     * @apiSuccess {Number} list.is_flux_linkage 0.无状态1.今日新种、2.无状态、3.昨日新种
+     * @apiSuccess {Number} list.comment_num 评论数量
+     * @apiSuccess {Number} list.score 评分
+     * @apiSuccess {String} list.small_cover 小图
+     * @apiSuccess {String} list.big_cove 大图
+     *
+     */
+    public function search( )
+    {
+
+    }
+
+
+    /**
+     * @api {Get} /api/search/log 搜索历史【登录可用】
+     * @apiName 搜索历史【登录可用】
+     * @apiGroup 首页相关
+     * @apiDescription 搜索历史【登录可用】
+     *
+     * @apiParam {Number} page 分页页码
+     * @apiParam {Number} pageSize 分页长度
+     *
+     * @apiSuccess {Number} sum 数据总数
+     * @apiSuccess {Object} list 列表【数组】
+     * @apiSuccess {String} list.content 搜索内容
+     *
+     */
+    public function searchLog( )
+    {
+
+    }
+
+
 }
