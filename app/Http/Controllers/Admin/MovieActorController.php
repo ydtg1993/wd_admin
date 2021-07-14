@@ -68,7 +68,7 @@ class MovieActorController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function create(Request $request)
     {
         if($request->method() == 'GET') {
             $categories = DB::table('movie_actor_category')->pluck( 'name','id')->all();
@@ -152,7 +152,7 @@ class MovieActorController extends Controller
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function edit(Request $request, $id)
     {
         if($request->method() == 'GET') {
             $categories = DB::table('movie_actor_category')->pluck( 'name','id')->all();

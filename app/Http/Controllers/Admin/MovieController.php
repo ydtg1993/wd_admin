@@ -78,6 +78,86 @@ class MovieController extends Controller
         return Response::json($data);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function create(Request $request)
+    {
+        if ($request->method() == 'GET') {
+            $category = $request->input('category');
+            list($series, $movie_series_associate) = $this->categorySelect('series', 'series_id', $category);
+
+            list($companies, $movie_film_companies_associate) = $this->categorySelect('film_companies', 'film_companies_id', $category);
+
+            $directors = MovieDirector::pluck('name', 'id')->all();
+
+            list($labels, $selected_labels) = $this->categoryMultiSelect('label', 'lid', $category, 0, [['cid', '>', 0]]);
+
+            list($actors, $selected_actors) = $this->categoryMultiSelect('actor', 'aid', $category);
+
+            return View::make('admin.movie.create',
+                compact('movie',
+                    'categories',
+                    'series',
+                    'companies',
+                    'labels',
+                    'directors',
+                    'actors'
+                )
+            );
+        }
+        $data = $request->all();
+        try {
+            DB::beginTransaction();
+            if(!$data['name']){
+                throw new \Exception('名称不能为空');
+            }
+            if(Movie::where(['number'=>$data['number'],'status'=>1])->exists()){
+                throw new \Exception('番号重复');
+            }
+            $category = DB::table('movie_category')->where('name',$data['category'])->first();
+            if(!$category){
+                throw new \Exception('分类错误');
+            }
+            $category_id = $category->id;
+
+            $flux_linkage = (array)json_decode($data['flux_linkage'], true);
+            $flux_linkage_num = count($flux_linkage);
+            $id = Movie::insertGetId([
+                'name' => $data['name'],
+                'number'=>$data['number'],
+                'release_time' => $data['release_time'],
+                'score' => (int)$data['score'],
+                'flux_linkage_num' => $flux_linkage_num,
+                'flux_linkage' => json_encode($flux_linkage),
+                'time'=>$data['time'],
+                'sell'=>$data['sell'],
+                'is_download' => $data['is_download'],
+                'is_subtitle' => $data['is_subtitle'],
+                'is_hot' => $data['is_hot']
+            ]);
+
+            /*标签*/
+            $this->dataAssociate('label', $id, explode(',', $data['labels']), 'cid');
+            /*演员*/
+            $this->dataAssociate('actor', $id, explode(',', $data['actors']), 'aid');
+
+            /*导演*/
+            $this->associate('director', $id, $data['director'], 'did');
+            /*系列*/
+            $this->associate('series', $id, $data['series'], 'series_id');
+            /*片商*/
+            $this->associate('film_companies', $id, $data['company'], 'film_companies_id');
+            /*分类*/
+            $this->associate('category', $id, $category_id, 'cid');
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return Redirect::back()->withErrors('更新失败:' . $exception->getMessage());
+        }
+        DB::commit();
+        return Redirect::to(URL::route('admin.movie.movie'))->with(['success' => '更新成功']);
+    }
 
     /**
      * 更新资讯
@@ -125,13 +205,15 @@ class MovieController extends Controller
         $data = $request->all();
         try {
             DB::beginTransaction();
+            if(!$data['name']){
+                throw new \Exception('名称不能为空');
+            }
             $flux_linkage = (array)json_decode($data['flux_linkage'], true);
             $flux_linkage_num = count($flux_linkage);
             Movie::where('id', $id)->update([
                 'name' => $data['name'],
                 'release_time' => $data['release_time'],
                 'score' => $data['score'],
-                'score_people' => $data['score_people'],
                 'flux_linkage_num' => $flux_linkage_num,
                 'flux_linkage' => json_encode($flux_linkage),
                 'is_download' => $data['is_download'],
@@ -160,25 +242,26 @@ class MovieController extends Controller
     }
 
 
-    private function categorySelect($table, $column, $category, $movie_id, $where = [])
+    private function categorySelect($table, $column, $category, $movie_id = 0, $where = [])
     {
         $movie_n_category = DB::table('movie_' . $table . '_category')->where('name', $category)->first();
         $movie_n_category_associate = DB::table('movie_' . $table . '_category_associate');
         $movie_n_category && ($movie_n_category_associate = $movie_n_category_associate->where('cid', $movie_n_category->id));
         $movie_n_category_associate_ids = $movie_n_category_associate->pluck($column)->all();
         $select = DB::table('movie_' . $table)->where($where)->whereIn('id', $movie_n_category_associate_ids)->pluck('name', 'id')->all();
-        $option = DB::table('movie_' . $table . '_associate')->where('mid', $movie_id)->first();
+        $option = [];
+        $movie_id>0 && ($option = DB::table('movie_' . $table . '_associate')->where('mid', $movie_id)->first());
         return [$select, $option];
     }
 
-    private function categoryMultiSelect($table, $column, $category, $movie_id, $where = [])
+    private function categoryMultiSelect($table, $column, $category, $movie_id=0, $where = [])
     {
         $movie_n_category = DB::table('movie_' . $table . '_category')->where('name', $category)->first();
         $select = [];
         $movie_n_model = DB::table('movie_' . $table)->where('status', 1)->where($where);
         $chunk = [];
         $movie_n_category && ($chunk = DB::table('movie_' . $table . '_category_associate')->where('cid', $movie_n_category->id)->pluck($column)->all());
-        !empty($chunk) && ($records = $movie_n_model->whereIn('id', $chunk));
+        !empty($chunk) && ($movie_n_model = $movie_n_model->whereIn('id', $chunk));
         $records = $movie_n_model->orderBy('id', 'DESC')->get();
         foreach ($records as $record) {
             if ($table == 'actor') {
@@ -191,7 +274,8 @@ class MovieController extends Controller
         if ($table == 'label') {
             $column = 'cid';
         }
-        $selected = DB::table('movie_' . $table . '_associate')->where('mid', $movie_id)->pluck($column)->all();
+        $selected = [];
+        $movie_id>0 && ($selected = DB::table('movie_' . $table . '_associate')->where('mid', $movie_id)->pluck($column)->all());
         return [$select, $selected];
     }
 
@@ -199,7 +283,7 @@ class MovieController extends Controller
     {
         $movie_director_associate = DB::table('movie_' . $table . '_associate')->where('mid', $movie_id)->first();
         if ($movie_director_associate && $movie_director_associate->{$column} !== $input) {
-            DB::table('movie_' . $table . '_associate')->update([$column => $input]);
+            DB::table('movie_' . $table . '_associate')->where('id',$movie_director_associate->id)->update([$column => $input]);
         } else {
             DB::table('movie_' . $table . '_associate')->insert(['mid' => $movie_id, $column => $input]);
         }

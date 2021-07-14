@@ -34,4 +34,7 @@ Route::group(['namespace'=>'Api'],function (){
 
     Route::any('actorFileUpload', 'ActorFileController@upload')->name('api.actorFileUpload');
     Route::any('actorFileRemove', 'ActorFileController@remove')->name('api.actorFileRemove');
+
+    Route::any('listFileUpload', 'ListFileController@upload')->name('api.listFileUpload');
+    Route::any('listFileRemove', 'ListFileController@remove')->name('api.listFileRemove');
 });

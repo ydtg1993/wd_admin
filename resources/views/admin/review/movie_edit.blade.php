@@ -47,7 +47,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label" style="background-color: #dccbcb;">影片时长</label>
                         <div class="layui-input-block">
-                            <input type="text" name="time" value="{{$movie->time}}" readonly
+                            <input type="number" name="time" value="{{$movie->time}}" readonly
                                    class="layui-input">
                         </div>
                     </div>
@@ -121,14 +121,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">评分</label>
                         <div class="layui-input-block">
-                            <input type="text" name="score" value="{{$movie->score}}"
-                                   class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">评分人数</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="score_people" value="{{$movie->score_people}}"
+                            <input type="number" min="0" max="10" name="score" value="{{$movie->score}}"
                                    class="layui-input">
                         </div>
                     </div>

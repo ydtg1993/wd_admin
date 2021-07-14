@@ -120,4 +120,63 @@
             alert(msg);
         });
     }
+    function createFileInput(dom,limit=1,filetype='image') {
+        var krajeeGetCount = function(id) {
+            var cnt = $('#' + id).fileinput('getFilesCount');
+            return cnt === 0 ? 'You have no files remaining.' :
+                'You have ' +  cnt + ' file' + (cnt > 1 ? 's' : '') + ' remaining.';
+        };
+        var initialPreview = [];
+        var initialPreviewConfig = [];
+
+        var ini = {
+            language: 'zh',
+            showClose: false,
+            showCaption: true,
+            dropZoneEnable: true,
+            overwriteInitial: false,
+            validateInitialCount: true,
+            showRemove: false,
+            showUpload: false,
+            allowedFileExtensions: ["png", "jpg", "jpeg"],
+            allowedFileTypes: ["image"],
+            uploadAsync: false,
+            layoutTemplates: {
+                actionUpload: '',
+            },
+            browseClass: "btn btn-primary",
+            maxFileCount: limit,
+            autoReplace:false,
+            initialPreview: initialPreview,
+            initialPreviewConfig: initialPreviewConfig,
+            maxFileSize: 5120,
+        };
+
+        if(filetype == 'video'){
+            ini.allowedFileExtensions =["mp4", "mpg", "mpeg","avi","rmvb"];
+            ini.allowedFileTypes = ["video"];
+            ini.maxFileSize = 51200;
+        }
+
+        var file = $('#' + dom);
+        file.fileinput(ini).on('filebeforedelete', function () {
+            var aborted = !window.confirm('确定删除该文件么?');
+            if (aborted) {
+                window.alert('已经删除! ' + krajeeGetCount(dom));
+            };
+            return aborted;
+        }).on('filedeleted', function(event, data) {
+            console.log(data)
+        }).on("filebatchselected", function(event, files) {
+            file.fileinput("upload");
+        }).on('fileerror', function(event, data, msg) {
+            console.log(data.id);
+            console.log(data.index);
+            console.log(data.file);
+            console.log(data.reader);
+            console.log(data.files);
+            // 获取信息
+            alert(msg);
+        });
+    }
 </script>

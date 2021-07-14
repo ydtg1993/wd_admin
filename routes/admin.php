@@ -283,6 +283,14 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::any('movie/series/create', 'MovieSeriesController@create')->name('admin.movie.series.create')->middleware('permission:movie.series.create');
         Route::any('movie/series/{id}/edit', 'MovieSeriesController@edit')->name('admin.movie.series.edit')->middleware('permission:movie.series.edit');
     });
+    //片单
+    Route::group(['middleware' => 'permission:movie.list'], function () {
+        Route::any('movie/list', 'MovieListController@index')->name('admin.movie.list');
+        Route::any('movie/list/list', 'MovieListController@list')->name('admin.movie.list.list');
+        Route::any('movie/list/like', 'MovieListController@like')->name('admin.movie.list.like');
+        Route::any('movie/list/create', 'MovieListController@create')->name('admin.movie.list.create')->middleware('permission:movie.list.create');
+        Route::any('movie/list/{id}/edit', 'MovieListController@edit')->name('admin.movie.list.edit')->middleware('permission:movie.list.edit');
+    });
     //番号
     Route::group(['middleware' => 'permission:movie.numbers'], function () {
         Route::any('movie/numbers', 'MovieNumbersController@index')->name('admin.movie.numbers');

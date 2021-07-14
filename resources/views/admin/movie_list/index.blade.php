@@ -14,27 +14,25 @@
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">标题</label>
+                            <label class="layui-form-label">片单id</label>
                             <div class="layui-input-inline">
-                                <input type="text" class="layui-input" id="name">
+                                <input type="text" class="layui-input" id="id">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">番号</label>
+                            <label class="layui-form-label">用户名</label>
                             <div class="layui-input-inline">
-                                <input type="text" class="layui-input" id="number">
+                                <input type="text" class="layui-input" id="nickname">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">类别</label>
+                            <label class="layui-form-label">用户类别</label>
                             <div class="layui-input-inline">
-                                <select id="category" lay-search  lay-filter="parent_id">
+                                <select id="type" lay-search  lay-filter="parent_id">
                                     <option value='' >选择分类</option>
-                                    <?php
-                                    foreach ($categories as $category){
-                                        echo "<option value=$category >$category</option>";
-                                    }
-                                    ?>
+                                    <option value=1 >用户创建</option>
+                                    <option value=2 >管理员创建</option>
+                                    <option value=3 >用户默认</option>
                                 </select>
                             </div>
                         </div>
@@ -48,11 +46,9 @@
         </fieldset>
         <div class="layui-card-header layuiadmin-card-header-auto">
             <div class="layui-btn-group">
-                <a class="layui-btn layui-btn-sm" id="create" data-href="{{route('admin.movie.movie.create')}}" >添 加</a>
-                <a class="layui-btn layui-btn-normal layui-btn-radius" target="_blank" href="{{route('admin.movie.movie.scoreList')}}" style="margin-left: 10px!important;">评分列表</a>
-                <a class="layui-btn layui-btn-normal layui-btn-radius" target="_blank" href="{{route('admin.movie.movie.commentList')}}" style="margin-left: 10px!important;">评论列表</a>
-                <a class="layui-btn layui-btn-normal layui-btn-radius" target="_blank" href="{{route('admin.movie.movie.wantSeeList')}}" style="margin-left: 10px!important;">想看列表</a>
-                <a class="layui-btn layui-btn-normal layui-btn-radius" target="_blank" href="{{route('admin.movie.movie.sawList')}}" style="margin-left: 10px!important;">看过列表</a>
+                <a class="layui-btn layui-btn-sm" href="{{route('admin.movie.list.create')}}" >添 加</a>
+                <a class="layui-btn layui-btn-normal layui-btn-radius" target="_blank" href="{{route('admin.movie.list.list')}}" style="margin-left: 10px!important;">影片列表</a>
+                <a class="layui-btn layui-btn-normal layui-btn-radius" target="_blank" href="{{route('admin.movie.list.like')}}" style="margin-left: 10px!important;">收藏列表</a>
             </div>
         </div>
         <div class="layui-card-body">
@@ -81,41 +77,32 @@
                     elem: '#dataTable'
                     ,id:'table'
                     , height: 500
-                    , url: "{{ route('admin.movie.movie') }}" //数据接口
+                    , url: "{{ route('admin.movie.list') }}" //数据接口
                     , method:'POST'
                     , page: true //开启分页
                     , cols: [[ //表头
-                         {field: 'id', title: 'ID', sort: true, width: 80}
-                        , {field:'number',title:'番号'}
-                        , {field: 'name', title: '标题'}
-                        , {field:'actors',title:'演员'}
-                        , {field:'score',title:'评分'}
-                        , {field: 'time', title:'时长'}
-                        , {field: 'small_cover', title:'封面图'}
-                        , {field: 'category', title:'类别'}
-                        , {field: 'comment_num', title:'评论'}
-                        , {field: 'flux_linkage_num', title:'磁链'}
-                        , {field: 'wan_see', title:'想看'}
-                        , {field: 'seen', title:'看过'}
+                        {field: 'id', title: 'ID', sort: true, width: 80}
+                        , {field: 'name', title: '名称'}
+                        , {field: 'intro', title: '简介'}
+                        , {field: 'nickname', title: '用户名'}
+                        , {field: 'type', title:'用户类型'}
+                        , {field: 'movie_sum', title:'影片数量'}
+                        , {field: 'like_sum', title:'收藏数量'}
+                        , {field: 'pv_browse_sum', title: 'pv'}
                         , {field: 'created_at', title: '创建时间'}
                         , {field: 'updated_at', title: '更新时间'}
                         , {fixed: 'right', width: 260, align: 'center', toolbar: '#options'}
                     ]],
                     done: function(res, curr, count){
-                        $("[data-field='status']").children().each(function(){
+                        $("[data-field='type']").children().each(function(){
+                            // 1.未处理  2.已处理【人工处理】 3.系统处理 4.舍弃 5.异常数据需要人工处理'
                             if($(this).text()=='1'){
-                                $(this).text("正常")
+                                $(this).text("用户创建")
                             }else if($(this).text()=='2'){
-                                $(this).text("禁用")
+                                $(this).text("管理员创建")
+                            }else if($(this).text()=='3'){
+                                $(this).text("用户默认")
                             }
-                        });
-
-                        $("[data-field='small_cover']").children().each(function(){
-                            var val = "<img src={{config('app.url')}}resources/"+$(this).text()+" />";
-                            if($(this).text() == '封面图'){
-                                return;
-                            }
-                            $(this).html(val)
                         });
                     }
                 });
@@ -125,7 +112,7 @@
                     var data = obj.data //获得当前行数据
                         , layEvent = obj.event; //获得 lay-event 对应的值
                     if (layEvent === 'edit') {
-                        location.href = '/admin/movie/movie/' + data.id + '/edit';
+                        location.href = '/admin/movie/list/' + data.id + '/edit';
                     }
                 });
 
@@ -145,9 +132,9 @@
                             }
                             ,where: {
                                 date: $('#date').val(),
-                                category:$('#category').val(),
-                                name:$('#name').val(),
-                                number:$('#number').val()
+                                id:$('#id').val(),
+                                type:$('#type').val(),
+                                nickname:$('#nickname').val()
                             }
                         });
                     }
@@ -155,25 +142,6 @@
                 $('#btn .layui-btn').on('click', function(){
                     var type = $(this).data('type');
                     active[type] ? active[type].call(this) : '';
-                });
-
-                $('#create').click(function () {
-                    <?php
-                        $create_html = '';
-                        foreach ($categories as $category){
-                            $url = route('admin.movie.movie.create',['category'=>$category]);
-                            $create_html.= <<<EOF
-<a class="layui-btn layui-btn-normal layui-btn-radius" target="_blank" style="margin: 10px!important;" href={$url}>{$category}</a>
-EOF;
-                        }
-                    ?>
-                    var html = '<?=$create_html?>';
-                    layer.open({
-                        type: 1,
-                        title:'选择分类',
-                        area: ['350px', '240px'], //宽高
-                        content: html
-                    });
                 });
             })
         </script>
