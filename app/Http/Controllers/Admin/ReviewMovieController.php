@@ -11,6 +11,7 @@ use App\Models\MovieComment;
 use App\Models\MovieDirector;
 use App\Models\MovieLabel;
 use App\Models\Movie;
+use App\Models\MovieSeries;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -99,7 +100,7 @@ class ReviewMovieController extends Controller
         if ($request->method() == 'GET') {
             $movie = CollectionMovie::findOrFail($id);
 
-            $categories = MovieCategory::pluck('name', 'id')->all();
+            $categories = MovieCategory::where('status',1)->pluck('name', 'id')->all();
             /*寻找类别*/
             $index = array_search($movie->category, $categories);
             $category = ($index !== false) ? $categories[$index] : current($categories);
@@ -138,7 +139,7 @@ class ReviewMovieController extends Controller
         }
 
         $data = $request->all();
-        /*判断*/
+        /*文件锁判断*/
         $lock_path = storage_path('review_movie');
         if (!is_dir($lock_path)) {
             mkdir($lock_path, 0777);
@@ -151,7 +152,7 @@ class ReviewMovieController extends Controller
             DB::beginTransaction();
             $date = date('Y-m-d H:i:s');
             $collect_movie = CollectionMovie::where('id', $id)->first();
-            if (Movie::where('number', $collect_movie->number)->first()) {
+            if (Movie::where(['number'=>$collect_movie->number,'status'=>1])->first()) {
                 throw new \Exception('番号:' . $collect_movie->number . '已经上架');
             }
 
@@ -169,7 +170,6 @@ class ReviewMovieController extends Controller
                 'trailer' => $collect_movie->trailer,
                 'map' => $collect_movie->map,
                 'score' => $data['score'],
-                'score_people' => $data['score_people'],
                 'comment_num' => $data['comment_num'],
                 'collection_score' => $collect_movie->score,
                 'collection_score_people' => $collect_movie->score_people,
@@ -191,7 +191,7 @@ class ReviewMovieController extends Controller
             $this->associate('category', $data['category'], ['cid' => '.id', 'mid' => $movie_id]);
             /*导演关联*/
             $this->associate('director', $collect_movie->director, ['did' => '.id', 'mid' => $movie_id]);
-            DB::table('movie_director')->where('name', $collect_movie->director)->increment('movie_sum');
+            MovieDirector::where('name', $collect_movie->director)->increment('movie_sum');
 
             /*系列关联*/
             $this->associate('series',
@@ -200,7 +200,8 @@ class ReviewMovieController extends Controller
                 $category,
                 'series_id'
             );
-            DB::table('movie_series')->where('id', $data['series'])->increment('movie_sum');
+            MovieSeries::where('id', $data['series'])->increment('movie_sum');
+
             /*公司关联*/
             $this->associate('film_companies',
                 $collect_movie->film_companies,
@@ -209,6 +210,7 @@ class ReviewMovieController extends Controller
                 'film_companies_id'
             );
             DB::table('movie_film_companies')->where('id', $data['film_companies'])->increment('movie_sum');
+
             /*标签关联*/
             $this->labelAssociate($movie_id, (array)json_decode($data['label'], true));
             /*演员关联*/
@@ -275,10 +277,9 @@ class ReviewMovieController extends Controller
         }
         $movie = DB::table('movie_' . $name)->where('name', $value)->first();
         if (!$movie) {
-            $id = DB::table('movie_' . $name)->insertGetId(['name' => $value]);
-        } else {
-            $id = $movie->id;
+            throw new \Exception("不存在的选项 表:movie_{$name} 选项:{$value}");
         }
+        $id = $movie->id;
 
         $where = [];
         foreach ($wv as $w => $v) {
@@ -288,19 +289,19 @@ class ReviewMovieController extends Controller
             }
             $where[$w] = $v;
         }
-        if (!DB::table('movie_' . $name . '_associate')->where($where)->first()) {
+        if (!DB::table('movie_' . $name . '_associate')->where($where)->exists()) {
             DB::table('movie_' . $name . '_associate')->insert($where);
         }
         if (!$category) {
             return;
         }
-        $movie_category = DB::table('movie_' . $name . '_category')->where('name', $category)->first();
+        $movie_category = DB::table('movie_' . $name . '_category')->where('name', $category)->where('status',1)->first();
         if (!$movie_category) {
-            return;
+            throw new \Exception("不存在分类 表：movie_{$name}_category 选项：{$category}");
         }
         $category_associate = [$category_associate_key => $id];
         $category_associate['cid'] = $movie_category->id;
-        if (!DB::table('movie_' . $name . '_category_associate')->where($category_associate)->first()) {
+        if (!DB::table('movie_' . $name . '_category_associate')->where($category_associate)->exists()) {
             DB::table('movie_' . $name . '_category_associate')->insert($category_associate);
         }
     }
@@ -308,7 +309,7 @@ class ReviewMovieController extends Controller
     private function labelAssociate($movie_id, $labels)
     {
         foreach ($labels as $label) {
-            if (!DB::table('movie_label_associate')->where(['cid' => $label, 'mid' => $movie_id])->first()) {
+            if (!DB::table('movie_label_associate')->where(['cid' => $label, 'mid' => $movie_id])->exists()) {
                 DB::table('movie_label_associate')->insert(['cid' => $label, 'mid' => $movie_id]);
             }
         }
@@ -317,8 +318,9 @@ class ReviewMovieController extends Controller
     private function actorAssociate($movie_id, $actors)
     {
         foreach ($actors as $actor) {
-            if (!DB::table('movie_actor_associate')->where(['aid' => $actor, 'mid' => $movie_id])->first()) {
+            if (!DB::table('movie_actor_associate')->where(['aid' => $actor, 'mid' => $movie_id])->exists()) {
                 DB::table('movie_actor_associate')->insert(['aid' => $actor, 'mid' => $movie_id]);
+                MovieActor::where('id',$actor)->increment('movie_sum');
             }
         }
     }

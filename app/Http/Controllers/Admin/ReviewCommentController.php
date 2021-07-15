@@ -73,7 +73,7 @@ class ReviewCommentController extends Controller
         }
         $data = $request->all();
         try {
-            $movie = Movie::where('number',$data['number'])->first();
+            $movie = Movie::where(['number'=>$data['number'],'status'=>1])->first();
             if(!$movie){
                 throw new \Exception('影片番号不存在');
             }

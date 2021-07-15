@@ -28,42 +28,35 @@
                                    class="layui-input">
                         </div>
                     </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label" style="background-color: #dccbcb;">来源网站</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="source_site" value="{{$movie->source_site}}" readonly
-                                   class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-inline">
-                        <label class="layui-form-label" style="background-color: #dccbcb;">卖家</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="sell" value="{{$movie->sell}}" readonly
-                                   class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-inline">
-                        <label class="layui-form-label" style="background-color: #dccbcb;">影片时长</label>
-                        <div class="layui-input-block">
-                            <input type="number" name="time" value="{{$movie->time}}" readonly
-                                   class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label" style="background-color: #dccbcb;">发布时间</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="release_time" value="{{$movie->release_time}}" readonly
-                                   class="layui-input">
-                        </div>
-                    </div>
 
                     <div class="layui-inline">
                         <label class="layui-form-label" style="background-color: #dccbcb;">验证网址</label>
                         <div class="layui-input-block">
                             <input type="text" name="actual_source" value="{{$movie->actual_source}}"
                                    readonly class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label" >卖家</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="sell" value="{{$movie->sell}}"
+                                   class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label" >影片时长</label>
+                        <div class="layui-input-block">
+                            <input type="number" name="time" value="{{$movie->time}}"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label" >发布时间</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="release_time" value="{{$movie->release_time}}"
+                                   class="layui-input">
                         </div>
                     </div>
 

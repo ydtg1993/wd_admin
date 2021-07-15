@@ -20,62 +20,61 @@ class MovieDetailController extends  BaseController
      *
      * @apiSuccess {String} code 响应码 200 正确 其他错误
      * @apiSuccessExample  {json} success-example
+     *
     {
     "code": 200,
     "msg": "成功！",
     "data": {
-    "id": 15,
-    "number": "IMadePorn.21.05.04",
-    "name": "Change Of Plans",
-    "time": null,
-    "release_time": "2021-05-30 02:20:28",
-    "small_cover": "/javdb/small_cover/d576bbdbc81d0e21f23ae48334cecb55.jpg",
-    "big_cove": "/javdb/big_cove/28bcc64ee14a186eb3b02119a5d081e1.jpg",
-    "trailer": "",
+    "id": 12895,
+    "number": "061320_001",
+    "name": "レズビアン大乱交〜ルナ&須藤なこ〜",
+    "time": 212400,
+    "release_time": "2021-05-30 02:34:12",
+    "small_cover": "/d41d8cd98f00b204e9800998ecf8427e/0d9d74d1a77c2a4f.jpeg",
+    "big_cove": "/d41d8cd98f00b204e9800998ecf8427e/9dd08f6a93072331.jpeg",
+    "trailer": "/d41d8cd98f00b204e9800998ecf8427e/a2105f1833731ade.mp4",
     "score": 0,
-    "score_people": 0,
+    "score_people": 5,
     "comment_num": 0,
-    "flux_linkage_num": 3,
+    "flux_linkage_num": 1,
     "flux_linkage": [
     {
-    "name": "IMadePorn.21.05.04.Alexia.Anders.Change.Of.Plans.XXX.1080p.MP4-WRB[rarbg]",
-    "url": "magnet:?xt=urn:btih:30edf0fc48e60089453b3537d1e89e747760a46f&dn=[javdb.com]IMadePorn.21.05.04.Alexia.Anders.Change.Of.Plans.XXX.1080p.MP4-WRB[rarbg]",
-    "is-small": "高清",
-    "is-warning": null,
-    "tooltip": null,
-    "meta": "(3.35GB,4個文件)"
-    },
-    {
-    "name": "IMadePorn.21.05.04.Alexia.Anders.Change.Of.Plans.XXX.720p.WEB.x264-GalaXXXy[XvX]",
-    "url": "magnet:?xt=urn:btih:54861ceedf360f946fe6aad76c706f92f5730e5b&dn=[javdb.com]IMadePorn.21.05.04.Alexia.Anders.Change.Of.Plans.XXX.720p.WEB.x264-GalaXXXy[XvX]",
-    "is-small": null,
-    "is-warning": null,
-    "tooltip": null,
-    "meta": "(376MB,2個文件)"
-    },
-    {
-    "name": "IMadePorn.21.05.04.Alexia.Anders.Change.Of.Plans.XXX.SD.MP4-KLEENEX",
-    "url": "magnet:?xt=urn:btih:5565222e48da4812497cf1450a12a4c1f26cf854&dn=[javdb.com]IMadePorn.21.05.04.Alexia.Anders.Change.Of.Plans.XXX.SD.MP4-KLEENEX",
-    "is-small": null,
-    "is-warning": null,
-    "tooltip": null,
-    "meta": "(322MB,3個文件)"
+    "name": "测试",
+    "url": "dsdsd",
+    "tooltip": "本地下载",
+    "meta": "2g",
+    "is-small": "",
+    "is-warning": ""
     }
     ],
-    "flux_linkage_time": "2021-05-30 02:28:23",
-    "created_at": "2021-05-30T02:28:23.000000Z",
-    "labels": [],
-    "actors": {
-    "1286": "Alexia Anders"
+    "flux_linkage_time": "2021-05-30 03:09:29",
+    "created_at": "2021-05-30T03:09:29.000000Z",
+    "labels": {
+    "38": "女同性戀",
+    "377": "熟女"
     },
-    "director": [],
-    "company": [],
+    "actors": {
+    "18": "真木今日子",
+    "21": "三上悠亜",
+    "822": "ルナ"
+    },
+    "director": {
+    "414": "［Jo］Style"
+    },
+    "company": {
+    "1": "Vixen Group"
+    },
     "series": {
-    "719": "レズビアン大乱交"
+    "1": "Bang Bus"
+    },
+    "numbers": {
+    "96": "Momsincontrol"
     },
     "seen": 0,
     "want_see": 0,
-    "map": []
+    "map": [
+    "/d41d8cd98f00b204e9800998ecf8427e/ea2db2a5e7f9a74e.jpeg"
+    ]
     }
     }
      */

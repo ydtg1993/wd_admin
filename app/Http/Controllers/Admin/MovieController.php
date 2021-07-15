@@ -36,7 +36,7 @@ class MovieController extends Controller
     public function index(Request $request)
     {
         if ($request->method() == 'GET') {
-            $categories = DB::table('movie_category')->pluck( 'name','id');
+            $categories = MovieCategory::where('status',1)->pluck( 'name','id');
             return View::make('admin.movie.movie',compact('categories'));
         }
         $model = Movie::query();
@@ -170,7 +170,7 @@ class MovieController extends Controller
         if ($request->method() == 'GET') {
             $movie = Movie::findOrFail($id);
 
-            $categories = MovieCategory::pluck('name', 'id')->all();
+            $categories = MovieCategory::where('status',1)->pluck('name', 'id')->all();
             $movie_category_associate = DB::table('movie_category_associate')->where('mid', $movie->id)->first();
             $category = MovieCategory::where('id', $movie_category_associate->cid)->first();
 
@@ -231,8 +231,6 @@ class MovieController extends Controller
             $this->associate('series', $id, $data['series'], 'series_id');
             /*片商*/
             $this->associate('film_companies', $id, $data['company'], 'film_companies_id');
-            /*分类*/
-            $this->associate('category', $id, $data['category'], 'cid');
         } catch (\Exception $exception) {
             DB::rollBack();
             return Redirect::back()->withErrors('更新失败:' . $exception->getMessage());

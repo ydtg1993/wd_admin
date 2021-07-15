@@ -120,7 +120,7 @@ class PieceListController
      * @apiSuccess {String} list.created_at 创建时间
      * @apiSuccess {String} list.avatar 用户头像
      * @apiSuccess {String} list.nickname 用户昵称
-     *
+     * @apiSuccess {String} list.is_like 0未收藏 1已收藏
      *
      */
     public function getPieceList()

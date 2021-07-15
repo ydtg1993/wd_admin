@@ -51,15 +51,20 @@
                 if (!file) {
                     return;
                 }
-                initialPreview.push("<img class='kv-preview-data file-preview-image' src='" + '{{config('app.url')}}resources/'+file + "'>");
-                initialPreviewConfig.push({caption: basename(file), width: "120px", key: file});
-                index++;
+                initialPreview.push('{{config('app.url')}}resources/' + file);
+                initialPreviewConfig.push({caption: basename(file), key: file});
             });
         }else {
             var file = files;
             if(file) {
-                initialPreview.push("<img class='kv-preview-data file-preview-image' src='" + '{{config('app.url')}}resources/' + file + "'>");
-                initialPreviewConfig.push({caption: basename(file), width: "120px", key: file});
+                if(filetype == 'image') {
+                    initialPreview.push('{{config('app.url')}}resources/' + file);
+                    initialPreviewConfig.push({caption: basename(file), key: file});
+                }else{
+                    initialPreview.push('{{config('app.url')}}resources/' + file);
+                    var fileExtension = file.substring(file.lastIndexOf('.') + 1);
+                    initialPreviewConfig.push({filetype:'video/'+fileExtension,caption: basename(file), key: file});
+                }
             }
         }
 
@@ -88,6 +93,7 @@
             },
             browseClass: "btn btn-primary",
             maxFileCount: limit,
+            initialPreviewAsData: true,
             autoReplace:false,
             initialPreview: initialPreview,
             initialPreviewConfig: initialPreviewConfig,
@@ -97,6 +103,8 @@
         if(filetype == 'video'){
             ini.allowedFileExtensions =["mp4", "mpg", "mpeg","avi","rmvb"];
             ini.allowedFileTypes = ["video"];
+            ini.initialPreviewFileType = 'video';
+            ini.maxFileSize = 51200;
         }
 
         var file = $('#' + dom);

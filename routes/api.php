@@ -28,9 +28,13 @@ Route::group(['namespace'=>'Api'],function (){
     Route::any('getActorData','DataController@getActorData')->name('api.getActorData');//获取数据演员
     Route::any('getActorDataCount','DataController@getActorDataCount')->name('api.getActorDataCount');//获取统计参数演员
 
-    Route::any('movieFileUpload', 'MovieFileController@upload')->name('api.movieFileUpload');
-    Route::any('movieFileBatchUpload', 'MovieFileController@batchUpload')->name('api.movieFileBatchUpload');
-    Route::any('movieFileRemove', 'MovieFileController@remove')->name('api.movieFileRemove');
+    Route::any('reviewMovieFileUpload', 'ReviewMovieFileController@upload')->name('api.reviewMovieFileUpload');
+    Route::any('reviewMovieFileBatchUpload', 'ReviewMovieFileController@batchUpload')->name('api.reviewMovieFileBatchUpload');
+    Route::any('reviewMovieFileRemove', 'ReviewMovieFileController@remove')->name('api.reviewMovieFileRemove');
+
+    Route::any('movieFileUpload', 'movieFileController@upload')->name('api.movieFileUpload');
+    Route::any('movieFileBatchUpload', 'movieFileController@batchUpload')->name('api.movieFileBatchUpload');
+    Route::any('movieFileRemove', 'movieFileController@remove')->name('api.movieFileRemove');
 
     Route::any('actorFileUpload', 'ActorFileController@upload')->name('api.actorFileUpload');
     Route::any('actorFileRemove', 'ActorFileController@remove')->name('api.actorFileRemove');

@@ -65,14 +65,14 @@
             }
         }
 
-        var uploadUrl = '{{ route("api.movieFileUpload") }}';
+        var uploadUrl = '{{ route("api.reviewMovieFileUpload") }}';
         if(dom == 'map'){
-            uploadUrl = '{{ route("api.movieFileBatchUpload") }}';
+            uploadUrl = '{{ route("api.reviewMovieFileBatchUpload") }}';
         }
         var ini = {
             language: 'zh',
             uploadUrl: uploadUrl,
-            deleteUrl: '{{ route("api.movieFileRemove") }}',
+            deleteUrl: '{{ route("api.reviewMovieFileRemove") }}',
             showClose: false,
             uploadExtraData:{"_token":"{{ csrf_token() }}","name":dom,"id":id},
             deleteExtraData:{"_token":"{{ csrf_token() }}","name":dom,"id":id},
