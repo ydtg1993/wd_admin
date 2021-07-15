@@ -4327,13 +4327,6 @@ define({ "api": [
             "optional": false,
             "field": "list.nickname",
             "description": "<p>用户昵称</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "list.is_like",
-            "description": "<p>0未收藏 1已收藏</p>"
           }
         ]
       }
@@ -4688,6 +4681,13 @@ define({ "api": [
             "optional": false,
             "field": "userInfo.user_attention",
             "description": "<p>是否被该用户关注【1.是、2.否】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "is_like",
+            "description": "<p>0未收藏 1已收藏</p>"
           }
         ]
       }

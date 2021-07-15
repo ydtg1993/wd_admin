@@ -42,6 +42,7 @@ class PieceListController
      * @apiSuccess {Number} userInfo.intro 简介
      * @apiSuccess {Number} userInfo.user_id 用户ID
      * @apiSuccess {Number} userInfo.user_attention 是否被该用户关注【1.是、2.否】
+     * @apiSuccess {Number} is_like 0未收藏 1已收藏
      *
      */
     public function getInfo( )
@@ -120,7 +121,6 @@ class PieceListController
      * @apiSuccess {String} list.created_at 创建时间
      * @apiSuccess {String} list.avatar 用户头像
      * @apiSuccess {String} list.nickname 用户昵称
-     * @apiSuccess {String} list.is_like 0未收藏 1已收藏
      *
      */
     public function getPieceList()
