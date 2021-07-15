@@ -30,9 +30,12 @@ class MovieDetailController extends  BaseController
     "name": "レズビアン大乱交〜ルナ&須藤なこ〜",
     "time": 212400,
     "release_time": "2021-05-30 02:34:12",
-    "small_cover": "/d41d8cd98f00b204e9800998ecf8427e/0d9d74d1a77c2a4f.jpeg",
-    "big_cove": "/d41d8cd98f00b204e9800998ecf8427e/9dd08f6a93072331.jpeg",
-    "trailer": "/d41d8cd98f00b204e9800998ecf8427e/a2105f1833731ade.mp4",
+    "small_cover": "http://www.wd.com/d41d8cd98f00b204e9800998ecf8427e/0d9d74d1a77c2a4f.jpeg",
+    "big_cove": "http://www.wd.com/d41d8cd98f00b204e9800998ecf8427e/9dd08f6a93072331.jpeg",
+    "trailer": "http://www.wd.com/d41d8cd98f00b204e9800998ecf8427e/a2105f1833731ade.mp4",
+    "map": [
+    "http://www.wd.com/d41d8cd98f00b204e9800998ecf8427e/ea2db2a5e7f9a74e.jpeg"
+    ],
     "score": 0,
     "score_people": 5,
     "comment_num": 0,
@@ -71,10 +74,7 @@ class MovieDetailController extends  BaseController
     "96": "Momsincontrol"
     },
     "seen": 0,
-    "want_see": 0,
-    "map": [
-    "/d41d8cd98f00b204e9800998ecf8427e/ea2db2a5e7f9a74e.jpeg"
-    ]
+    "want_see": 0
     }
     }
      */
