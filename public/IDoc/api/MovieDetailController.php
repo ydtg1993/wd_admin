@@ -52,27 +52,54 @@ class MovieDetailController extends  BaseController
     ],
     "flux_linkage_time": "2021-05-30 03:09:29",
     "created_at": "2021-05-30T03:09:29.000000Z",
-    "labels": {
-    "38": "女同性戀",
-    "377": "熟女"
+    "labels": [
+    {
+    "name": "女同性戀",
+    "id": 38
     },
-    "actors": {
-    "18": "真木今日子",
-    "21": "三上悠亜",
-    "822": "ルナ"
+    {
+    "name": "熟女",
+    "id": 377
+    }
+    ],
+    "actors": [
+    {
+    "name": "真木今日子",
+    "id": 18
     },
-    "director": {
-    "414": "［Jo］Style"
+    {
+    "name": "三上悠亜",
+    "id": 21
     },
-    "company": {
-    "1": "Vixen Group"
-    },
-    "series": {
-    "1": "Bang Bus"
-    },
-    "numbers": {
-    "96": "Momsincontrol"
-    },
+    {
+    "name": "ルナ",
+    "id": 822
+    }
+    ],
+    "director": [
+    {
+    "name": "［Jo］Style",
+    "id": 414
+    }
+    ],
+    "company": [
+    {
+    "name": "Vixen Group",
+    "id": 1
+    }
+    ],
+    "series": [
+    {
+    "name": "Bang Bus",
+    "id": 1
+    }
+    ],
+    "numbers": [
+    {
+    "name": "Momsincontrol",
+    "id": 96
+    }
+    ],
     "seen": 0,
     "want_see": 0
     }
