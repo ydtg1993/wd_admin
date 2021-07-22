@@ -65,33 +65,39 @@ class MovieDetailController extends  BaseController
     "actors": [
     {
     "name": "真木今日子",
-    "id": 18
+    "id": 18,
+    "is_like": 0
     },
     {
     "name": "三上悠亜",
-    "id": 21
+    "id": 21,
+    "is_like": 0
     },
     {
     "name": "ルナ",
-    "id": 822
+    "id": 822,
+    "is_like": 0
     }
     ],
     "director": [
     {
     "name": "［Jo］Style",
-    "id": 414
+    "id": 414,
+    "is_like": 0
     }
     ],
     "company": [
     {
     "name": "Vixen Group",
-    "id": 1
+    "id": 1,
+    "is_like": 0
     }
     ],
     "series": [
     {
     "name": "Bang Bus",
-    "id": 1
+    "id": 1,
+    "is_like": 0
     }
     ],
     "numbers": [
@@ -291,7 +297,7 @@ class MovieDetailController extends  BaseController
     }
 
     /**
-     * @api {Post} /api/movie/detail 影片发评论
+     * @api {Post} /api/movie/reply 影片发评论
      * @apiName 影片发评论
      * @apiGroup 影片
      * @apiDescription 发评论
