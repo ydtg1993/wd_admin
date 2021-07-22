@@ -3014,7 +3014,7 @@ define({ "api": [
   },
   {
     "type": "Post",
-    "url": "/api/movie/detail",
+    "url": "/api/movie/reply",
     "title": "影片发评论",
     "name": "影片发评论",
     "group": "影片",
@@ -3118,7 +3118,7 @@ define({ "api": [
       "examples": [
         {
           "title": "success-example",
-          "content": "\n{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"id\": 12895,\n\"number\": \"061320_001\",\n\"name\": \"レズビアン大乱交〜ルナ&須藤なこ〜\",\n\"time\": 212400,\n\"release_time\": \"2021-05-30 02:34:12\",\n\"small_cover\": \"http://www.wd.com/d41d8cd98f00b204e9800998ecf8427e/0d9d74d1a77c2a4f.jpeg\",\n\"big_cove\": \"http://www.wd.com/d41d8cd98f00b204e9800998ecf8427e/9dd08f6a93072331.jpeg\",\n\"trailer\": \"http://www.wd.com/d41d8cd98f00b204e9800998ecf8427e/a2105f1833731ade.mp4\",\n\"map\": [\n\"http://www.wd.com/d41d8cd98f00b204e9800998ecf8427e/ea2db2a5e7f9a74e.jpeg\"\n],\n\"score\": 0,\n\"score_people\": 5,\n\"comment_num\": 0,\n\"flux_linkage_num\": 1,\n\"flux_linkage\": [\n{\n\"name\": \"测试\",\n\"url\": \"dsdsd\",\n\"tooltip\": \"本地下载\",\n\"meta\": \"2g\",\n\"is-small\": \"\",\n\"is-warning\": \"\"\n}\n],\n\"flux_linkage_time\": \"2021-05-30 03:09:29\",\n\"created_at\": \"2021-05-30T03:09:29.000000Z\",\n\"labels\": [\n{\n\"name\": \"女同性戀\",\n\"id\": 38\n},\n{\n\"name\": \"熟女\",\n\"id\": 377\n}\n],\n\"actors\": [\n{\n\"name\": \"真木今日子\",\n\"id\": 18\n},\n{\n\"name\": \"三上悠亜\",\n\"id\": 21\n},\n{\n\"name\": \"ルナ\",\n\"id\": 822\n}\n],\n\"director\": [\n{\n\"name\": \"［Jo］Style\",\n\"id\": 414\n}\n],\n\"company\": [\n{\n\"name\": \"Vixen Group\",\n\"id\": 1\n}\n],\n\"series\": [\n{\n\"name\": \"Bang Bus\",\n\"id\": 1\n}\n],\n\"numbers\": [\n{\n\"name\": \"Momsincontrol\",\n\"id\": 96\n}\n],\n\"seen\": 0,\n\"want_see\": 0\n}\n}",
+          "content": "\n{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"id\": 12895,\n\"number\": \"061320_001\",\n\"name\": \"レズビアン大乱交〜ルナ&須藤なこ〜\",\n\"time\": 212400,\n\"release_time\": \"2021-05-30 02:34:12\",\n\"small_cover\": \"http://www.wd.com/d41d8cd98f00b204e9800998ecf8427e/0d9d74d1a77c2a4f.jpeg\",\n\"big_cove\": \"http://www.wd.com/d41d8cd98f00b204e9800998ecf8427e/9dd08f6a93072331.jpeg\",\n\"trailer\": \"http://www.wd.com/d41d8cd98f00b204e9800998ecf8427e/a2105f1833731ade.mp4\",\n\"map\": [\n\"http://www.wd.com/d41d8cd98f00b204e9800998ecf8427e/ea2db2a5e7f9a74e.jpeg\"\n],\n\"score\": 0,\n\"score_people\": 5,\n\"comment_num\": 0,\n\"flux_linkage_num\": 1,\n\"flux_linkage\": [\n{\n\"name\": \"测试\",\n\"url\": \"dsdsd\",\n\"tooltip\": \"本地下载\",\n\"meta\": \"2g\",\n\"is-small\": \"\",\n\"is-warning\": \"\"\n}\n],\n\"flux_linkage_time\": \"2021-05-30 03:09:29\",\n\"created_at\": \"2021-05-30T03:09:29.000000Z\",\n\"labels\": [\n{\n\"name\": \"女同性戀\",\n\"id\": 38\n},\n{\n\"name\": \"熟女\",\n\"id\": 377\n}\n],\n\"actors\": [\n{\n\"name\": \"真木今日子\",\n\"id\": 18,\n\"is_like\": 0\n},\n{\n\"name\": \"三上悠亜\",\n\"id\": 21,\n\"is_like\": 0\n},\n{\n\"name\": \"ルナ\",\n\"id\": 822,\n\"is_like\": 0\n}\n],\n\"director\": [\n{\n\"name\": \"［Jo］Style\",\n\"id\": 414,\n\"is_like\": 0\n}\n],\n\"company\": [\n{\n\"name\": \"Vixen Group\",\n\"id\": 1,\n\"is_like\": 0\n}\n],\n\"series\": [\n{\n\"name\": \"Bang Bus\",\n\"id\": 1,\n\"is_like\": 0\n}\n],\n\"numbers\": [\n{\n\"name\": \"Momsincontrol\",\n\"id\": 96\n}\n],\n\"seen\": 0,\n\"want_see\": 0\n}\n}",
           "type": "json"
         }
       ]
