@@ -225,7 +225,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "status",
-            "description": "<p>操作动作【1.新增、2.删除、3.修改、4.收藏】</p>"
+            "description": "<p>操作动作【1.新增、2.删除、3.修改、4.收藏、5.取消收藏】</p>"
           },
           {
             "group": "Parameter",
@@ -254,6 +254,13 @@ define({ "api": [
             "optional": false,
             "field": "plid",
             "description": "<p>片单ID【修改、删除、收藏必须存在】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>片单名称【与片单id一起传】</p>"
           }
         ]
       }
@@ -508,7 +515,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "status",
-            "description": "<p>浏览的影片列表</p>"
+            "description": "<p>操作动作【1.添加2.取消】</p>"
           },
           {
             "group": "Parameter",
@@ -546,7 +553,128 @@ define({ "api": [
   },
   {
     "type": "Get",
-    "url": "/api/user/get/action/list",
+    "url": "/api/user/getHomeUserAction",
+    "title": "获取其他用户关注/粉丝列表",
+    "name": "获取其他用户关注/粉丝列表",
+    "group": "个人中心相关",
+    "description": "<p>获取其他用户关注/粉丝列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "action_type",
+            "description": "<p>动作类型传4【必须是4】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "mid",
+            "description": "<p>想看或者取消想看的影片ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>获取动作【1.关注列表、2.粉丝列表】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>关注或者粉丝列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.nickname",
+            "description": "<p>昵称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.avatar",
+            "description": "<p>头像</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.piece_list_num",
+            "description": "<p>片单数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.seen_num",
+            "description": "<p>看过数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_like",
+            "description": "<p>是否关注1.关注，其他未关注</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/user/getHomeUserAction",
     "title": "获取其他用户浏览记录列表",
     "name": "获取其他用户浏览记录列表",
     "group": "个人中心相关",
@@ -560,6 +688,13 @@ define({ "api": [
             "optional": false,
             "field": "action_type",
             "description": "<p>动作类型传1【必须是1】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>分类ID【1.有码、2.无码、3.欧美、4.FC2】</p>"
           },
           {
             "group": "Parameter",
@@ -984,7 +1119,7 @@ define({ "api": [
   },
   {
     "type": "Get",
-    "url": "/api/movie/attributes/actor/list",
+    "url": "/api/user/getHomeUser",
     "title": "获取用户主页信息",
     "name": "获取用户主页信息",
     "group": "个人中心相关",

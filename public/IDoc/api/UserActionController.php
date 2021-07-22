@@ -103,11 +103,12 @@ class UserActionController
      *
      * @apiParam {Number} action_type  动作类型传10【必须是10】
      * @apiParam {Number} type  创建方式【0.其他、1.简易创建、2.详细创建。仅status=1可用】
-     * @apiParam {Number} status 操作动作【1.新增、2.删除、3.修改、4.收藏】
+     * @apiParam {Number} status 操作动作【1.新增、2.删除、3.修改、4.收藏、5.取消收藏】
      * @apiParam {String} intro  片单简介【可选】
      * @apiParam {String} cover  片单图【可选】
      * @apiParam {Number} authority  权限【1.公开、2.仅自己可见】
      * @apiParam {Number} plid  片单ID【修改、删除、收藏必须存在】
+     * @apiParam {string} name  片单名称【与片单id一起传】
      *
      * @apiSuccess {bool} data  true成功
      *
@@ -135,7 +136,7 @@ class UserActionController
      *
      * @apiParam {Number} action_type  动作类型传3【必须是3】
      * @apiParam {Number} mid  操作的影片
-     * @apiParam {Number} status  浏览的影片列表
+     * @apiParam {Number} status  操作动作【1.添加2.取消】
      * @apiParam {Number} score  评分1-10【status=1必须传】
      * @apiParam {String} comment  评论【status=1必须传】
      *
@@ -428,7 +429,7 @@ class UserActionController
     }
 
     /**
-     * @api {Get} /api/movie/attributes/actor/list 获取用户主页信息
+     * @api {Get} /api/user/getHomeUser 获取用户主页信息
      * @apiName 获取用户主页信息
      * @apiGroup 个人中心相关
      * @apiDescription 获取用户主页信息
@@ -506,12 +507,13 @@ class UserActionController
      */
 
     /**
-     * @api {Get} /api/user/get/action/list 获取其他用户浏览记录列表
+     * @api {Get} /api/user/getHomeUserAction 获取其他用户浏览记录列表
      * @apiName 获取其他用户浏览记录列表
      * @apiGroup 个人中心相关
      * @apiDescription 获取其他用户浏览记录列表
      *
      * @apiParam {Number} action_type  动作类型传1【必须是1】
+     * @apiParam {Number} type 分类ID【1.有码、2.无码、3.欧美、4.FC2】
      * @apiParam {Number} user_id 用户ID
      * @apiParam {Number} page 分页页码
      * @apiParam {Number} pageSize 分页长度
@@ -536,7 +538,31 @@ class UserActionController
      *
      */
 
-    public function getHomeUserAction(Request $request)
+    /**
+     * @api {Get} /api/user/getHomeUserAction 获取其他用户关注/粉丝列表
+     * @apiName 获取其他用户关注/粉丝列表
+     * @apiGroup 个人中心相关
+     * @apiDescription 获取其他用户关注/粉丝列表
+     *
+     * @apiParam {Number} action_type  动作类型传4【必须是4】
+     * @apiParam {Number} mid 想看或者取消想看的影片ID
+     * @apiParam {Number} status 获取动作【1.关注列表、2.粉丝列表】
+     * @apiParam {Number} user_id 用户ID
+     * @apiParam {Number} page 分页页码
+     * @apiParam {Number} pageSize 分页长度
+     *
+     * @apiSuccess {Number} sum 数据总数
+     * @apiSuccess {Object} list 关注或者粉丝列表【数组】
+     * @apiSuccess {String} list.nickname 昵称
+     * @apiSuccess {Number} list.id 用户ID
+     * @apiSuccess {String} list.avatar 头像
+     * @apiSuccess {Number} list.piece_list_num 片单数量
+     * @apiSuccess {Number} list.seen_num 看过数量
+     * @apiSuccess {Number} list.is_like 是否关注1.关注，其他未关注
+     *
+     */
+
+    public function getHomeUserAction()
     {
 
     }
