@@ -158,6 +158,84 @@ EOF;
         };
         accounts.insert().delApply();
 
-        addFileInput('photo', false, '{{$actor->id}}', '{{$actor->photo}}');
+        $(function () {
+            function addFileInput(dom,create = false,id=null,photo = '') {
+                function basename(str) {
+                    if (!str){
+                        return '';
+                    }
+                    var idx = str.lastIndexOf('/');
+                    idx = idx > -1 ? idx : str.lastIndexOf('\\');
+                    if (idx < 0) {
+                        return str
+                    }
+                    return str.substring(idx + 1);
+                }
+
+                var krajeeGetCount = function (id) {
+                    var cnt = $('#' + id).fileinput('getFilesCount');
+                    return cnt === 0 ? 'You have no files remaining.' :
+                        'You have ' + cnt + ' file' + (cnt > 1 ? 's' : '') + ' remaining.';
+                };
+
+                if(photo) {
+                    var initialPreview = ["<img class='kv-preview-data file-preview-image' src='" + '{{config('app.url')}}resources/' + photo + "'>"];
+                    var initialPreviewConfig = [{caption: basename(photo), width: "120px", key: photo}];
+                }
+
+                var ini = {
+                    language: 'zh',
+                    showClose: false,
+                    uploadExtraData:{"_token":"{{ csrf_token() }}","name":dom,"id":id},
+                    deleteExtraData:{"_token":"{{ csrf_token() }}","name":dom,"id":id},
+                    showCaption: true,
+                    dropZoneEnable: true,
+                    overwriteInitial: false,
+                    validateInitialCount: true,
+                    showRemove: false,
+                    showUpload: false,
+                    allowedFileExtensions: ["png", "jpg", "jpeg"],
+                    allowedFileTypes: ["image"],
+                    uploadAsync: false,
+                    layoutTemplates: {
+                        actionUpload: '',
+                    },
+                    browseClass: "btn btn-primary",
+                    maxFileCount: 1,
+                    autoReplace: false,
+                    initialPreview: initialPreview,
+                    initialPreviewConfig: initialPreviewConfig,
+                    maxFileSize: 5120,
+                };
+
+                if(!create){
+                    ini.uploadUrl = '{{ route("api.actorFileUpload") }}';
+                    ini.deleteUrl = '{{ route("api.actorFileRemove") }}';
+                }
+
+                var file = $('#' + dom);
+                file.fileinput(ini).on('filebeforedelete', function () {
+                    var aborted = !window.confirm('确定删除该文件么?');
+                    if (aborted) {
+                        window.alert('已经删除! ' + krajeeGetCount(dom));
+                    };
+                    return aborted;
+                }).on('filedeleted', function (event, data) {
+                    console.log(data)
+                }).on("filebatchselected", function (event, files) {
+                    file.fileinput("upload");
+                }).on('fileerror', function (event, data, msg) {
+                    console.log(data.id);
+                    console.log(data.index);
+                    console.log(data.file);
+                    console.log(data.reader);
+                    console.log(data.files);
+                    // 获取信息
+                    alert(msg);
+                });
+            }
+
+            addFileInput('photo', false, '{{$actor->id}}', '{{$actor->photo}}');
+        });
     </script>
 @endsection
