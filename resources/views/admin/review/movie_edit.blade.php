@@ -1,4 +1,4 @@
-@extends('admin.base')
+@extends('admin.bas')
 <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
 <link href="/bootfile/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
 @include('admin.review._upload')
