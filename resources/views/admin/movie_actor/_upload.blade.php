@@ -1,4 +1,4 @@
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="/bootfile/js/jquery-3.5.1.min.js"></script>
 <!-- piexif.min.js is needed for auto orienting image files OR when restoring exif data in resized images and when you
     wish to resize images before upload. This must be loaded before fileinput.min.js -->
 <script src="/bootfile/js/plugins/piexif.min.js" type="text/javascript"></script>
@@ -27,7 +27,6 @@
     }
 </style>
 <script>
-    $(function () {
     function addFileInput(dom,create = false,id=null,photo = '') {
         function basename(str) {
             if (!str){
@@ -103,5 +102,4 @@
             alert(msg);
         });
     }
-    });
 </script>
