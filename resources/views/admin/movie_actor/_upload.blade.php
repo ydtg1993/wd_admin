@@ -27,6 +27,7 @@
     }
 </style>
 <script>
+    $(function () {
     function addFileInput(dom,create = false,id=null,photo = '') {
         function basename(str) {
             if (!str){
@@ -102,4 +103,5 @@
             alert(msg);
         });
     }
+    });
 </script>
