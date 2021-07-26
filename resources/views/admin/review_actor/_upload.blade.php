@@ -7,7 +7,7 @@
 <script src="/bootfile/js/plugins/sortable.min.js" type="text/javascript"></script>
 <!-- popper.min.js below is needed if you use bootstrap 4.x. You can also use the bootstrap js
    3.3.x versions without popper.min.js. -->
-<script src="/bootfile/js/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <!-- bootstrap.min.js below is needed if you wish to zoom and preview file content in a detail modal
     dialog. Bootstrap 5.x and 4.x is supported. You can also use the 3.3.x versions. -->
 <script src="/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>

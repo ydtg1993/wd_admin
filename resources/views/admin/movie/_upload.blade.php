@@ -24,6 +24,7 @@
     label{margin-bottom: 0}
 </style>
 <script>
+    $(function () {
     function addFileInput(id,dom,files=[],limit=1,filetype='image') {
         var krajeeGetCount = function(id) {
             var cnt = $('#' + id).fileinput('getFilesCount');
@@ -187,4 +188,5 @@
             alert(msg);
         });
     }
+    });
 </script>
