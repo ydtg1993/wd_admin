@@ -236,5 +236,20 @@ class HomeController
 
     }
 
+    /**
+     * @api {Get} /api/search/log/clear 清除搜索历史【登录可用】
+     * @apiName 清除搜索历史【登录可用】
+     * @apiGroup 首页相关
+     * @apiDescription 清除搜索历史【登录可用】
+     *
+     *
+     * @apiSuccess {Object} data 空
+     *
+     */
+    public function searchLogClear( )
+    {
+
+    }
+
 
 }

@@ -10,10 +10,12 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Redis;
 
 class CommConf extends Model
 {
     protected $table = 'comm_conf';
+
 
     const CONF_AD_INVESTMENT = 1;//广告招商
     const CONF_DOWN_SITE = 2;//下载本站
@@ -25,4 +27,24 @@ class CommConf extends Model
 
         /*
          * 1.广告招商 2. 下载本站 3.关于我们 4.友情链接 5.隐私条款 6.磁链使用教程*/
+
+    //通知
+    public static function boot(){
+        parent::boot();
+        static::saved(function ($model){
+             $redisPrefix = "Conf:";
+              $keyMap = [
+                1=>'ad_investment',
+                2=>'download_setting',
+                3=>'about_us',
+                4=>'friend_link',
+                5=>'private_item',
+                6=>'magnet_link',
+             ];
+            $cacheKey = $redisPrefix.$keyMap[$model->type];
+            $cacheKeyAll = $redisPrefix.'all';
+            $redis = Redis::connection();
+            $redis->del($cacheKey,$cacheKeyAll);
+        });
+    }
 }

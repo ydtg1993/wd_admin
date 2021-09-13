@@ -109,12 +109,29 @@ class MovieListController extends Controller
 
             $user = UserClient::where('id', $data['uid'])->first();
             if ($user) {
+                if($user->type == 2)
+                {
+                    throw new \Exception("必须是运营账号！");
+                }
                 $uid = $user->id;
-                $type = 1;
-            } else {
-                $uid = 0;
                 $type = 2;
+            } else {
+                throw new \Exception("无效的用户ID");
             }
+            //默认片单检查
+            $moviePieceCount = MoviePiece::where('uid',$uid)->where('type',3)->count();
+            if($moviePieceCount <= 0)
+            {
+                MoviePiece::insertGetId([
+                    'uid' => $uid,
+                    'type' => 3,
+                    'name' => '系统默认片单',
+                    'cover' => '',
+                    'intro' => '系统默认片单',
+                    'movie_sum' =>0
+                ]);
+            }
+
             $id = MoviePiece::insertGetId([
                 'uid' => $uid,
                 'type' => $type,
@@ -122,6 +139,13 @@ class MovieListController extends Controller
                 'cover' => $new_dir . $newFile,
                 'intro' => $data['intro'],
                 'movie_sum' => count($movie_ids)
+            ]);
+
+
+            UserPieceList::insertGetId([
+                'uid' => $uid,
+                'type' => 2,
+                'plid' => $id,
             ]);
 
             $insertData = [];

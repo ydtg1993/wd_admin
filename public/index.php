@@ -58,3 +58,12 @@ $response = $kernel->handle(
 $response->send();
 
 $kernel->terminate($request, $response);
+function pr($val) {
+    $bCli   = php_sapi_name() == 'cli';
+    $prefix = $bCli ? "\n" : '<pre>';
+    $suffix = $bCli ? "\n" : '</pre>';
+    echo $prefix;
+    print_r($val);
+    echo $suffix;
+
+}

@@ -1,14 +1,15 @@
-@extends('admin.base')
+@extends('admin.bas')
 <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
 <link href="/bootfile/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
-@include('admin.movie_list._upload')
+
+@include('admin.movie._upload')
 @section('content')
     <div class="layui-card">
         <div class="layui-card-header layuiadmin-card-header-auto">
             <h2>添加片单</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.movie.list.create')}}" method="post" enctype="multipart/form-data">
+            <form class="layui-form layui-form-pane" action="{{route('admin.movie.list.create')}}" method="post" enctype="multipart/form-data">
                 {{ method_field('post') }}
                 {{csrf_field()}}
                 <div class="layui-form-item">
@@ -37,12 +38,18 @@
                     </div>
                 </div>
 
-                <div class="layui-col-md4">
-                    <label class="control-label">封面</label>
-                    <div class="file-loading">
-                        <input id="cover" name="cover" type="file">
+                <div class="layui-form-item">
+                    <div class="layui-row">
+                    <div class="layui-col-md4">
+                        <label class="control-label">封面</label>
+                        <div class="file-loading">
+                            <input id="cover" name="cover" type="file">
+                        </div>
+                    </div>
                     </div>
                 </div>
+
+
 
                 <div class="layui-form-item">
                     <div class="layui-input-block">
@@ -60,6 +67,6 @@
         layui.use(['element', 'form'], function () {
 
         });
-        addFileInput('cover',true);
+        createFileInput('cover');
     </script>
 @endsection

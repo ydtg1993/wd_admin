@@ -95,9 +95,9 @@ class MovieController extends Controller
             list($labels, $selected_labels) = $this->categoryMultiSelect('label', 'lid', $category, 0, [['cid', '>', 0]]);
 
             list($actors, $selected_actors) = $this->categoryMultiSelect('actor', 'aid', $category);
-
+            $categories = MovieCategory::where('status',1)->pluck('name', 'id')->all();
             return View::make('admin.movie.create',
-                compact('movie',
+                compact(
                     'categories',
                     'series',
                     'companies',
@@ -184,6 +184,13 @@ class MovieController extends Controller
             list($labels, $selected_labels) = $this->categoryMultiSelect('label', 'lid', $category->name, $movie->id, [['cid', '>', 0]]);
 
             list($actors, $selected_actors) = $this->categoryMultiSelect('actor', 'aid', $category->name, $movie->id);
+            $map = json_decode($movie->map,true) ;
+            $mapData = [];
+            foreach ($map as $value)
+            {
+                $mapData[] = $value['big_img']??'';
+            }
+            $movie->map = json_encode($mapData);
 
             return View::make('admin.movie.movie_edit',
                 compact('movie',
@@ -351,6 +358,7 @@ class MovieController extends Controller
 
         $model = MovieComment::query();
         $date = explode('~',$request->input('date'));
+        $model = $model->where('movie_comment.status', 1);//1是正常
         if(isset($date[0]) && isset($date[1])){
             $model = $model->whereBetween('movie.release_time',[trim($date[0]),trim($date[1])]);
         }
@@ -358,15 +366,22 @@ class MovieController extends Controller
             $model = $model->where('movie.number', $request->input('number'));
         }
         if($request->input('nickname')){
-            $model = $model->where('user_client.nickname', $request->input('nickname'));
+            $model->whereRaw('(user_client.nickname = \''.$request->input('nickname').'\' or movie_comment.nickname = \''.$request->input('nickname').'\')');
         }
         $res = $model->orderBy('movie_comment.id', 'DESC')
-            ->join('user_client', 'user_client.id', '=', 'movie_comment.uid')
-            ->join('movie', 'movie.id', '=', 'movie_comment.mid')
+            ->leftJoin('user_client', 'user_client.id', '=', 'movie_comment.uid')
+            ->leftJoin('movie', 'movie.id', '=', 'movie_comment.mid')
             ->select('movie_comment.id', 'movie_comment.comment_time',
-                'movie.number', 'movie.name as movie_name',
-                'user_client.nickname')
+                'movie.number', 'movie.name as movie_name', 'movie_comment.comment as comment',
+                'user_client.nickname as nickname','movie_comment.nickname as cnickname','movie_comment.source_type as source_type','movie_comment.uid as uid')
             ->paginate($request->get('limit', 30));
+
+        foreach ($res as &$val)
+        {
+            $val->nickname = ($val->nickname??($val->cnickname))??'';
+            $val->source_type = MovieComment::COMMENT_SORT_TYPE[$val->source_type]??'未知';
+            $val->nickname = $val->nickname .((($val->uid??0) <= 0)?('['.$val->source_type.']'):('[uid:'.($val->uid??0).']'));
+        }
 
         $data = [
             'code' => 0,
@@ -375,6 +390,35 @@ class MovieController extends Controller
             'data' => $res->items(),
         ];
         return Response::json($data);
+    }
+
+    public function commentDel(Request $request)
+    {
+        MovieComment::where('id',$request->input('id')??0)->update(['status'=>2]);
+        return Redirect::to(URL::route('admin.movie.movie.commentList'))->with(['success' => '删除成功']);
+    }
+
+    /**
+     * 删除评论
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function commentDestroy(Request $request)
+    {
+        $ids = $request->input('ids');
+        if (!is_array($ids) || empty($ids)){
+            return Response::json(['code'=>1,'msg'=>'请选择删除项']);
+        }
+        if(count($ids) <= 0)
+        {
+            return Response::json(['code'=>1,'msg'=>'请选择删除项']);
+        }
+        try{
+            MovieComment::whereIn('id',$ids)->update(['status'=>2]);
+            return Response::json(['code'=>0,'msg'=>'删除成功']);
+        }catch (\Exception $exception){
+            return Response::json(['code'=>1,'msg'=>'删除失败']);
+        }
     }
 
     public function wantSeeList(Request $request)

@@ -171,7 +171,7 @@ class UserActionController
      *
      * @apiParam {Number} action_type  动作类型传4【必须是4】
      * @apiParam {Number} mid 想看或者取消想看的影片ID
-     * @apiParam {Number} status 获取动作【1.关注列表、2.粉丝列表】
+     * @apiParam {Number} type 获取动作【1.关注列表、2.粉丝列表】
      * @apiParam {Number} page 分页页码
      * @apiParam {Number} pageSize 分页长度
      *
@@ -546,7 +546,7 @@ class UserActionController
      *
      * @apiParam {Number} action_type  动作类型传4【必须是4】
      * @apiParam {Number} mid 想看或者取消想看的影片ID
-     * @apiParam {Number} status 获取动作【1.关注列表、2.粉丝列表】
+     * @apiParam {Number} type 获取动作【1.关注列表、2.粉丝列表】
      * @apiParam {Number} user_id 用户ID
      * @apiParam {Number} page 分页页码
      * @apiParam {Number} pageSize 分页长度

@@ -147,8 +147,6 @@ class AnnouncementController extends Controller
 //            $article->tags()->sync($request->get('tags',[]));
             return Redirect::to(URL::route('admin.content.index'))->with(['success'=>'添加成功']);
         }catch (\Exception $exception){
-            print_r($exception);
-            exit;
             return Redirect::back()->withErrors('添加失败');
         }
     }
@@ -182,6 +180,68 @@ class AnnouncementController extends Controller
 
 
 
+    /**
+     * 标签列表
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function messageIndex ()
+    {
+
+        return View::make('admin.announcement.message.index');
+    }
+    /**
+     * top
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function createMessageView(): \Illuminate\Contracts\View\View
+    {
+        return View::make('admin.announcement.message.create');
+    }
+
+    /**
+     * top
+     * @param AnnouncementRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeMessage(AnnouncementRequest $request)
+    {
+        $data = $request->all();
+        try{
+            Announcement::createTop( $data );
+//            $article->tags()->sync($request->get('tags',[]));
+            return Redirect::to(URL::route('admin.message.index'))->with(['success'=>'添加成功']);
+        }catch (\Exception $exception){
+            return Redirect::back()->withErrors('添加失败');
+        }
+    }
+
+    /**
+     * edit top
+     * @param $id
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function editMessageView($id): \Illuminate\Contracts\View\View
+    {
+        $announcement = Announcement::getOneById( $id );
+        return View::make('admin.announcement.message.edit',compact('announcement'));
+    }
+
+    /**
+     * @param AnnouncementRequest $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateMessage(AnnouncementRequest $request, $id): \Illuminate\Http\RedirectResponse
+    {
+        return $this->updateCommon( $request, $id);
+    }
+
+    public function destroyMessage( Request $request): \Illuminate\Http\JsonResponse
+    {
+        return $this->destroyCommon($request);
+    }
+
+
 
 
 
@@ -208,7 +268,9 @@ class AnnouncementController extends Controller
         $data = $request->all();
         try{
             $mapView = [
-                'top'=>'admin.top.index',
+                1=>'admin.top.index',
+                2=>'admin.content.index',
+                3=>'admin.message.index',
             ];
 
             Announcement::saveAnnouncement($id,$data);

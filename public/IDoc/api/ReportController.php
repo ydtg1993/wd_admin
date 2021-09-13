@@ -24,6 +24,7 @@ class ReportController extends  BaseController
      * @apiParam {avid} avid 番号
      * @apiParam {text} content 内容【格式用户昵称+冒号+评论内容】
      * @apiParam {string} key 图形验证码key【开启了图形验证码】
+     * @apiParam {string} captcha 验证码
      *
      *
      * @apiSuccess {String} code 响应码 200 正确 其他错误

@@ -264,30 +264,107 @@ class MovieDetailController extends  BaseController
     "msg": "成功！",
     "data": {
     "page": "1",
-    "pageSize": "2",
-    "sum": 5,
-    "list": {
-    "7524": {
-    "id": 7524,
-    "comment": "sjhdkjshdkjsdkjsdh",
-    "nickname": "hk",
+    "pageSize": "10",
+    "sum": 1,
+    "list": [
+    {
+    "id": 7521,
+    "comment": "那个牙是真的丑\n逼略肥但是不是粉的，片不好看逼也不好看",
+    "nickname": "ja***y",
+    "like": 0,
+    "dislike": 0,
     "avatar": "",
+    "score": null,
     "type": 1,
     "reply_uid": 0,
-    "comment_time": "2021-06-30 16:16:13",
-    "reply_comments": []
+    "comment_time": "2021-05-30 02:46:16",
+    "reply_comments": [
+    {
+    "id": 7516,
+    "comment": "剧情不错.无码有字幕本身就少见.感觉妈妈拍的话比女儿更吸引人",
+    "nickname": "se***o",
+    "like": 0,
+    "dislike": 0,
+    "avatar": "",
+    "score": null,
+    "type": 1,
+    "reply_uid": 0,
+    "comment_time": "2021-05-30 02:46:14",
+    "reply_comments": [],
+    "uid": -1,
+    "is_like": 1,//本人是点赞
+    "is_dislike": 1//本人是否踩
     },
-    "7523": {
-    "id": 7523,
-    "comment": "sjhdkjshdkjsdkjsdh",
-    "nickname": "hk",
+    {
+    "id": 7517,
+    "comment": "举报的死马",
+    "nickname": "al***o",
+    "like": 0,
+    "dislike": 0,
     "avatar": "",
+    "score": null,
     "type": 1,
     "reply_uid": 0,
-    "comment_time": "2021-06-30 16:14:34",
-    "reply_comments": []
+    "comment_time": "2021-05-30 02:46:14",
+    "reply_comments": [],
+    "uid": -1,
+    "is_like": 0,
+    "is_dislike": 0
+    },
+    {
+    "id": 7518,
+    "comment": "橹度不是很高",
+    "nickname": "hu***i",
+    "like": 0,
+    "dislike": 0,
+    "avatar": "",
+    "score": null,
+    "type": 1,
+    "reply_uid": 0,
+    "comment_time": "2021-05-30 02:46:14",
+    "reply_comments": [],
+    "uid": -1,
+    "is_like": 0,
+    "is_dislike": 0
+    },
+    {
+    "id": 7519,
+    "comment": "还是东京热的味道：够狠，够折磨\n某人说东京热就是一群猪拱了一个好白菜\n此话不假，而且白菜的身材还真的不错\n还是比较推荐的\n唯独缺少了片头曲，那首激情片头能唤醒多少人的精液啊",
+    "nickname": "ja***y",
+    "like": 0,
+    "dislike": 0,
+    "avatar": "",
+    "score": null,
+    "type": 1,
+    "reply_uid": 0,
+    "comment_time": "2021-05-30 02:46:15",
+    "reply_comments": [],
+    "uid": -1,
+    "is_like": 0,
+    "is_dislike": 1
+    },
+    {
+    "id": 7520,
+    "comment": "眼睛挺大但是做爱的时候哪个表情感觉丝毫都不会让人硬\n一般般",
+    "nickname": "ja***y",
+    "like": 0,
+    "dislike": 0,
+    "avatar": "",
+    "score": null,
+    "type": 1,
+    "reply_uid": 0,
+    "comment_time": "2021-05-30 02:46:15",
+    "reply_comments": [],
+    "uid": -1,
+    "is_like": 0,
+    "is_dislike": 1
     }
+    ],
+    "uid": -1,
+    "is_like": 1,//本人是点赞
+    "is_dislike": 1//本人是否踩
     }
+    ]
     }
     }
      */

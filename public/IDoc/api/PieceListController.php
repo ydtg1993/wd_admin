@@ -49,6 +49,7 @@ class PieceListController
     {
     }
 
+
     /**
      * @api {Get} /api/piece/movie/list 获取片单影片列表
      * @apiName 获取片单影片列表
@@ -56,6 +57,11 @@ class PieceListController
      * @apiDescription 获取片单影片列表
      *
      * @apiParam {Number} pid 片单ID
+     * @apiParam {Number} is_subtitle 状态：1.不含字幕、2.含字幕
+     * @apiParam {Number} is_download 状态：1.不可下载、2.可下载
+     * @apiParam {Number} is_short_comment 状态：1.不含短评、2.含短评
+     * @apiParam {Number} sort 其他发布日期。2，评分排序
+     * @apiParam {Number} sortType 排序方式desc/asc
      * @apiParam {Number} page 分页页码
      * @apiParam {Number} pageSize 分页长度
      *

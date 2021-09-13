@@ -262,6 +262,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::any('movie/movie', 'MovieController@index')->name('admin.movie.movie');
         Route::any('movie/movie.scoreList', 'MovieController@scoreList')->name('admin.movie.movie.scoreList');
         Route::any('movie/movie.commentList', 'MovieController@commentList')->name('admin.movie.movie.commentList');
+        Route::any('movie/movie.commentDel', 'MovieController@commentDel')->name('admin.movie.movie.commentDel');
+        Route::any('movie/movie.commentDestroy', 'MovieController@commentDestroy')->name('admin.movie.movie.commentDestroy');//批量删除评论
         Route::any('movie/movie.wantSeeList', 'MovieController@wantSeeList')->name('admin.movie.movie.wantSeeList');
         Route::any('movie/movie.sawList', 'MovieController@sawList')->name('admin.movie.movie.sawList');
         Route::any('movie/movie/create', 'MovieController@create')->name('admin.movie.movie.create')->middleware('permission:movie.movie.create');
@@ -404,10 +406,57 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::post('content/store_content', 'AnnouncementController@storeContent')->name('admin.content.store_content')->middleware('permission:announcement.content.create_content');
         //编辑
         Route::get('content/{id}/edit_content', 'AnnouncementController@editContentView')->name('admin.content.edit_content')->middleware('permission:announcement.content.edit_content');
-        Route::put('content/{id}/update_content', 'AnnouncementController@updateContent')->name('admin.content.edit_content')->middleware('permission:announcement.content.edit_content');
+        Route::put('content/{id}/update_content', 'AnnouncementController@updateContent')->name('admin.content.update_content')->middleware('permission:announcement.content.edit_content');
         //删除
         Route::delete('content/destroy_content', 'AnnouncementController@destroyContent')->name('admin.content.destroy_content')->middleware('permission:announcement.content.destroy_content');
 
     });
+    //消息轮播图
+    Route::group(['middleware' => 'permission:announcement.message'], function () {
+        Route::get('message/index', 'AnnouncementController@messageIndex')->name('admin.message.index');
+        //添加
+        Route::get('message/create_message', 'AnnouncementController@createMessageView')->name('admin.message.create_message')->middleware('permission:announcement.message.create_message');
+        Route::post('message/store_message', 'AnnouncementController@storeMessage')->name('admin.message.store_message')->middleware('permission:announcement.message.create_message');
+        //编辑
+        Route::get('message/{id}/edit_message', 'AnnouncementController@editMessageView')->name('admin.message.edit_message')->middleware('permission:announcement.message.edit_message');
+        Route::put('message/{id}/update_message', 'AnnouncementController@updateMessage')->name('admin.message.update_message')->middleware('permission:announcement.message.edit_message');
+        //删除
+        Route::delete('message/destroy_message', 'AnnouncementController@destroyMessage')->name('admin.message.destroy_message')->middleware('permission:announcement.message.destroy_message');
 
+    });
+
+});
+/*
+|--------------------------------------------------------------------------
+| 举报管理
+|--------------------------------------------------------------------------
+*/
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'permission:report', 'operate.log']], function () {
+//举报
+        Route::get('report/data', 'ReportController@data')->name('admin.report.data');
+        Route::get('report/index', 'ReportController@index')->name('admin.report.index');
+
+});
+
+/*
+|--------------------------------------------------------------------------
+| 用户管理
+|--------------------------------------------------------------------------
+*/
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'permission:report', 'operate.log']], function () {
+
+    Route::get('userClient/data', 'UserClientController@data')->name('admin.user_client.data');
+    Route::get('userClient/index', 'UserClientController@index')->name('admin.user_client.index');
+
+    Route::get('userClient/create', 'UserClientController@create')->name('admin.user_client.create')->middleware('permission:user_client.create');
+    Route::post('userClient/store', 'UserClientController@store')->name('admin.user_client.store')->middleware('permission:user_client.create');
+    //编辑
+    Route::get('userClient/{id}/edit', 'UserClientController@edit')->name('admin.user_client.edit')->middleware('permission:user_client.edit');
+    Route::put('userClient/{id}/update', 'UserClientController@update')->name('admin.user_client.update')->middleware('permission:user_client.edit');
+    //删除
+    Route::delete('userClient/destroy', 'UserClientController@destroy')->name('admin.user_client.destroy')->middleware('permission:user_client.destroy');
+    Route::put('userClient/blockUser', 'UserClientController@blockUser')->name('admin.user_client.block_user')->middleware('permission:user_client.block_user');
+});
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => []], function () {
+Route::any('userClient/test', 'UserClientController@test');
 });

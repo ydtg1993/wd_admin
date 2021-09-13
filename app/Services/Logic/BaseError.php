@@ -31,4 +31,11 @@ class BaseError
         $this->msg = ($msg == '') ? ($this->msgCode[$code]??'未知错误'):$msg;
         return $this;
     }
+
+    public function  reset()
+    {
+        $this->data = [];
+        $this->code = 200;
+        $this->msg = self::$msgCode[$this->code]??'未知错误';
+    }
 }

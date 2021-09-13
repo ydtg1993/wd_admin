@@ -11,7 +11,7 @@ class ApiController extends Controller
     //文件上传
     public function upload(Request $request)
     {
-        //上传文件最大大小,单位M
+        //上传文件最大大小,单位M 
         $maxSize = 10;
         //支持的上传图片类型
         $allowed_extensions = ["png", "jpg", "gif"];

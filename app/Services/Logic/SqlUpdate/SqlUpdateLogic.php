@@ -18,7 +18,7 @@ class SqlUpdateLogic
 
     //类型执行
     public static $typeClass = array(
-
+'init'=>'InitData',
     );
 
     /**

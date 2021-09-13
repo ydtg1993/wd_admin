@@ -3,10 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Redis;
 
 
 class Announcement extends Model
 {
+    /**
+     * @var string
+     */
     protected $table = 'system_announcements';
     protected $guarded = ['id'];
 
@@ -62,6 +66,29 @@ class Announcement extends Model
         }catch (\Exception $e){
             throw new \Exception($e);
         }
+    }
+    protected  static $redisPrefix = "announcement:";
+    public static $cachePage = 3;
+    public static function clearCache( $model ) {
+        $redis = Redis::connection();
+        for ($i=1;$i<=static::$cachePage;$i++) {
+            $cacheKey[] = static::$redisPrefix . 'type:' . $model->type . ":page:".$i;
+        }
+        $redis->del($cacheKey);
+    }
+
+
+    public static function boot(){
+        parent::boot();
+        static::created(function ($model){
+            static::clearCache($model);
+        });
+        static::saved(function ($model){
+            static::clearCache($model);
+        });
+        static::deleted(function ($model){
+            static::clearCache($model);
+        });
     }
 
 

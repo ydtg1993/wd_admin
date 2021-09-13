@@ -24,7 +24,10 @@ class ToolController extends  BaseController
         {
             "code": 200,
             "msg": "成功！",
-            "data": "/public/uploads/local/profile_photo/2021-06-22_1624359988_60d1c434b68ce.png"//头像图片路径
+    "data": {
+    "netUrl": "/public/uploads/avatar/2021-07-28_1627445309_6100d83ddbed3.png",//full path for display
+    "saveUrl": "/public/uploads/avatar/2021-07-28_1627445309_6100d83ddbed3.png"//for save to backend
+    }
         }
 
      */
@@ -33,7 +36,7 @@ class ToolController extends  BaseController
 
     }
     /**
-     * @api {Get} /captcha/api/math 图形验证码
+     * @api {Get} /api/captcha/cors/math 图形验证码
      * @apiName  图形验证码
      * @apiGroup 工具接口
      * @apiDescription 发送图形验证码
@@ -68,7 +71,10 @@ class ToolController extends  BaseController
     {
     "code": 200,
     "msg": "成功！",
-    "data": "/public/uploads/local/profile_photo/2021-06-22_1624359988_60d1c434b68ce.png"//头像图片路径
+    "data": {
+    "netUrl": "/public/uploads/avatar/2021-07-28_1627445309_6100d83ddbed3.png",//full path for display
+    "saveUrl": "/public/uploads/avatar/2021-07-28_1627445309_6100d83ddbed3.png"//for save to backend
+    }
     }
 
      */

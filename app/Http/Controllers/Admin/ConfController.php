@@ -89,6 +89,8 @@ class ConfController  extends Controller
     {
         $conf = new ConfLogic();
         $dataInfo  = $conf->getConf(CommConf::CONF_FRIENDY_LINK);
+//        print_r($dataInfo);
+//        exit;
         return View::make('conf.friend_link',compact('dataInfo'));
     }
     /**

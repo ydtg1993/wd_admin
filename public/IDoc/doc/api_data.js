@@ -579,7 +579,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "Number",
             "optional": false,
-            "field": "status",
+            "field": "type",
             "description": "<p>获取动作【1.关注列表、2.粉丝列表】</p>"
           },
           {
@@ -1273,7 +1273,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "Number",
             "optional": false,
-            "field": "status",
+            "field": "type",
             "description": "<p>获取动作【1.关注列表、2.粉丝列表】</p>"
           },
           {
@@ -2888,7 +2888,7 @@ define({ "api": [
       "examples": [
         {
           "title": "success-example",
-          "content": "{\n    \"code\": 200,\n    \"msg\": \"成功！\",\n    \"data\": \"/public/uploads/local/profile_photo/2021-06-22_1624359988_60d1c434b68ce.png\"//头像图片路径\n}",
+          "content": "    {\n        \"code\": 200,\n        \"msg\": \"成功！\",\n\"data\": {\n\"netUrl\": \"/public/uploads/avatar/2021-07-28_1627445309_6100d83ddbed3.png\",//full path for display\n\"saveUrl\": \"/public/uploads/avatar/2021-07-28_1627445309_6100d83ddbed3.png\"//for save to backend\n}\n    }",
           "type": "json"
         }
       ]
@@ -2939,7 +2939,7 @@ define({ "api": [
       "examples": [
         {
           "title": "success-example",
-          "content": "{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": \"/public/uploads/local/profile_photo/2021-06-22_1624359988_60d1c434b68ce.png\"//头像图片路径\n}",
+          "content": "{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"netUrl\": \"/public/uploads/avatar/2021-07-28_1627445309_6100d83ddbed3.png\",//full path for display\n\"saveUrl\": \"/public/uploads/avatar/2021-07-28_1627445309_6100d83ddbed3.png\"//for save to backend\n}\n}",
           "type": "json"
         }
       ]
@@ -2950,7 +2950,7 @@ define({ "api": [
   },
   {
     "type": "Get",
-    "url": "/captcha/api/math",
+    "url": "/api/captcha/cors/math",
     "title": "图形验证码",
     "name": "图形验证码",
     "group": "工具接口",
@@ -3690,7 +3690,7 @@ define({ "api": [
       "examples": [
         {
           "title": "success-example",
-          "content": "\n{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"page\": \"1\",\n\"pageSize\": \"2\",\n\"sum\": 5,\n\"list\": {\n\"7524\": {\n\"id\": 7524,\n\"comment\": \"sjhdkjshdkjsdkjsdh\",\n\"nickname\": \"hk\",\n\"avatar\": \"\",\n\"type\": 1,\n\"reply_uid\": 0,\n\"comment_time\": \"2021-06-30 16:16:13\",\n\"reply_comments\": []\n},\n\"7523\": {\n\"id\": 7523,\n\"comment\": \"sjhdkjshdkjsdkjsdh\",\n\"nickname\": \"hk\",\n\"avatar\": \"\",\n\"type\": 1,\n\"reply_uid\": 0,\n\"comment_time\": \"2021-06-30 16:14:34\",\n\"reply_comments\": []\n}\n}\n}\n}",
+          "content": "\n{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n\"page\": \"1\",\n\"pageSize\": \"10\",\n\"sum\": 1,\n\"list\": [\n{\n\"id\": 7521,\n\"comment\": \"那个牙是真的丑\\n逼略肥但是不是粉的，片不好看逼也不好看\",\n\"nickname\": \"ja***y\",\n\"like\": 0,\n\"dislike\": 0,\n\"avatar\": \"\",\n\"score\": null,\n\"type\": 1,\n\"reply_uid\": 0,\n\"comment_time\": \"2021-05-30 02:46:16\",\n\"reply_comments\": [\n{\n\"id\": 7516,\n\"comment\": \"剧情不错.无码有字幕本身就少见.感觉妈妈拍的话比女儿更吸引人\",\n\"nickname\": \"se***o\",\n\"like\": 0,\n\"dislike\": 0,\n\"avatar\": \"\",\n\"score\": null,\n\"type\": 1,\n\"reply_uid\": 0,\n\"comment_time\": \"2021-05-30 02:46:14\",\n\"reply_comments\": [],\n\"uid\": -1,\n\"is_like\": 1,//本人是点赞\n\"is_dislike\": 1//本人是否踩\n},\n{\n\"id\": 7517,\n\"comment\": \"举报的死马\",\n\"nickname\": \"al***o\",\n\"like\": 0,\n\"dislike\": 0,\n\"avatar\": \"\",\n\"score\": null,\n\"type\": 1,\n\"reply_uid\": 0,\n\"comment_time\": \"2021-05-30 02:46:14\",\n\"reply_comments\": [],\n\"uid\": -1,\n\"is_like\": 0,\n\"is_dislike\": 0\n},\n{\n\"id\": 7518,\n\"comment\": \"橹度不是很高\",\n\"nickname\": \"hu***i\",\n\"like\": 0,\n\"dislike\": 0,\n\"avatar\": \"\",\n\"score\": null,\n\"type\": 1,\n\"reply_uid\": 0,\n\"comment_time\": \"2021-05-30 02:46:14\",\n\"reply_comments\": [],\n\"uid\": -1,\n\"is_like\": 0,\n\"is_dislike\": 0\n},\n{\n\"id\": 7519,\n\"comment\": \"还是东京热的味道：够狠，够折磨\\n某人说东京热就是一群猪拱了一个好白菜\\n此话不假，而且白菜的身材还真的不错\\n还是比较推荐的\\n唯独缺少了片头曲，那首激情片头能唤醒多少人的精液啊\",\n\"nickname\": \"ja***y\",\n\"like\": 0,\n\"dislike\": 0,\n\"avatar\": \"\",\n\"score\": null,\n\"type\": 1,\n\"reply_uid\": 0,\n\"comment_time\": \"2021-05-30 02:46:15\",\n\"reply_comments\": [],\n\"uid\": -1,\n\"is_like\": 0,\n\"is_dislike\": 1\n},\n{\n\"id\": 7520,\n\"comment\": \"眼睛挺大但是做爱的时候哪个表情感觉丝毫都不会让人硬\\n一般般\",\n\"nickname\": \"ja***y\",\n\"like\": 0,\n\"dislike\": 0,\n\"avatar\": \"\",\n\"score\": null,\n\"type\": 1,\n\"reply_uid\": 0,\n\"comment_time\": \"2021-05-30 02:46:15\",\n\"reply_comments\": [],\n\"uid\": -1,\n\"is_like\": 0,\n\"is_dislike\": 1\n}\n],\n\"uid\": -1,\n\"is_like\": 1,//本人是点赞\n\"is_dislike\": 1//本人是否踩\n}\n]\n}\n}",
           "type": "json"
         }
       ]
@@ -4486,6 +4486,41 @@ define({ "api": [
             "optional": false,
             "field": "pid",
             "description": "<p>片单ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "is_subtitle",
+            "description": "<p>状态：1.不含字幕、2.含字幕</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "is_download",
+            "description": "<p>状态：1.不可下载、2.可下载</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "is_short_comment",
+            "description": "<p>状态：1.不含短评、2.含短评</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>其他发布日期。2，评分排序</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sortType",
+            "description": "<p>排序方式desc/asc</p>"
           },
           {
             "group": "Parameter",
@@ -5961,6 +5996,13 @@ define({ "api": [
             "optional": false,
             "field": "key",
             "description": "<p>图形验证码key【开启了图形验证码】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "captcha",
+            "description": "<p>验证码</p>"
           }
         ]
       }
@@ -6456,6 +6498,30 @@ define({ "api": [
             "optional": false,
             "field": "list.content",
             "description": "<p>搜索内容</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/HomeController.php",
+    "groupTitle": "首页相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/search/log/clear",
+    "title": "清除搜索历史【登录可用】",
+    "name": "清除搜索历史【登录可用】",
+    "group": "首页相关",
+    "description": "<p>清除搜索历史【登录可用】</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>空</p>"
           }
         ]
       }

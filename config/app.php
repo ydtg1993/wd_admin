@@ -166,7 +166,7 @@ return [
          * Package Service Providers...
          */
         Jenssegers\Mongodb\MongodbServiceProvider::class,
-
+        App\Providers\Es\EsServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -179,6 +179,7 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         Mews\Captcha\CaptchaServiceProvider::class,
         Overtrue\LaravelWeChat\ServiceProvider::class,
+        //Elasticquent\ElasticquentServiceProvider::class,
 
     ],
 
