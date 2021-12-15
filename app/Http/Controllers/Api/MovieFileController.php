@@ -15,21 +15,24 @@ class MovieFileController extends Controller
     public function upload(Request $request)
     {
         //上传文件最大大小,单位M
-        $maxSize = 10;
+        $maxSize = 50;
         //支持的上传图片类型
-        $allowed_extensions = ["png", "jpg", "jpeg", "gif","mp4", "mpg", "mpeg","avi","rmvb"];
+        $allowed_extensions = ["png", "jpg", "jpeg", "gif","mp4", "mpg", "mpeg","avi","rmvb","image/gif", "image/jpeg", "image/png","video/mp4","video/mpeg","video/x-msvideo","audio/x-pn-realaudio"];
         //返回信息json
         $data = ['code' => 1, 'msg' => '上传失败', 'data' => ''];
 
         $name = $request->name;
+
         $id = $request->id;
         if (!isset($_FILES[$name]) || empty($_FILES[$name])) {
             return response()->json($data);
         }
         $file = $_FILES[$name];
+        $fl = $request->file($name);
+
+        $mm = $fl->getClientMimeType();
         //检查文件是否上传完成
-        $ext = basename($file['type']);
-        if (!in_array($ext, $allowed_extensions)) {
+        if (!in_array($mm, $allowed_extensions)) {
             $data['msg'] = "请上传" . implode(",", $allowed_extensions) . "格式的图片";
             return response()->json($data);
         }
@@ -48,8 +51,9 @@ class MovieFileController extends Controller
             mkdir($newDir, 0777, true);
             chmod($newDir, 0777);
         }
-        $newFile = substr(md5($file['name']), 8, 16) . "." . $ext;
+        $newFile = substr(md5($file['name']), 8, 16) . "." . $fl->getClientOriginalExtension();
         $res = move_uploaded_file($file['tmp_name'], $newDir . '/' . $newFile);
+
         if ($res) {
             Movie::where('id', $id)->update([$name => $movie->source_site . '/' . md5($movie->source_url) . '/' . $newFile]);
             $data = [
@@ -57,6 +61,11 @@ class MovieFileController extends Controller
                 'msg' => '上传成功',
             ];
             return response()->json($data);
+        }else{
+            $data = [
+                'code' => 1,
+                'msg' => '上传失败',
+            ];
         }
         return response()->json($data);
     }
@@ -110,7 +119,8 @@ class MovieFileController extends Controller
             $res = move_uploaded_file($file['tmp_name'][$index], $newDir . '/' . $newFile);
             if ($res) {
                 $map = (array)json_decode($movie->map);
-                $map[] = $movie->source_site . '/' . md5($movie->source_url) . '/' . $newFile;
+                $tempImgPath = $movie->source_site . '/' . md5($movie->source_url) . '/' . $newFile;
+                $map[] = ['big_img'=>$tempImgPath,'img'=>$tempImgPath];
                 Movie::where('id', $id)->update([$name => json_encode($map)]);
             }
             $index++;
@@ -123,27 +133,48 @@ class MovieFileController extends Controller
         $id = $request->input('id');
         $name = $request->input('name');
         $key = $request->input('key');
+        /*if($name == 'big_cove' || $name == 'small_cover' || $name == 'trailer' || $name == 'map')
+        {
+            return response()->json([]);
+        }
+        for ($i=1;$i<=20;$i++)
+        {
+            if($name == ('map'.$i))
+            {
+                return response()->json([]);
+            }
+
+        }*/
 
         if ($name == 'big_cove' || $name == 'small_cover' || $name == 'trailer') {
             $movie = Movie::where('id', $id)->first();
             $file = public_path('resources') . '/' . $movie->{$name};
-            is_file($file) && unlink($file);
-            if(is_dir(dirname($file)) && !(new \FilesystemIterator(dirname($file)))->valid()){
+            //is_file($file) && unlink($file);
+            /*if(is_dir(dirname($file)) && !(new \FilesystemIterator(dirname($file)))->valid()){
                 rmdir(dirname($file));
-            }
+            }*/
             Movie::where('id', $id)->update([$name => '']);
         } elseif ($name == 'map') {
             $movie = Movie::where('id', $id)->first();
-            $map = (array)json_decode($movie->map);
-            if (in_array($key, $map)) {
-                $file = public_path('resources') . '/' . $key;
-                is_file($file) && unlink($file);
-                if(!(new \FilesystemIterator(dirname($file)))->valid()){
-                    rmdir(dirname($file));
+            $map = (array)json_decode($movie->map,true);
+            $tempMap = [];
+            $is_trueMapTemp = false;
+            foreach ($map as $valueMap)
+            {
+                if(isset($valueMap['big_img']) && $valueMap['big_img'] != $key)
+                {
+                    $tempMap[] = $valueMap;
                 }
-                array_splice($map, array_search($key, $map), 1);
-                Movie::where('id', $id)->update(['map' => $map]);
+                else
+                {
+                    if($is_trueMapTemp == true)
+                    {
+                        $tempMap[] = $valueMap;
+                    }
+                    $is_trueMapTemp = true;
+                }
             }
+            Movie::where('id', $id)->update(['map' => $tempMap]);
         }
 
         return response()->json([]);

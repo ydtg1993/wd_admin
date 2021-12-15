@@ -73,6 +73,10 @@ class MovieNumbersController extends Controller
                 //insert
                 DB::table('movie_number_associate')->insert(['nid'=>$id,'mid'=>$movie_id]);
             }
+
+            //计算影片数量
+            $movieNum = MovieNumberAss::getCount($id);
+            MovieNumbers::where('id', $id)->update(['movie_sum' => $movieNum]);
         }catch (\Exception $exception){
             return Redirect::back()->withErrors('添加失败');
         }
@@ -112,6 +116,10 @@ class MovieNumbersController extends Controller
                 DB::table('movie_number_associate')->insert(['nid'=>$id,'mid'=>$movie_id]);
             }
             !empty($has_movie_ids) && DB::table('movie_number_associate')->where('nid',$id)->whereIn('mid',$has_movie_ids)->delete();
+
+            //计算影片数量
+            $movieNum = MovieNumberAss::getCount($id);
+            MovieNumbers::where('id', $id)->update(['movie_sum' => $movieNum]);
         }catch (\Exception $e){
             return Redirect::back()->withErrors('更新失败:'.$e->getMessage());
         }

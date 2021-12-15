@@ -145,7 +145,25 @@ class ConfController  extends Controller
 
     }
 
+    /**
+     * 短评须知
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function commentNotesView()
+    {
+        $conf = new ConfLogic();
+        $dataInfo  = $conf->getConf(CommConf::CONF_COMMENT_NOTES);
+        return View::make('conf.comment_notes',compact('dataInfo'));
+    }
+    /**
+     * 保存配置
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function saveCommentNotes(Request $request)
+    {
+        return self::saveCommon($request);
 
+    }
 
 
     /**
@@ -165,6 +183,7 @@ class ConfController  extends Controller
             4=>'admin.conf.friend_link',
             5=>'admin.conf.private_item',
             6=>'admin.conf.magnet_link',
+            7=>'admin.conf.comment_notes',
         ];
         $data = $request->input();
         Log::info('数据：'.json_encode($data));

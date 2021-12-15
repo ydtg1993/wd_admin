@@ -55,9 +55,9 @@
                     {checkbox: true, fixed: true}
                     , {field: 'id', title: 'ID', sort: true, width: 80}
                     , {field: 'username', title: '用户名'}
-                    , {field: 'ip', sort: true, title: 'ip地址'}
+                    , {field: 'uri', sort: true, title: 'url地址'}
                     , {field: 'method', sort: true, title: '请求方式'}
-                    , {field: 'user_agent', sort: true, title: 'UserAgent'}
+                    , {field: 'parameter', sort: true, title: '请求内容'}
                     , {field: 'created_at', title: '创建时间'}
                     , {fixed: 'right', align: 'center', toolbar: '#options'}
                 ]]

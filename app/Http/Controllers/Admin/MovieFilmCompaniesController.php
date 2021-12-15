@@ -70,7 +70,10 @@ class MovieFilmCompaniesController extends Controller
         }
         $data = $request->all();
         try{
+            /*
             $id = MovieFilmCompanies::insertGetId(['name'=>$data['name'],'status'=>$data['status']]);
+            */
+            $id = MovieFilmCompanies::create($data['name'],$data['status']);
             $check = DB::table('movie_film_companies_category_associate')->where(['film_companies_id'=>$id])->first();
             if($check){
                 DB::table('movie_film_companies_category_associate')->where('id',$check->id)->update(['cid'=>$data['category']]);

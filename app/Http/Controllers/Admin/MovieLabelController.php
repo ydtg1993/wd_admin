@@ -58,7 +58,10 @@ class MovieLabelController extends Controller
         }
         $data = $request->all();
         try{
+            /*
             MovieLabel::insert(['name'=>$data['name'],'status'=>$data['status'],'cid'=>$data['cid']]);
+            */
+            MovieLabel::create($data['name'],$data['status'],$data['cid']);
         }catch (\Exception $exception){
             return Redirect::back()->withErrors('添加失败');
         }

@@ -22,12 +22,6 @@
                     <input type="text" name="created_at_end" id="created_at_end" placeholder="结束时间" readonly class="layui-input">
                 </div>
             </div>
-            <div class="layui-inline">
-                <label for="" class="layui-form-label">公告id</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="uuid"  placeholder="公告id"  class="layui-input">
-                </div>
-            </div>
             <div class="layui-btn-group ">
                 {{--                    @can('system.operate_log.destroy')--}}
                 {{--                        <button type="button" class="layui-btn layui-btn-sm layui-btn-danger" id="listDelete">删 除</button>--}}
@@ -68,8 +62,8 @@
                     , url: "{{ route('admin.top.data') }}"+"?type=3" //数据接口
                     , page: true //开启分页
                     , cols: [[ //表头
-                        {field: 'id', title: '序号', sort: true, width: 80}
-                        , {field: 'uuid', title: '公告id'}
+                        {field: 'id', title: 'ID', sort: true, width: 80}
+                        , {field: 'uuid', title: 'uuid'}
                         , {field: 'title', title: '公告标题'}
                         , {field: 'content', title: '公告内容'}
                         , {field: 'url',  title: '公告链接'}

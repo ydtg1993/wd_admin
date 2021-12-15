@@ -57,8 +57,8 @@
                     , url: "{{ route('admin.report.data') }}" //数据接口
                     , page: true //开启分页
                     , cols: [[ //表头
-                        {field: 'id', title: '序号', sort: true, width: 80}
-                        , {field: 'uuid', title: '信息id'}
+                        {field: 'id', title: 'ID', sort: true, width: 80}
+                        , {field: 'uuid', title: 'uuid'}
                         , {field: 'u_number', title: '用户名'}
                         , {field: 'avid', title: '关联番号'}
                         , {field: 'content',  title: '举报内容'}

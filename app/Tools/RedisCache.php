@@ -121,5 +121,80 @@ class RedisCache
         return json_decode($redata,true) ;
     }
 
+    /**
+     * 删除缓存的KEY
+     * @param $key
+     * @param array $data
+     * @return string
+     */
+    public static function delKey($key)
+    {
+        $res = Redis::command('DEl',[$key]);
+        return $res;
+    }
+
+    /**
+     * 添加有序集合到redis
+     * @param   @key    有序集合的key
+     * @param   @text   添加进key的内容
+     */
+    public static function addSet($key,$id,$text = '')
+    {
+        $res = Redis::command('ZADD',[$key,$id,$text]);
+
+        return $res;
+    }
+
+    /**
+     * 删除有序集合中的一条数据
+     */
+    public static function delSet($key,$text = '')
+    {
+        $res = Redis::command('ZREM',[$key,$text]);
+        
+        return $res;
+    }
+
+    /**
+     * 删除有序集合中指定分值的一条数据
+     * @param   string  $key    有序集合的key
+     * @param   int     $score  分值
+     */
+    public static function delSetWithScore($key,$score)
+    {
+        $res = Redis::command('ZREMRANGEBYSCORE',[$key,$score,$score]);
+
+        return $res;
+    }
+
+    /**
+     * 判断有序集合中是否存在，返回分数
+     */
+    public static function getSetScore($key,$text = '')
+    {
+        $res = Redis::command('ZSCORE',[$key,$text]);
+
+        return $res;
+    }
+
+    /**
+     * 写入数据到集合 
+     */
+    public static function addSets($key,$text)
+    {
+        $res = Redis::sAdd($key,$text);
+
+        return $res;
+    }
+
+    /**
+     * 读取集合中所有的数据 
+     */
+    public static function getSetAll($key)
+    {
+        $res = Redis::sMembers($key);
+        
+        return $res;
+    }
 
 }

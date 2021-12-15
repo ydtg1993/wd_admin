@@ -10,6 +10,7 @@ use App\Models\PieceListMovies;
 use App\Models\UserClient;
 use App\Models\UserLikeSeries;
 use App\Models\UserPieceList;
+use App\Models\Notify;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -45,12 +46,16 @@ class MovieListController extends Controller
         }
         if ($request->input('nickname')) {
             $model = $model->where('user_client.nickname', $request->input('nickname'));
+        } 
+
+        if ($request->input('audit')!=='' && $request->input('audit')!==null) {
+            $model = $model->where('movie_piece_list.audit', $request->input('audit'));
         }
 
         $res = $model->orderBy('movie_piece_list.id', 'DESC')
             ->leftJoin('user_client', 'user_client.id', '=', 'movie_piece_list.uid')
             ->select('movie_piece_list.id', 'movie_piece_list.name', 'movie_piece_list.movie_sum', 'movie_piece_list.like_sum',
-                'movie_piece_list.pv_browse_sum', 'movie_piece_list.intro', 'movie_piece_list.type', 'movie_piece_list.created_at', 'movie_piece_list.updated_at',
+                'movie_piece_list.pv_browse_sum', 'movie_piece_list.intro', 'movie_piece_list.type', 'movie_piece_list.created_at', 'movie_piece_list.updated_at','movie_piece_list.cover','movie_piece_list.authority','movie_piece_list.audit','movie_piece_list.remarks',
                 'user_client.nickname')
             ->paginate($request->get('limit', 30));
 
@@ -306,6 +311,51 @@ class MovieListController extends Controller
             'count' => $res->total(),
             'data' => $res->items(),
         ];
+        return Response::json($data);
+    }
+
+    /**
+     * 审核 
+     */
+    public function audit(Request $request)
+    {
+        $id = $request->input('id');
+        $audit = $request->input('audit');
+        $remarks = $request->input('remarks');
+
+        //片单详情
+        $info = MoviePiece::where('id', $id)->first();
+        $authority = $info->authority;
+
+        //判断小于10部，仅自己可见
+        if($info->movie_sum<10)
+        {
+            $authority = 2;
+        }
+
+        //更新状态
+        MoviePiece::where('id', $id)->update([
+                'audit' => $audit,
+                'authority' => $authority,
+                'remarks' => $remarks
+            ]);
+
+        
+
+        //发送一个消息通知
+        if($audit>0)
+        {
+            $auditNote = ($audit==1)?'审核通过':'审核不通过';
+            $msg = new Notify();
+            $content = $info->name.' '.$auditNote.' '.$info->remarks;
+            $msg->sysNotify(9,-9,'admin',$info->uid,$content);
+        }        
+
+        $data = [
+            'code' => 0,
+            'msg' => '审核完成',
+        ];
+
         return Response::json($data);
     }
 }

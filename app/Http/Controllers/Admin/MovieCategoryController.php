@@ -55,10 +55,11 @@ class MovieCategoryController extends Controller
             if(MovieCategory::where('name',$data['name'])->exists()){
                 throw new \Exception("名字重复");
             }
-            MovieCategory::insert([
+            /*MovieCategory::insert([
                'name'=>$data['name'],
                'status'=>$data['status']
-            ]);
+            ]);*/
+            MovieCategory::create($data['name'],$data['status']);
         } catch (\Exception $exception) {
             return Redirect::back()->withErrors('添加失败 ' . $exception->getMessage());
         }

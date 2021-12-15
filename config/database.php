@@ -153,5 +153,9 @@ return [
         ],
 
     ],
+    'elasticsearch' => [
+        'host' =>  env('ES_HOSTS','127.0.0.1'),
+        'port' =>  env('ES_PORT',9200),
+    ],
 
 ];

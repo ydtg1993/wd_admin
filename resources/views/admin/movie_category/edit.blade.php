@@ -12,7 +12,7 @@
                 <div class="layui-form-item">
                     <label for="" class="layui-form-label">名称</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="name" value="{{ $category->name ?? old('name') }}" lay-verify="required" disabled class="layui-input" >
+                        <input type="text" name="name" value="{{ $category->name ?? old('name') }}" lay-verify="required" class="layui-input" >
                     </div>
                 </div>
                 <div class="layui-form-item">

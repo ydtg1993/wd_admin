@@ -59,7 +59,10 @@ class MovieDirectorController extends Controller
         }
         $data = $request->all();
         try {
-            MovieDirector::insert(['name'=>$data['name'],'status'=>$data['status']]);
+            /*
+            MovieDirector::insert(['name'=>$data['name'],'status'=>$data['status']??1]);
+            */
+            MovieDirector::create($data['name'],1);
         } catch (\Exception $exception) {
             return Redirect::back()->withErrors('添加失败 ' . $exception->getMessage());
         }
@@ -81,7 +84,7 @@ class MovieDirectorController extends Controller
         }
         $data = $request->all();
         try {
-            MovieDirector::where('id',$id)->update(['name'=>$data['name'],'status'=>$data['status']]);
+            MovieDirector::where('id',$id)->update(['name'=>$data['name'],'status'=>$data['status']??1]);
         } catch (\Exception $e) {
             return Redirect::back()->withErrors('更新失败:' . $e->getMessage());
         }

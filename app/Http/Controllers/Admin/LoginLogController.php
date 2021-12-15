@@ -27,9 +27,9 @@ class LoginLogController extends Controller
      */
     public function data(Request $request)
     {
-        $data = $request->all(['created_at_start','created_at_end','username']);
-        $res = LoginLog::when($data['username'],function ($query,$data){
-                return $query->where('username','like','%'.$data['username'].'%');
+        $data = $request->all(['created_at_start','created_at_end','uname']);
+        $res = LoginLog::when($data['uname'],function ($query,$data){
+                return $query->where('username','=',$data);
             })->when($data['created_at_start']&&!$data['created_at_end'],function ($query,$data){
                 return $query->where('created_at','>=',$data['created_at_start']);
             })->when(!$data['created_at_start']&&$data['created_at_end'],function ($query,$data){

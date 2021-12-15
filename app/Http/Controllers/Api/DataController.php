@@ -40,6 +40,31 @@ class DataController extends Controller
         return response()->json(['code'=>200,'data'=>$data,'msg'=>'ok'],200);
     }
 
+    public function getDataFluxLinkage(Request $request)
+    {
+        $data  = $request->input();
+        $pageSize = $data['pageSize']??100;
+        $page = $data['page']??1;
+        $page = ($page-1)*$pageSize;
+        $tableName = $data['tableName']??'javdb';
+        $beginTime = $data['beginTime']??(date('Y-m-d 00:00:00',time()));
+        /*秘钥校验后面补*/
+
+        $data = DB::connection('mongodb')->collection($tableName)->where('utime','>=',$beginTime)->skip((int)$page)->take((int)$pageSize)->orderBy('utime', 'asc')->get();
+        return response()->json(['code'=>200,'data'=>$data,'msg'=>'ok'],200);
+    }
+
+    public function getDataFluxLinkageCount(Request $request)
+    {
+        $data  = $request->input();
+        $tableName = $data['tableName']??'javdb';
+        $beginTime = $data['beginTime']??(date('Y-m-d 00:00:00',time()));
+        /*秘钥校验后面补*/
+
+        $data = DB::connection('mongodb')->collection($tableName)->where('utime','>=',$beginTime)->count();
+        return response()->json(['code'=>200,'data'=>$data,'msg'=>'ok'],200);
+    }
+
     public function getActorData(Request $request)
     {
         $data  = $request->input();

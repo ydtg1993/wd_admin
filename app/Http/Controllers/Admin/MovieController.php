@@ -46,18 +46,64 @@ class MovieController extends Controller
         if(isset($date[0]) && isset($date[1])){
             $model = $model->whereBetween($table.'.created_at',[trim($date[0]),trim($date[1])]);
         }
+        $rdate = explode('~',$request->input('rdate'));
+        if(isset($rdate[0]) && isset($rdate[1])){
+            $model = $model->whereBetween($table.'.release_time',[trim($rdate[0]),trim($rdate[1])]);
+        }
         if($request->input('name')){
             $model = $model->where($table.'.name', $request->input('name'));
         }
-        if($request->input('number')){
-            $model = $model->where($table.'.number', $request->input('number'));
+        if($request->input('is_up')){
+            $model = $model->where($table.'.is_up', $request->input('is_up'));
         }
+        if($request->input('search_key') && $request->input('search_value')){
+            $Val = $request->input('search_value');
+            switch($request->input('search_key'))
+            {
+                /**根据番号搜索*/
+                case 'number' :
+                    $model = $model->where($table.'.number','like', $Val.'%');
+                    break;
+                /**根据演员搜索*/
+                case 'actor' :
+                    $actor = MovieActor::where('name','like', $Val.'%')->select('id')->first();
+                    $aid = $actor?$actor->id:0;
+                    $model = $model->leftJoin('movie_actor_associate','movie_actor_associate.mid',$table.'.id')
+                    ->where('movie_actor_associate.aid','=', $aid);
+                    break;
+                /**根据系列搜索*/
+                case 'series' :
+                    $series = MovieSeries::where('name','like', $Val.'%')->select('id')->first();
+                    $sid = $series?$series->id:0;
+                    $model = $model->leftJoin('movie_series_associate','movie_series_associate.mid',$table.'.id')
+                    ->where('movie_series_associate.series_id','=', $sid);
+                    break;
+                /**根据片商搜索*/
+                case 'film_companies' :
+                    $film = MovieFilmCompanies::where('name','like', $Val.'%')->select('id')->first();
+                    $fid = $film?$film->id:0;
+                    $model = $model->leftJoin('movie_film_companies_associate','movie_film_companies_associate.mid',$table.'.id')
+                    ->where('movie_film_companies_associate.film_companies_id','=', $fid);
+                    break;
+                /**根据导演搜索*/
+                case 'director' :
+                    $director = MovieDirector::where('name','like', $Val.'%')->select('id')->first();
+                    $did = $director?$director->id:0;
+                    $model = $model->leftJoin('movie_director_associate','movie_director_associate.mid',$table.'.id')
+                    ->where('movie_director_associate.did','=', $did);
+                    break;
+            }
+        }
+
+        //排序
+        $orderName = empty($request->input('field')) ?'id':$request->input('field');
+        $ordertype = empty($request->input('order')) ?'desc':$request->input('order');
+
         if($request->input('category')){
             $model = $model->where('movie_category.name', $request->input('category'));
         }
-        $res = $model->leftJoin('movie_category_associate','movie_category_associate.mid',$table.'.id')
-            ->join('movie_category','movie_category.id','=','movie_category_associate.cid')
-            ->orderBy('id', 'desc')
+        $res = $model->join('movie_category','movie_category.id','=','movie.cid')
+            ->orderBy($orderName, $ordertype)
             ->select($table.'.*','movie_category.name as category')
             ->paginate($request->get('limit', 30));
 
@@ -67,6 +113,7 @@ class MovieController extends Controller
             $movie_actor_associate_ids = DB::table('movie_actor_associate')->where('mid', $movie['id'])->pluck('aid')->all();
             $actors = MovieActor::whereIn('id', $movie_actor_associate_ids)->pluck('name')->all();
             $movie['actors'] = join(',', $actors);
+            $movie['is_up']=($movie['is_up']==1)?'上架':'下架';
         }
 
         $data = [
@@ -77,6 +124,72 @@ class MovieController extends Controller
         ];
         return Response::json($data);
     }
+
+    /**
+     * 删除影片 
+     */
+    public function destroy(Request $request)
+    {
+        $ids = $request->get('ids');
+        if (!is_array($ids) || empty($ids)){
+            return Response::json(['code'=>1,'msg'=>'请选择删除项']);
+        }
+        DB::beginTransaction();
+        try{
+            //删除影片列表
+            Movie::rm($ids);
+            //删除影片演员关系表
+            DB::table('movie_actor_associate')->whereIn('mid',$ids)->delete();
+            //删除影片系列关系表
+            DB::table('movie_series_associate')->whereIn('mid',$ids)->delete();
+            //删除影片片商关系表
+            DB::table('movie_film_companies_associate')->whereIn('mid',$ids)->delete();
+            //删除影片导演关系表
+            DB::table('movie_director_associate')->whereIn('mid',$ids)->delete();
+            //删除影片番号关系表
+            DB::table('movie_number_associate')->whereIn('mid',$ids)->delete();
+            //删除影片标签关系表
+            DB::table('movie_label_associate')->whereIn('mid',$ids)->delete();
+            //删除影片类型关系表
+            DB::table('movie_category_associate')->whereIn('mid',$ids)->delete();
+            //删除影片评分记录表
+            DB::table('movie_score_notes')->whereIn('mid',$ids)->delete();
+            //删除影片浏览记录表
+            DB::table('movie_log')->whereIn('mid',$ids)->delete();
+            //影片评论表
+            DB::table('movie_comment')->whereIn('mid',$ids)->delete();            
+            DB::commit();
+            return Response::json(['code'=>0,'msg'=>'删除成功']);
+        }catch (\Exception $exception){
+            DB::rollback();
+            return Response::json(['code'=>1,'msg'=>'删除失败','data'=>$exception->getMessage()]);
+        }
+    }
+
+    /**
+     * 上架影片 
+     */
+    public function up(Request $request)
+    {
+        $id = $request->input('id');
+        $aIds = explode(',',$id);
+        Movie::up($aIds);
+
+        return Response::json(['code'=>0,'msg'=>'下架成功']);
+    }
+
+    /**
+     * 下架影片 
+     */
+    public function down(Request $request)
+    {
+        $id = $request->input('id');
+        $aIds = explode(',',$id);
+        Movie::down($aIds);
+
+        return Response::json(['code'=>0,'msg'=>'下架成功']);
+    }
+
 
     /**
      * @param Request $request
@@ -107,9 +220,126 @@ class MovieController extends Controller
                 )
             );
         }
+
+
         $data = $request->all();
         try {
-            DB::beginTransaction();
+            $allowed_extensions = ["png", "jpg", "jpeg", "gif"];
+            $maxSize = 5;
+            $big_cove = '';
+            $small_cover = '';
+            $trailer = '';
+
+            if(!(!isset($_FILES['big_cove']) || empty($_FILES['big_cove'])))
+            {
+                $file = $_FILES['big_cove'];
+                if (!($file['error'] != 0))
+                {
+                    $ext = basename($file['type']);
+                    if (!in_array($ext, $allowed_extensions)) {
+                        $data['msg'] = '图片类型错误';
+                        throw new \Exception('图片类型错误');
+                    }
+                    if ($file['size'] > $maxSize * 1024 * 1024) {
+                        $data['msg'] = "图片大小限制" . $maxSize . "M";
+                        throw new \Exception("图片大小限制" . $maxSize . "M");
+                    }
+                    $base_dir = public_path('resources');
+                    $new_dir = '/movie_resources/' . date('Ym') . '/';
+                    if (!is_dir($base_dir . $new_dir)) {
+                        mkdir($base_dir . $new_dir, 0777, true);
+                    }
+                    $newFile = substr(md5($file['name'] . time()), 8, 16) . "." . $ext;
+                    $res = move_uploaded_file($file['tmp_name'], $base_dir . $new_dir . $newFile);
+                    if (!$res) {
+                        throw new \Exception("文件上传失败:无文件操作权限");
+                    }
+                    $big_cove = $new_dir . $newFile;
+                }
+            }
+
+            if(!(!isset($_FILES['small_cover']) || empty($_FILES['small_cover'])))
+            {
+                $file = $_FILES['small_cover'];
+                if (!($file['error'] != 0))
+                {
+                    $ext = basename($file['type']);
+                    if (!in_array($ext, $allowed_extensions)) {
+                        $data['msg'] = '图片类型错误';
+                        throw new \Exception('图片类型错误');
+                    }
+                    if ($file['size'] > $maxSize * 1024 * 1024) {
+                        $data['msg'] = "图片大小限制" . $maxSize . "M";
+                        throw new \Exception("图片大小限制" . $maxSize . "M");
+                    }
+                    $base_dir = public_path('resources');
+                    $new_dir = '/movie_resources/' . date('Ym') . '/';
+                    if (!is_dir($base_dir . $new_dir)) {
+                        mkdir($base_dir . $new_dir, 0777, true);
+                    }
+                    $newFile = substr(md5($file['name'] . time()), 8, 16) . "." . $ext;
+                    $res = move_uploaded_file($file['tmp_name'], $base_dir . $new_dir . $newFile);
+                    if (!$res) {
+                        throw new \Exception("文件上传失败:无文件操作权限");
+                    }
+                    $small_cover = $new_dir . $newFile;
+                }
+            }
+
+            if(!(!isset($_FILES['trailer']) || empty($_FILES['trailer'])))
+            {
+                $file = $_FILES['trailer'];
+                if (!($file['error'] != 0))
+                {
+                    $ext = basename($file['type']);
+                    $base_dir = public_path('resources');
+                    $new_dir = '/movie_resources/' . date('Ym') . '/';
+                    if (!is_dir($base_dir . $new_dir)) {
+                        mkdir($base_dir . $new_dir, 0777, true);
+                    }
+                    $newFile = substr(md5($file['name'] . time()), 8, 16) . "." . $ext;
+                    $res = move_uploaded_file($file['tmp_name'], $base_dir . $new_dir . $newFile);
+                    if (!$res) {
+                        throw new \Exception("文件上传失败:无文件操作权限");
+                    }
+                    $trailer = $new_dir . $newFile;
+                }
+            }
+
+            $map = [];
+            if(!(!isset($_FILES['map']) || empty($_FILES['map']))) {
+                $files = $_FILES['map'];
+                if (count($files['name']) > 0) {
+                    foreach ($files['name'] as $key => $value) {
+                        if($files['name'][$key] == '')
+                        {
+                            continue;
+                        }
+                        $ext = basename($files['type'][$key]);
+                        if (!in_array($ext, $allowed_extensions)) {
+                            $data['msg'] = '图片类型错误';
+                            throw new \Exception('图片类型错误');
+                        }
+                        if ($files['size'][$key] > $maxSize * 1024 * 1024) {
+                            $data['msg'] = "图片大小限制" . $maxSize . "M";
+                            throw new \Exception("图片大小限制" . $maxSize . "M");
+                        }
+
+                        $base_dir = public_path('resources');
+                        $new_dir = '/movie_resources/' . date('Ym') . '/';
+                        if (!is_dir($base_dir . $new_dir)) {
+                            mkdir($base_dir . $new_dir, 0777, true);
+                        }
+                        $newFile = substr(md5($files['name'][$key] . time()), 8, 16) . "." . $ext;
+                        $res = move_uploaded_file($files['tmp_name'][$key], $base_dir . $new_dir . $newFile);
+                        if (!$res) {
+                            throw new \Exception("文件上传失败:无文件操作权限");
+                        }
+                        $map[] = ['big_img' => $new_dir . $newFile, 'img' => $new_dir . $newFile];
+                    }
+                }
+            }
+
             if(!$data['name']){
                 throw new \Exception('名称不能为空');
             }
@@ -121,46 +351,50 @@ class MovieController extends Controller
                 throw new \Exception('分类错误');
             }
             $category_id = $category->id;
-
             $flux_linkage = (array)json_decode($data['flux_linkage'], true);
             $flux_linkage_num = count($flux_linkage);
-            $id = Movie::insertGetId([
-                'name' => $data['name'],
-                'number'=>$data['number'],
-                'release_time' => $data['release_time'],
-                'score' => (int)$data['score'],
-                'flux_linkage_num' => $flux_linkage_num,
-                'flux_linkage' => json_encode($flux_linkage),
-                'time'=>$data['time'],
-                'sell'=>$data['sell'],
-                'is_download' => $data['is_download'],
-                'is_subtitle' => $data['is_subtitle'],
-                'is_hot' => $data['is_hot']
-            ]);
+            if($flux_linkage_num >0)
+            {
+                $tempFlux_linkage = [];
+                foreach ($flux_linkage as $flux_linkagek=>$flux_linkageval)
+                {
+                    $tempFlux_linkage[] = [
+                        'name'=>$flux_linkageval['name']??'',
+                        'url'=>$flux_linkageval['url']??'',
+                        'meta'=>$flux_linkageval['meta']??'',
+                        'is-small'=> (($flux_linkageval['issmall']??2)==1?1:2) ,
+                        'is-warning'=>(($flux_linkageval['iswarning']??2)==1?1:2),
+                        'tooltip'=>(($flux_linkageval['tooltip']??2)==1?1:2) ,
+                        'time'=>date('Y-m-d H:i:s'),
+                    ];
+                }
+                $flux_linkage = $tempFlux_linkage;
+            }
 
-            /*标签*/
-            $this->dataAssociate('label', $id, explode(',', $data['labels']), 'cid');
-            /*演员*/
-            $this->dataAssociate('actor', $id, explode(',', $data['actors']), 'aid');
+            $data['flux_linkage_num'] = $flux_linkage_num;
+            $data['flux_linkage'] = json_encode($flux_linkage);
+            $data['big_cove'] = $big_cove;
+            $data['small_cover'] = $small_cover;
+            $data['trailer'] = $trailer;
+            $data['map'] = json_encode($map);
 
-            /*导演*/
-            $this->associate('director', $id, $data['director'], 'did');
-            /*系列*/
-            $this->associate('series', $id, $data['series'], 'series_id');
-            /*片商*/
-            $this->associate('film_companies', $id, $data['company'], 'film_companies_id');
-            /*分类*/
-            $this->associate('category', $id, $category_id, 'cid');
+            $data['arrLabels'] = $data['labels']?explode(',', $data['labels']):'';
+            $data['arrActors'] = $data['actors']?explode(',', $data['actors']):'';
+
+            $movie = new Movie();
+            $movie->create($data,$category_id);
+
         } catch (\Exception $exception) {
             DB::rollBack();
             return Redirect::back()->withErrors('更新失败:' . $exception->getMessage());
         }
+
         DB::commit();
-        return Redirect::to(URL::route('admin.movie.movie'))->with(['success' => '更新成功']);
+        return Redirect::to(URL::route('admin.movie.movie'))->with(['success' => '添加成功']);
     }
 
     /**
-     * 更新资讯
+     * 更新
      * @param Request $request
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
@@ -172,7 +406,7 @@ class MovieController extends Controller
 
             $categories = MovieCategory::where('status',1)->pluck('name', 'id')->all();
             $movie_category_associate = DB::table('movie_category_associate')->where('mid', $movie->id)->first();
-            $category = MovieCategory::where('id', $movie_category_associate->cid)->first();
+            $category = MovieCategory::where('id', $movie->cid)->first();
 
             list($series, $movie_series_associate) = $this->categorySelect('series', 'series_id', $category->name, $movie->id);
 
@@ -188,7 +422,7 @@ class MovieController extends Controller
             $mapData = [];
             foreach ($map as $value)
             {
-                $mapData[] = $value['big_img']??'';
+                (( $value['big_img']??'')=='')?null: $mapData[] = ($value['big_img']??'');
             }
             $movie->map = json_encode($mapData);
 
@@ -209,40 +443,79 @@ class MovieController extends Controller
                 )
             );
         }
-        $data = $request->all();
-        try {
-            DB::beginTransaction();
-            if(!$data['name']){
-                throw new \Exception('名称不能为空');
-            }
-            $flux_linkage = (array)json_decode($data['flux_linkage'], true);
-            $flux_linkage_num = count($flux_linkage);
-            Movie::where('id', $id)->update([
-                'name' => $data['name'],
-                'release_time' => $data['release_time'],
-                'score' => $data['score'],
-                'flux_linkage_num' => $flux_linkage_num,
-                'flux_linkage' => json_encode($flux_linkage),
-                'is_download' => $data['is_download'],
-                'is_subtitle' => $data['is_subtitle'],
-                'is_hot' => $data['is_hot']
-            ]);
-            /*标签*/
-            $this->dataAssociate('label', $id, explode(',', $data['labels']), 'cid');
-            /*演员*/
-            $this->dataAssociate('actor', $id, explode(',', $data['actors']), 'aid');
 
-            /*导演*/
-            $this->associate('director', $id, $data['director'], 'did');
-            /*系列*/
-            $this->associate('series', $id, $data['series'], 'series_id');
-            /*片商*/
-            $this->associate('film_companies', $id, $data['company'], 'film_companies_id');
-        } catch (\Exception $exception) {
-            DB::rollBack();
-            return Redirect::back()->withErrors('更新失败:' . $exception->getMessage());
+
+        $data = $request->all();
+
+        if(!$data['name']){
+            throw new \Exception('名称不能为空');
         }
-        DB::commit();
+        $flux_linkage = json_decode($data['flux_linkage'], true);
+
+        $flux_linkage_num = 0 ;
+        if($flux_linkage){
+            $flux_linkage_num = count($flux_linkage);
+        }
+
+        if($flux_linkage_num >0)
+        {
+            $tempFlux_linkage = [];
+            foreach ($flux_linkage as $v)
+            {
+                if($v['name'] && $v['url'] && $v['meta'])
+                {
+                    $arr = array();
+                    $arr['name'] = $v['name']??'';
+                    $arr['url'] = $v['url']??'';
+                    $arr['meta'] = $v['meta'];
+                    $arr['tooltip'] = ($v['tooltip']==1?1:2);
+                    $arr['time'] = $v['time']?$v['time']:date('Y-m-d H:i:s');
+
+                    if(isset($v['is-small'])){
+                        $arr['is-small'] = intval($v['is-small']);
+                    }
+                    if(isset($v['issmall'])){
+                        $arr['is-small'] = intval($v['issmall']);
+                    }
+                    
+                    if(isset($v['is-warning'])){
+                        $arr['is-warning'] = intval($v['is-warning']);
+                    }
+                    if(isset($v['iswarning'])){
+                        $arr['is-warning'] = intval($v['iswarning']);
+                    }
+                    
+                    $tempFlux_linkage[] = $arr;
+                }
+                
+            }
+            $flux_linkage = $tempFlux_linkage;
+        }
+
+        $movie = Movie::findOrFail($id);
+
+        //读取磁链中最新的时间
+        $mLinkage = json_decode($movie->flux_linkage,true);
+        $fluxTime = strtotime($movie->flux_linkage_time);
+        foreach($mLinkage as $v){
+            if(strtotime($v["time"])>$fluxTime){
+                $fluxTime = strtotime($v["time"]);
+            }
+        }
+
+        //只有磁链数量+1，磁链更新时间修改
+        $data['flux_linkage_time'] = date('Y-m-d H:i:s',$fluxTime);
+        if($flux_linkage_num > $movie->flux_linkage_num){
+            $data['flux_linkage_time'] = date('Y-m-d H:i:s');
+        }
+
+        $data['time'] = $data['time']?$data['time']:0;
+        $data['category_id'] = $data['category_id']?$data['category_id']:0;
+        $data['flux_linkage_num'] = $flux_linkage_num;
+        $data['flux_linkage'] = json_encode($flux_linkage);
+        $movie = new Movie();
+        $movie->edit($data,$id);
+
         return Redirect::to(URL::route('admin.movie.movie'))->with(['success' => '更新成功']);
     }
 
@@ -358,7 +631,7 @@ class MovieController extends Controller
 
         $model = MovieComment::query();
         $date = explode('~',$request->input('date'));
-        $model = $model->where('movie_comment.status', 1);//1是正常
+        $model = $model->where('movie_comment.status','>', 0);//1是正常
         if(isset($date[0]) && isset($date[1])){
             $model = $model->whereBetween('movie.release_time',[trim($date[0]),trim($date[1])]);
         }
@@ -368,19 +641,46 @@ class MovieController extends Controller
         if($request->input('nickname')){
             $model->whereRaw('(user_client.nickname = \''.$request->input('nickname').'\' or movie_comment.nickname = \''.$request->input('nickname').'\')');
         }
+        if(!is_null($request->input('audit')) && $request->input('audit')!=='')
+        {
+            $model = $model->where('movie_comment.audit', $request->input('audit'));
+        }
+        if(!is_null($request->input('source_type')) && $request->input('source_type')!=='')
+        {
+            $model = $model->where('movie_comment.source_type', $request->input('source_type'));
+        }
+        
         $res = $model->orderBy('movie_comment.id', 'DESC')
             ->leftJoin('user_client', 'user_client.id', '=', 'movie_comment.uid')
             ->leftJoin('movie', 'movie.id', '=', 'movie_comment.mid')
             ->select('movie_comment.id', 'movie_comment.comment_time',
                 'movie.number', 'movie.name as movie_name', 'movie_comment.comment as comment',
-                'user_client.nickname as nickname','movie_comment.nickname as cnickname','movie_comment.source_type as source_type','movie_comment.uid as uid')
+                'user_client.nickname as nickname','movie_comment.nickname as cnickname','movie_comment.source_type as source_type','movie_comment.uid as uid','movie_comment.audit as audit','movie_comment.status as status')
             ->paginate($request->get('limit', 30));
 
         foreach ($res as &$val)
         {
             $val->nickname = ($val->nickname??($val->cnickname))??'';
             $val->source_type = MovieComment::COMMENT_SORT_TYPE[$val->source_type]??'未知';
-            $val->nickname = $val->nickname .((($val->uid??0) <= 0)?('['.$val->source_type.']'):('[uid:'.($val->uid??0).']'));
+            //$val->nickname = $val->nickname .((($val->uid??0) <= 0)?('['.$val->source_type.']'):('[uid:'.($val->uid??0).']'));
+            switch($val->audit)
+            {
+                case 0:
+                    $val->audit = '待审核';
+                    break;
+                case 1:
+                    $val->audit = '正常';
+                    break;
+                case -1:
+                    $val->audit = '审核不通过';
+                    break;
+            }
+            if($val->status==1)
+            {
+                $val->status = '显示';
+            }else{
+                $val->status = '隐藏';
+            }
         }
 
         $data = [
@@ -395,7 +695,7 @@ class MovieController extends Controller
     public function commentDel(Request $request)
     {
         MovieComment::where('id',$request->input('id')??0)->update(['status'=>2]);
-        return Redirect::to(URL::route('admin.movie.movie.commentList'))->with(['success' => '删除成功']);
+        return Redirect::to(URL::route('admin.movie.movie.commentList'))->with(['success' => '隐藏成功']);
     }
 
     /**
@@ -407,18 +707,37 @@ class MovieController extends Controller
     {
         $ids = $request->input('ids');
         if (!is_array($ids) || empty($ids)){
-            return Response::json(['code'=>1,'msg'=>'请选择删除项']);
+            return Response::json(['code'=>1,'msg'=>'请选择隐藏项']);
         }
         if(count($ids) <= 0)
         {
-            return Response::json(['code'=>1,'msg'=>'请选择删除项']);
+            return Response::json(['code'=>1,'msg'=>'请选择隐藏项']);
         }
         try{
             MovieComment::whereIn('id',$ids)->update(['status'=>2]);
-            return Response::json(['code'=>0,'msg'=>'删除成功']);
+            return Response::json(['code'=>0,'msg'=>'隐藏成功']);
         }catch (\Exception $exception){
-            return Response::json(['code'=>1,'msg'=>'删除失败']);
+            return Response::json(['code'=>1,'msg'=>'隐藏失败']);
         }
+    }
+
+    public function commentShow(Request $request)
+    {
+        MovieComment::where('id',$request->input('id')??0)->update(['status'=>1]);
+        return Response::json(['code'=>0,'msg'=>'回复显示成功']);
+    }
+
+    /**
+     * 审核评论
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function commentAudit(Request $request)
+    {
+        $id = $request->input('id');
+        $status = $request->input('status');
+        MovieComment::where('id',$id)->update(['audit'=>$status]);
+        return Response::json(['code'=>0,'msg'=>'操作成功']);
     }
 
     public function wantSeeList(Request $request)

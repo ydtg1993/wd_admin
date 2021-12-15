@@ -66,8 +66,8 @@
                     , page: true //开启分页
                     , cols: [[ //表头
                         // {checkbox: true, fixed: true}
-                         {field: 'id', title: '序号', sort: true, width: 80}
-                        , {field: 'move_id', title: 'id'}
+                         {field: 'id', title: 'ID', sort: true, width: 80}
+                        , {field: 'move_id', title: '影片id'}
                         , {field: 'topic',  title: '主题'}
                         , {field: 'title', title: '标题'}
                         , {field: 'content',  title: '具体描述'}

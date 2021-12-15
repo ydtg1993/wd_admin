@@ -69,7 +69,10 @@ class MovieSeriesController extends Controller
         }
         $data = $request->all();
         try{
+            /*
             $id = MovieSeries::insertGetId(['name'=>$data['name'],'status'=>$data['status']]);
+            */
+            $id = MovieSeries::create($data['name'],$data['status']);
             $check = DB::table('movie_series_category_associate')->where('series_id',$id)->first();
             if($check){
                 DB::table('movie_series_category_associate')->where(['id'=>$check->id])->update(['cid'=>$data['category']]);

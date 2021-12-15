@@ -10,7 +10,7 @@
         </div>
         <div class="layui-card-body">
             <form class="layui-form layui-form-pane" action="{{route('admin.movie.movie.create')}}"
-                  method="post">
+                  method="post" enctype="multipart/form-data">
                 {{ method_field('post') }}
                 {{csrf_field()}}
                 <div class="layui-form-item">
@@ -136,15 +136,17 @@
                 <blockquote class="layui-elem-quote" style="margin-top: 30px;margin-bottom: 0">演员列表</blockquote>
                 <div id="actors"></div>
 
-                <blockquote class="layui-elem-quote" style="margin-top: 30px;margin-bottom: 0">种子链接</blockquote>
+                <blockquote class="layui-elem-quote" style="margin-top: 30px;margin-bottom: 0">磁链</blockquote>
                 <input type="hidden" name="flux_linkage" >
                 <table class="layui-table" lay-even="" lay-skin="row">
                     <thead>
                     <tr>
                         <th>名称</th>
                         <th>地址</th>
-                        <th>工具</th>
-                        <th>数据</th>
+                        <th>文件信息</th>
+                        <th>是否高清【填1为是2为否】</th>
+                        <th>是否含字幕【填1为是2为否】</th>
+                        <th>是否可下载【填1为是2为否】</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -158,11 +160,19 @@
                                    class="layui-input">
                         </td>
                         <td>
-                            <input type="text" name="linkage_url" data-name="tooltip"
+                            <input type="text" name="linkage_meta" data-name="meta"
                                    class="layui-input">
                         </td>
                         <td>
-                            <input type="text" name="linkage_tooltip" data-name="meta"
+                            <input type="text" name="linkage_issmall" data-name="issmall"
+                                   class="layui-input">
+                        </td>
+                        <td>
+                            <input type="text" name="linkage_iswarning" data-name="iswarning"
+                                   class="layui-input">
+                        </td>
+                        <td>
+                            <input type="text" name="linkage_tooltip" data-name="tooltip"
                                    class="layui-input">
                         </td>
                         <td><button type="button" class="layui-btn layui-btn-normal layui-btn-sm delete_linkage"><i class="layui-icon"></i></button></td>
@@ -202,11 +212,42 @@
                 </div>
                 <hr/>
 
+
                 <div class="layui-form-item">
-                        <label class="control-label">组图 (最多可支持20张)</label>
+                        <label class="control-label">组图 (最多可支持6张)第一张</label>
                         <div class="file-loading">
-                            <input id="map" name="map[]" type="file" multiple accept="image/*">
+                            <input id="map1" name="map[0]" type="file"  accept="image/*">
                         </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="control-label">组图 (最多可支持6张)第二张</label>
+                    <div class="file-loading">
+                        <input id="map2" name="map[1]" type="file"  accept="image/*">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="control-label">组图 (最多可支持6张)第三张</label>
+                    <div class="file-loading">
+                        <input id="map3" name="map[2]" type="file"  accept="image/*">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="control-label">组图 (最多可支持6张)第四张</label>
+                    <div class="file-loading">
+                        <input id="map4" name="map[3]" type="file"  accept="image/*">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="control-label">组图 (最多可支持6张)第五张</label>
+                    <div class="file-loading">
+                        <input id="map5" name="map[4]" type="file"  accept="image/*">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="control-label">组图 (最多可支持6张)第六张</label>
+                    <div class="file-loading">
+                        <input id="map6" name="map[5]" type="file"  accept="image/*">
+                    </div>
                 </div>
                 <hr/>
 
@@ -286,7 +327,7 @@
         componentSelect('actors',[],JSON.parse('<?=json_encode($actors);?>'));
 
         var linkpage = {
-            data:[{name:'',url:'',tooltip:'',meta:'','is-small':'','is-warning':''}],
+            data:[{name:'',url:'',meta:'',issmall:'',iswarning:'',tooltip:'',}],
             addApply:function(){
                 var html ='<tr class="linkage_content" data-key={$key}>\n' +
                     '<td>\n' +
@@ -295,16 +336,22 @@
                     '<input type="text" name="linkage_url" data-name="url" class="layui-input">\n' +
                     '</td>\n' +
                     '<td>\n' +
-                    ' <input type="text" name="linkage_url" data-name="tooltip" class="layui-input">\n' +
+                    ' <input type="text" name="linkage_meta" data-name="meta" class="layui-input">\n' +
                     '</td>\n' +
                     '<td>\n' +
-                    '<input type="text" name="linkage_tooltip" data-name="meta" class="layui-input">\n' +
+                    '<input type="text" name="linkage_issmall" data-name="issmall" class="layui-input">\n' +
+                    '</td>\n' +
+                    '<td>\n' +
+                    '<input type="text" name="linkage_iswarning" data-name="iswarning" class="layui-input">\n' +
+                    '</td>\n' +
+                    '<td>\n' +
+                    '<input type="text" name="linkage_tooltip" data-name="tooltip" class="layui-input">\n' +
                     '</td>\n' +
                     '<td><button type="button" class="layui-btn layui-btn-normal layui-btn-sm delete_linkage"><i class="layui-icon"></i></button></td>\n' +
                     '</tr>';
                 $('#create_linkage').click(function () {
                     $('#linkage_body').append(html);
-                    linkpage.data.push({name:'',url:'',tooltip:'',meta:'','is-small':'','is-warning':''});
+                    linkpage.data.push({name:'',url:'',meta:'',issmall:'',iswarning:'',tooltip:''});
                     linkpage.rearrange();
                     linkpage.delApply().upApply();
                 });
@@ -329,6 +376,8 @@
                 $("input[name='linkage_url']").change(linkpage.change);
                 $("input[name='linkage_tooltip']").change(linkpage.change);
                 $("input[name='linkage_meta']").change(linkpage.change);
+                $("input[name='linkage_issmall']").change(linkpage.change);
+                $("input[name='linkage_iswarning']").change(linkpage.change);
                 return this;
             },
             change:function(){
@@ -353,6 +402,11 @@
         createFileInput('small_cover');
         createFileInput('trailer',1,'video');
 
-        createFileInput('map',20,'image');
+        createFileInput('map1');
+        createFileInput('map2');
+        createFileInput('map3');
+        createFileInput('map4');
+        createFileInput('map5');
+        createFileInput('map6');
     });
 </script>

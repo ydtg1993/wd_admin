@@ -18,6 +18,7 @@ class OperateLog
         if ($request->session()->has('configuration') && $request->session()->get('configuration.operate_log')==1){
             \App\Models\OperateLog::create([
                 'user_id' => $request->user()->id,
+                'username'=> $request->user()->username,
                 'uri' => $request->getUri(),
                 'parameter' => http_build_query($request->except(['_token','_method'])),
                 'method' => $request->getMethod(),

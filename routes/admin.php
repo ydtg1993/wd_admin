@@ -201,6 +201,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::any('review/movie', 'ReviewMovieController@index')->name('admin.review.movie');
         Route::any('review/movie.error', 'ReviewMovieController@error')->name('admin.review.movie.error');
         Route::any('review/movie/{id}/edit', 'ReviewMovieController@edit')->name('admin.review.movie.edit')->middleware('permission:review.movie.edit');
+        Route::any('review/movie/synch', 'ReviewMovieController@synch')->name('admin.review.movie.synch');
     });
     //审核采集演员
     Route::group(['middleware' => 'permission:review.actor'], function () {
@@ -250,6 +251,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::any('review/score.error', 'ReviewScoreController@error')->name('admin.review.score.error');
         Route::any('review/score/{id}/edit', 'ReviewScoreController@edit')->name('admin.review.score.edit')->middleware('permission:review.score.edit');
     });
+    //磁链
+    Route::group(['middleware' => 'permission:review.movie'], function () {
+        Route::any('review/disklink', 'ReviewDisklinkController@index')->name('admin.review.disklink');
+    });
 });
 /*
 |--------------------------------------------------------------------------
@@ -263,11 +268,28 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::any('movie/movie.scoreList', 'MovieController@scoreList')->name('admin.movie.movie.scoreList');
         Route::any('movie/movie.commentList', 'MovieController@commentList')->name('admin.movie.movie.commentList');
         Route::any('movie/movie.commentDel', 'MovieController@commentDel')->name('admin.movie.movie.commentDel');
-        Route::any('movie/movie.commentDestroy', 'MovieController@commentDestroy')->name('admin.movie.movie.commentDestroy');//批量删除评论
+        Route::any('movie/movie.commentDestroy', 'MovieController@commentDestroy')->name('admin.movie.movie.commentDestroy');
+        Route::any('movie/movie.commentShow', 'MovieController@commentShow')->name('admin.movie.movie.commentShow');
+        Route::any('movie/movie.commentAudit', 'MovieController@commentAudit')->name('admin.movie.movie.commentAudit');
+        //批量删除评论
         Route::any('movie/movie.wantSeeList', 'MovieController@wantSeeList')->name('admin.movie.movie.wantSeeList');
         Route::any('movie/movie.sawList', 'MovieController@sawList')->name('admin.movie.movie.sawList');
         Route::any('movie/movie/create', 'MovieController@create')->name('admin.movie.movie.create')->middleware('permission:movie.movie.create');
         Route::any('movie/movie/{id}/edit', 'MovieController@edit')->name('admin.movie.movie.edit')->middleware('permission:movie.movie.edit');
+        //删除
+        Route::any('movie/movie/destroy','MovieController@destroy')->name('admin.movie.movie.destroy')->middleware('permission:movie.movie.destroy');
+        //影片导入
+        Route::post('movie/movie/mvup','MovieUpController@movieup')->name('admin.movie.movie.mvup');
+        Route::any('movie/movie/mvdo/{path}/{p}','MovieUpController@movieDo')->name('admin.movie.movie.mvdo');
+        //磁链导入
+        Route::post('movie/movie/linkup','MovieUpController@linkup')->name('admin.movie.movie.linkup');
+        Route::any('movie/movie/linkdo/{path}/{p}','MovieUpController@linkDo')->name('admin.movie.movie.linkdo');
+        //影片导出
+        Route::any('movie/movie/mvdown','MovieUpController@moviedown')->name('admin.movie.movie.mvdown');
+        //上架
+        Route::any('movie/movie/up','MovieController@up')->name('admin.movie.movie.up');
+        //下架
+        Route::any('movie/movie/down','MovieController@down')->name('admin.movie.movie.down');
     });
     //发行商
     Route::group(['middleware' => 'permission:movie.companies'], function () {
@@ -292,6 +314,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::any('movie/list/like', 'MovieListController@like')->name('admin.movie.list.like');
         Route::any('movie/list/create', 'MovieListController@create')->name('admin.movie.list.create')->middleware('permission:movie.list.create');
         Route::any('movie/list/{id}/edit', 'MovieListController@edit')->name('admin.movie.list.edit')->middleware('permission:movie.list.edit');
+        //审核
+        Route::any('movie/list/audit','MovieListController@audit')->name('movie.list.audit')->middleware('permission:movie.list.audit');;
     });
     //番号
     Route::group(['middleware' => 'permission:movie.numbers'], function () {
@@ -373,6 +397,19 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::get('conf/magnet_link', 'ConfController@magnetLinkView')->name('admin.conf.magnet_link');
         Route::put('conf/save_magnet_link', 'ConfController@saveMagnetLink')->name('admin.conf.save_magnet_link');
     });
+    //热搜词设置
+    Route::get('search/hotword', 'SearchController@hotword')->name('admin.search.hotword');
+    Route::get('search/hotword/data', 'SearchController@data')->name('admin.search.hotword.data');
+    Route::post('search/hotword/save', 'SearchController@save')->name('admin.search.hotword.save');
+    //域名管理
+    Route::get('domain/lists', 'DomainController@index')->name('admin.conf.domain');
+    Route::get('domain/lists/data', 'DomainController@data')->name('admin.conf.domain.data');
+    Route::post('domain/lists/save', 'DomainController@save')->name('admin.conf.domain.save');
+    Route::post('domain/lists/destroy', 'DomainController@del')->name('admin.conf.domain.destroy');
+    
+    //短评须知
+    Route::get('conf/comment_notes', 'ConfController@commentNotesView')->name('admin.conf.comment_notes');
+    Route::put('conf/save_comment_notes', 'ConfController@saveCommentNotes')->name('admin.conf.save_comment_notes');
 });
 
 
@@ -440,6 +477,39 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
 
 /*
 |--------------------------------------------------------------------------
+| 广告管理
+|--------------------------------------------------------------------------
+*/
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'permission:ads', 'operate.log']], function () {
+    //广告位
+    Route::get('ads/location/data', 'AdsLocationController@data')->name('admin.ads.location.data');
+    Route::get('ads/location/index', 'AdsLocationController@index')->name('admin.ads.location.index');
+    //添加
+    Route::get('ads/location/create', 'AdsLocationController@create')->name('admin.ads.location.create');
+    Route::post('ads/location/store', 'AdsLocationController@store')->name('admin.ads.location.store');
+    //修改
+    Route::get('ads/location/{id}/edit', 'AdsLocationController@edit')->name('admin.ads.location.edit');
+    Route::post('ads/location/update', 'AdsLocationController@update')->name('admin.ads.location.update');
+    //修改状态
+    Route::post('ads/location/status', 'AdsLocationController@status')->name('admin.ads.location.status');
+
+    //广告内容
+    Route::get('ads/list/data', 'AdsController@data')->name('admin.ads.list.data');
+    Route::get('ads/list/index', 'AdsController@index')->name('admin.ads.list.index');
+    //添加
+    Route::get('ads/list/create', 'AdsController@create')->name('admin.ads.list.create');
+    Route::post('ads/list/store', 'AdsController@store')->name('admin.ads.list.store');
+    //修改
+    Route::get('ads/list/{id}/edit', 'AdsController@edit')->name('admin.ads.list.edit');
+    Route::post('ads/list/update', 'AdsController@update')->name('admin.ads.list.update');
+    //状态
+    Route::post('ads/list/status', 'AdsController@status')->name('admin.ads.list.status');
+    //删除
+    Route::post('ads/list/del', 'AdsController@del')->name('admin.ads.list.del');
+});
+
+/*
+|--------------------------------------------------------------------------
 | 用户管理
 |--------------------------------------------------------------------------
 */
@@ -455,7 +525,25 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
     Route::put('userClient/{id}/update', 'UserClientController@update')->name('admin.user_client.update')->middleware('permission:user_client.edit');
     //删除
     Route::delete('userClient/destroy', 'UserClientController@destroy')->name('admin.user_client.destroy')->middleware('permission:user_client.destroy');
-    Route::put('userClient/blockUser', 'UserClientController@blockUser')->name('admin.user_client.block_user')->middleware('permission:user_client.block_user');
+    //封禁用户
+    Route::post('userClient/blockUser', 'UserClientController@blockUser')->name('admin.user_client.block_user')->middleware('permission:user_client.block_user');
+    //批量封禁用户
+    Route::post('userClient/blockUserAll', 'UserClientController@blockUserAll')->name('admin.user_client.block_user_all')->middleware('permission:user_client.block_user');
+    //封禁列表
+    Route::get('userClient/locklist', 'UserClientBlackController@index')->name('admin.user_client.locklist');
+    Route::get('userClient/locklistdata', 'UserClientBlackController@data')->name('admin.user_client.locklistdata');
+    //解封操作
+    Route::post('userClient/unlock', 'UserClientBlackController@unlockUser')->name('admin.user_client.unlock')->middleware('permission:user_client.unlock');
+    //过滤词列表
+    Route::get('userClient/filter', 'FilterController@index')->name('admin.user_client.filter')->middleware('permission:user_client.filter');
+    Route::get('userClient/filterdata', 'FilterController@data')->name('admin.user_client.filterdata');
+    Route::get('userClient/filter/create', 'FilterController@create')->name('admin.user_client.filter.create');
+    Route::post('userClient/filter/store', 'FilterController@store')->name('admin.user_client.filter.store');
+
+    Route::get('userClient/filter/{id}/edit', 'FilterController@edit')->name('admin.user_client.filter.edit');
+    Route::post('userClient/filter/update', 'FilterController@update')->name('admin.user_client.filter.update');
+    
+    Route::any('userClient/filter/del', 'FilterController@destroy')->name('admin.user_client.filter.del');
 });
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => []], function () {
 Route::any('userClient/test', 'UserClientController@test');

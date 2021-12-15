@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\UseClientRequest;
 use App\Models\Report;
 use App\Models\UserClient;
+use App\Models\UserClientBlack;
 use App\Tools\UserTool;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -34,33 +35,38 @@ class UserClientController extends Controller
      */
     public function data(Request $request)
     {
-        $data = $request->all(['created_at_start','created_at_end','status','type','u_number']);
+        $data = $request->all(['created_at_start','created_at_end','status','type','u_number','u_nickname','u_phone','u_email']);
 
         $res = UserClient::when($data['type'],function ($query,$data) {
-            return $query->where('user_client.type',$data);
-        })->when($data['status'],function ($query,$data) {
+                return $query->where('user_client.type',$data);
+            })->when($data['status'],function ($query,$data) {
                 return $query->where('user_client.status',$data);
-            })->when($data['u_number'],function ($query,$data) {
-            return $query->where(
-                function ($query) use($data){
-                    return $query->where('user_client.nickname','like','%'.$data.'%')->
-                    orWhere('user_client.number','like','%'.$data.'%');
-                });
-
-        })->when($data['created_at_start'],function ($query,$data){
-            return $query->where('user_client.created_at','>=',$data);
-        })->when($data['created_at_end'],function ($query,$data){
-            return $query->where('user_client.created_at','<=',$data);
-        })->leftjoin('user_client_event','user_client.id','=','user_client_event.uid')
-            ->select('user_client.*','user_client_event.reply','user_client_event.like',
-            'user_client_event.my_comment',
-            'user_client_event.my_reply','user_client_event.my_like','user_client_event.dislike',
-                'user_client_event.report')
+            }) ->when($data['u_number'],function ($query,$data) {
+                //查询用户id
+                return $query->where('user_client.number','like',$data.'%');
+            })->when($data['u_nickname'],function ($query,$data) {
+                //查询用户昵称/用户名
+                return $query->where('user_client.nickname','like',$data.'%');
+            })->when($data['u_phone'],function ($query,$data) {
+                //查询用户号码
+                return $query->where('user_client.phone','like',$data.'%');
+            })->when($data['u_email'],function ($query,$data) {
+                //查询用户邮箱
+                return $query->where('user_client.email','like',$data.'%');
+            })->when($data['created_at_start'],function ($query,$data){
+                return $query->where('user_client.created_at','>=',$data);
+            })->when($data['created_at_end'],function ($query,$data){
+                return $query->where('user_client.created_at','<=',$data);
+            })->leftjoin('user_client_event','user_client.id','=','user_client_event.uid')
+                ->select('user_client.*','user_client_event.reply','user_client_event.like',
+                'user_client_event.my_comment',
+                'user_client_event.my_reply','user_client_event.my_like','user_client_event.dislike',
+                    'user_client_event.report')
             ->orderBy('user_client.id','desc')->paginate($request->get('limit',30));
         $statusMap = [
             1=>'正常',
-            2=>'已拉黑',
-            3=>'已禁言',
+            2=>'已禁言',
+            3=>'已拉黑',
         ];
         $typeMap = [
             1=>'普通用户',
@@ -155,30 +161,84 @@ class UserClientController extends Controller
     }
 
     /**
-     * 拉黑用户
+     * 封禁用户
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function blockUser(Request $request ): \Illuminate\Http\JsonResponse
     {
-        try{
-            $data = [
-                'code'  => 0,
-                'msg'   => '拉黑成功',
-            ];
-            (new \App\Models\UserClient)->saveData($request->id,['status'=>3]);
-            return \response()->json($data);
-        }catch (\Exception $exception){
-            Log::error('blocks user:'.$exception->getFile().$exception->getLine().$exception->getMessage());
+
+        $req = $request->all(['uid','uname','status','unlockday','remarks']);
+
+        $mb = new UserClientBlack();
+        //判断是否已经有
+        $bid = $mb->check($req['uid']);
+        if($bid>0)
+        {
             $data = [
                 'code'  => 100,
-                'msg'   => '拉黑失败',
+                'msg'   => '该用户已经被封禁',
             ];
             return \response()->json($data);
         }
 
+        //读取用户id
+        $user = UserClient::getOneById($req['uid']);
+
+        if($user){
+            //写入封禁表
+            $mb->lock($req['uid'], $req['uname'],$user['phone'],$user['email'], $req['status'], $req['unlockday'],$req['remarks']);
+
+            //修改用户表状态
+            $muc = new UserClient();
+            $muc->saveData($req['uid'],['status'=>$req['status']]);
+        }
+
+        $data = [
+                'code'  => 0,
+                'msg'   => '封禁成功',
+            ];
+        return \response()->json($data);
     }
 
+    /**
+     * 封禁批量操作 
+     */
+    public function blockUserAll(Request $request):\Illuminate\Http\JsonResponse
+    {
+        $req = $request->all(['uid','uname','status','unlockday','remarks']);
 
+        //加工数据
+        $uids = $req['uid'];
+        $uidArr = explode(',',$uids);
+
+        $unames = $req['uname'];
+        $unameArr = explode(',',$unames);
+
+        $mb = new UserClientBlack();
+        $muc = new UserClient();
+
+        //循环插入数据
+        foreach($uidArr as $k=>$v)
+        {
+            //判断是否已经有
+            $bid = $mb->check($v);
+            if($bid<1){
+                //客户信息
+                $user = UserClient::getOneById($v);
+
+                //写入封禁表
+                $mb->lock($v, $unameArr[$k], $user['phone'],$user['email'],$req['status'], $req['unlockday'],$req['remarks']);
+                $muc->saveData($v,['status'=>$req['status']]);
+            }
+        }
+
+        $data = [
+                'code'  => 0,
+                'msg'   => '封禁成功',
+                'userarr' => $uidArr,
+            ];
+        return \response()->json($data);
+    }
 
 }

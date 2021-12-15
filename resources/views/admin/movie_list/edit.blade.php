@@ -1,8 +1,7 @@
 @extends('admin.bas')
 <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
 <link href="/bootfile/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
-<!--@include('admin.movie_list._upload')-->
-@include('admin.movie._upload')
+@include('admin.movie_list._upload')
 @section('content')
     <div class="layui-card">
         <div class="layui-card-header layuiadmin-card-header-auto">

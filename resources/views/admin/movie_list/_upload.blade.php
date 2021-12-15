@@ -18,41 +18,64 @@
 <!-- optionally if you need translation for your language then include  locale file as mentioned below (replace LANG.js with your locale file) -->
 <script src="/bootfile/js/locales/zh.js"></script>
 <style>
-    .layui-col-md4 > .file-input {
-        margin: 0 60px 0 0 !important;
+    .layui-col-md4>.file-input{
+        margin: 0 60px 0 0!important;
     }
-
-    label {
-        margin-bottom: 0
-    }
+    label{margin-bottom: 0}
 </style>
 <script>
-    function addFileInput(dom,create = false,id=null,photo = '') {
+    function addFileInput(id,dom,files=[],limit=1,filetype='image') {
+        var krajeeGetCount = function(id) {
+            var cnt = $('#' + id).fileinput('getFilesCount');
+            return cnt === 0 ? 'You have no files remaining.' :
+                'You have ' +  cnt + ' file' + (cnt > 1 ? 's' : '') + ' remaining.';
+        };
         function basename(str) {
             if (!str){
                 return '';
             }
-            var idx = str.lastIndexOf('/');
-            idx = idx > -1 ? idx : str.lastIndexOf('\\');
+            var idx = str.lastIndexOf('/')
+            idx = idx > -1 ? idx : str.lastIndexOf('\\')
             if (idx < 0) {
                 return str
             }
             return str.substring(idx + 1);
         }
 
-        var krajeeGetCount = function (id) {
-            var cnt = $('#' + id).fileinput('getFilesCount');
-            return cnt === 0 ? 'You have no files remaining.' :
-                'You have ' + cnt + ' file' + (cnt > 1 ? 's' : '') + ' remaining.';
-        };
+        var initialPreview = [];
+        var initialPreviewConfig = [];
+        var index = 0;
 
-        if(photo) {
-            var initialPreview = ["<img class='kv-preview-data file-preview-image' src='" + '{{config('app.url')}}resources/' + photo + "'>"];
-            var initialPreviewConfig = [{caption: basename(photo), width: "120px", key: photo}];
+        if(files instanceof Array) {
+            files.forEach(function (file) {
+                if (!file) {
+                    return;
+                }
+                initialPreview.push('{{config('app.url')}}resources/' + file);
+                initialPreviewConfig.push({caption: basename(file), key: file});
+            });
+        }else {
+            var file = files;
+            if(file) {
+                if(filetype == 'image') {
+                    initialPreview.push('{{config('app.url')}}resources/' + file);
+                    initialPreviewConfig.push({caption: basename(file), key: file});
+                }else{
+                    initialPreview.push('{{config('app.url')}}resources/' + file);
+                    var fileExtension = file.substring(file.lastIndexOf('.') + 1);
+                    initialPreviewConfig.push({filetype:'video/'+fileExtension,caption: basename(file), key: file});
+                }
+            }
         }
 
+        var uploadUrl = '{{ route("api.listFileUpload") }}';
+        if(dom == 'map'){
+            uploadUrl = '{{ route("api.listFileRemove") }}';
+        }
         var ini = {
             language: 'zh',
+            uploadUrl: uploadUrl,
+            deleteUrl: '{{ route("api.movieFileRemove") }}',
             showClose: false,
             uploadExtraData:{"_token":"{{ csrf_token() }}","name":dom,"id":id},
             deleteExtraData:{"_token":"{{ csrf_token() }}","name":dom,"id":id},
@@ -69,16 +92,19 @@
                 actionUpload: '',
             },
             browseClass: "btn btn-primary",
-            maxFileCount: 1,
-            autoReplace: false,
+            maxFileCount: limit,
+            initialPreviewAsData: true,
+            autoReplace:false,
             initialPreview: initialPreview,
             initialPreviewConfig: initialPreviewConfig,
-            maxFileSize: 5120,
+            maxFileSize: 51200,
         };
 
-        if(!create){
-            ini.uploadUrl = '{{ route("api.listFileUpload") }}';
-            ini.deleteUrl = '{{ route("api.listFileRemove") }}';
+        if(filetype == 'video'){
+            ini.allowedFileExtensions =["mp4", "mpg", "mpeg","avi","rmvb"];
+            ini.allowedFileTypes = ["video"];
+            ini.initialPreviewFileType = 'video';
+            ini.maxFileSize = 51200;
         }
 
         var file = $('#' + dom);
@@ -88,11 +114,70 @@
                 window.alert('已经删除! ' + krajeeGetCount(dom));
             };
             return aborted;
-        }).on('filedeleted', function (event, data) {
+        }).on('filedeleted', function(event, data) {
             console.log(data)
-        }).on("filebatchselected", function (event, files) {
+        }).on("filebatchselected", function(event, files) {
             file.fileinput("upload");
-        }).on('fileerror', function (event, data, msg) {
+        }).on('fileerror', function(event, data, msg) {
+            console.log(data.id);
+            console.log(data.index);
+            console.log(data.file);
+            console.log(data.reader);
+            console.log(data.files);
+            // 获取信息
+            alert(msg);
+        });
+    }
+    function createFileInput(dom,limit=1,filetype='image') {
+        var krajeeGetCount = function(id) {
+            var cnt = $('#' + id).fileinput('getFilesCount');
+            return cnt === 0 ? 'You have no files remaining.' :
+                'You have ' +  cnt + ' file' + (cnt > 1 ? 's' : '') + ' remaining.';
+        };
+        var initialPreview = [];
+        var initialPreviewConfig = [];
+
+        var ini = {
+            language: 'zh',
+            showClose: false,
+            showCaption: true,
+            dropZoneEnable: true,
+            overwriteInitial: false,
+            validateInitialCount: true,
+            showRemove: false,
+            showUpload: false,
+            allowedFileExtensions: ["png", "jpg", "jpeg"],
+            allowedFileTypes: ["image"],
+            uploadAsync: false,
+            layoutTemplates: {
+                actionUpload: '',
+            },
+            browseClass: "btn btn-primary",
+            maxFileCount: limit,
+            autoReplace:false,
+            initialPreview: initialPreview,
+            initialPreviewConfig: initialPreviewConfig,
+            maxFileSize: 5120,
+        };
+
+        if(filetype == 'video'){
+            ini.allowedFileExtensions =["mp4", "mpg", "mpeg","avi","rmvb"];
+            ini.allowedFileTypes = ["video"];
+            ini.maxFileSize = 51200;
+        }
+
+        var file = $('#' + dom);
+        file.fileinput(ini).on('filebeforedelete', function () {
+            var aborted = !window.confirm('确定删除该文件么?');
+            if (aborted) {
+                window.alert('已经删除! ' + krajeeGetCount(dom));
+            };
+            return aborted;
+        }).on('filedeleted', function(event, data) {
+            console.log(data)
+        }).on("filebatchselected", function(event, files) {
+            file.fileinput("upload");
+        }).on('fileerror', function(event, data, msg) {
             console.log(data.id);
             console.log(data.index);
             console.log(data.file);

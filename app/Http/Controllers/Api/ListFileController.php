@@ -70,10 +70,10 @@ class ListFileController extends Controller
         $id = $request->input('id');
         $list = MoviePiece::where('id', $id)->first();
         $file = public_path('resources') . '/' . $list->cover;
-        is_file($file) && unlink($file);
+        /*is_file($file) && unlink($file);
         if (is_dir(dirname($file)) && !(new \FilesystemIterator(dirname($file)))->valid()) {
             rmdir(dirname($file));
-        }
+        }*/
         MoviePiece::where('id', $id)->update(['cover' => '']);
         return response()->json([]);
     }

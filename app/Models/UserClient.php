@@ -68,6 +68,13 @@ class UserClient extends Model
         return $model->update($data);
     }
 
+    /**
+     * 更改用户状态
+     */
+    public static function updateStatus($uid,$status){
+        return UserClient::where('id',$uid)->update(['status'=>$status]);
+    }
+
     /***
      * @param $id
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Model|null

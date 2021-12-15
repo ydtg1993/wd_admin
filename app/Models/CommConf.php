@@ -23,6 +23,7 @@ class CommConf extends Model
     const CONF_FRIENDY_LINK = 4;//友情链接
     const CONF_PRIVACY_CLAUSE = 5;//隐私条款
     const CONF_MAGNET_LINK = 6;//磁链使用教程
+    const CONF_COMMENT_NOTES = 7; //短评须知
 
 
         /*
@@ -40,6 +41,7 @@ class CommConf extends Model
                 4=>'friend_link',
                 5=>'private_item',
                 6=>'magnet_link',
+                7=>'comment_notes',
              ];
             $cacheKey = $redisPrefix.$keyMap[$model->type];
             $cacheKeyAll = $redisPrefix.'all';

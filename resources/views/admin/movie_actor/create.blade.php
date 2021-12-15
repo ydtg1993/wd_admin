@@ -5,7 +5,7 @@
 @section('content')
     <div class="layui-card">
         <div class="layui-card-header layuiadmin-card-header-auto">
-            <h2>添加公司</h2>
+            <h2>添加演员</h2>
         </div>
         <div class="layui-card-body">
             <form class="layui-form" action="{{route('admin.movie.actor.create')}}" method="post" enctype="multipart/form-data">

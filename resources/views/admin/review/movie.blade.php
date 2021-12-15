@@ -14,11 +14,22 @@
                             </div>
                         </div>
                         <div class="layui-inline">
+                            <label class="layui-form-label">资源状态</label>
+                            <div class="layui-input-inline">
+                                <select id="resources_status" lay-search  lay-filter="parent_id">
+                                    <option value='' >选择状态</option>
+                                    <option value=1 >未处理</option>
+                                    <option value=2 >已下载</option>
+                                    <option value=3 selected>下载失败</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
                             <label class="layui-form-label">处理状态</label>
                             <div class="layui-input-inline">
                                 <select id="status" lay-search  lay-filter="parent_id">
                                     <option value='' >选择状态</option>
-                                    <option value=1 >未处理</option>
+                                    <option value=1 selected>未处理</option>
                                     <option value=2 >已处理</option>
                                 </select>
                             </div>
@@ -26,7 +37,13 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">处理人</label>
                             <div class="layui-input-inline">
-                                <input type="text" class="layui-input" id="nickname">
+                                <input type="text" class="layui-input" id="username">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">番号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="number">
                             </div>
                         </div>
 
@@ -46,9 +63,8 @@
             <table id="dataTable" lay-filter="dataTable"></table>
             <script type="text/html" id="options">
                 <div class="layui-btn-group">
-                    @can('system.role.edit')
                         <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
-                    @endcan
+                        <a class="layui-btn layui-btn-sm layui-btn-warm" lay-event="synch">手工同步</a>
                 </div>
             </script>
         </div>
@@ -56,7 +72,6 @@
 @endsection
 
 @section('script')
-    @can('system.role')
         <script>
             layui.use(['layer', 'table', 'form','laydate'], function () {
                 var $ = layui.jquery;
@@ -81,6 +96,7 @@
                         , {field: 'status', title:'状态'}
                         , {field: 'username', title:'处理人'}
                         , {field:'created_at',title:'创建时间'}
+                        , {field:'updated_at',title:'更新时间'}
                         , {fixed: 'right', width: 260, align: 'center', toolbar: '#options'}
                     ]],
                     done: function(res, curr, count){
@@ -113,11 +129,26 @@
                     var data = obj.data //获得当前行数据
                         , layEvent = obj.event; //获得 lay-event 对应的值
                     if (layEvent === 'edit') {
-                        if(data.status == 2){
-                            alert('已经发布');
-                        }else {
-                            location.href = '/admin/review/movie/' + data.id + '/edit';
-                        }
+                        location.href = '/admin/review/movie/' + data.id + '/edit';
+                    }
+                    if (layEvent === 'synch') {
+                        //手工同步
+                        layer.confirm('确认要同步这个数据吗？id='+data.id, function (index) {
+                            layer.close(index)
+                            var load = layer.load();
+                            $.post("{{ route('admin.review.movie.synch') }}", {
+                                id: data.id
+                            }, function (res) {
+                                layer.close(load);
+                                if (res.code == 0) {
+                                    layer.msg(res.msg, {icon: 1}, function () {
+                                        window.location.reload();
+                                    })
+                                } else {
+                                    layer.msg(res.msg, {icon: 2})
+                                }
+                            });
+                        });
                     }
                 });
 
@@ -138,7 +169,9 @@
                             ,where: {
                                 date: $('#date').val(),
                                 status: $('#status').val(),
-                                nickname: $('#nickname').val()
+                                resources_status:$('#resources_status').val(),
+                                username: $('#username').val(),
+                                number:$('#number').val()
                             }
                         });
                     }
@@ -149,5 +182,4 @@
                 });
             })
         </script>
-    @endcan
 @endsection

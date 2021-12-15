@@ -76,6 +76,7 @@ class MovieActorController extends Controller
         }
         $data = $request->all();
         try {
+            DB::beginTransaction();
             if(MovieActor::where('name',$data['name'])->exists()){
                 throw new \Exception("演员名字重复");
             }
@@ -123,6 +124,7 @@ class MovieActorController extends Controller
                     $social_accounts[$name] = $url;
                 }
             }
+            /*
             $id = MovieActor::insertGetId([
                 'name' => $data['name'],
                 'status' => $data['status'],
@@ -130,6 +132,8 @@ class MovieActorController extends Controller
                 'photo' => $new_dir . $newFile,
                 'social_accounts'=>json_encode($social_accounts)
             ]);
+            */
+            $id = MovieActor::create($data['name'],$data['status'],$data['sex'],$new_dir.$newFile,json_encode($social_accounts));
             /*names*/
             $insertData = [];
             $names = explode("\r\n",$data['names']);
@@ -143,6 +147,7 @@ class MovieActorController extends Controller
         } catch (\Exception $exception) {
             return Redirect::back()->withErrors('添加失败 ' . $exception->getMessage());
         }
+        DB::commit();
         return Redirect::to(URL::route('admin.movie.actor'))->with(['success' => '添加成功']);
     }
 

@@ -70,7 +70,7 @@
                                     if($movie->director  == $director){
                                         $selected = 'selected';
                                     }
-                                    echo "<option value='{$id}' {$selected}>$director</option>";
+                                    echo "<option value='{$director}' {$selected}>$director</option>";
                                 }
                                 ?>
                             </select>
@@ -87,7 +87,7 @@
                                     if($movie->series == $serie){
                                         $selected = 'selected';
                                     }
-                                    echo "<option value='{$id}' {$selected}>$serie</option>";
+                                    echo "<option value='{$serie}' {$selected}>$serie</option>";
                                 }
                                 ?>
                             </select>
@@ -97,7 +97,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">片商</label>
                         <div class="layui-input-block">
-                            <select name="company" lay-search  lay-filter="parent_id">
+                            <select name="film_companies" lay-search  lay-filter="parent_id">
                                 <?php
                                 foreach ($companies as $id=>$company){
                                     $selected = '';
@@ -129,7 +129,7 @@
                                     if($movie->category == $category){
                                         $selected = 'selected';
                                     }
-                                    echo "<option value='{$id}' {$selected}>$category</option>";
+                                    echo "<option value='{$category}' {$selected}>$category</option>";
                                 }
                                 ?>
                             </select>
@@ -149,7 +149,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">可否下载</label>
                         <div class="layui-input-inline">
-                            <select name="category" lay-search  lay-filter="parent_id">
+                            <select name="is_download" lay-search  lay-filter="parent_id">
                                 <option value="1" <?=$movie->is_download == 1? 'selected':''  ?>>不可下载</option>
                                 <option value="2" <?=$movie->is_download == 2? 'selected':''  ?>>可下载</option>
                             </select>
@@ -159,7 +159,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">含字幕</label>
                         <div class="layui-input-inline">
-                            <select name="category" lay-search  lay-filter="parent_id">
+                            <select name="is_subtitle" lay-search  lay-filter="parent_id">
                                 <option value="1" <?=!$movie->is_subtitle == 1? 'selected':''  ?>>不含字幕</option>
                                 <option value="2" <?=!$movie->is_subtitle == 2? 'selected':''  ?>>含字幕</option>
                             </select>
@@ -173,24 +173,29 @@
                 <blockquote class="layui-elem-quote" style="margin-top: 30px;margin-bottom: 0">演员列表</blockquote>
                 <div id="actors"></div>
 
-                <blockquote class="layui-elem-quote" style="margin-top: 30px;margin-bottom: 0">种子链接</blockquote>
-                <input type="hidden" name="flux_linkage" value="{{$movie->flux_linkage}}}">
+                <blockquote class="layui-elem-quote" style="margin-top: 30px;margin-bottom: 0">磁链编辑</blockquote>
+                <input type="hidden" name="flux_linkage" value="{{$movie->flux_linkage}}">
                 <table class="layui-table" lay-even="" lay-skin="row">
                         <?php $flux_linkage = (array)json_decode($movie->flux_linkage);
 echo <<<EOF
 <thead>
     <tr>
-      <th>名称</th>
-      <th>地址</th>
-      <th>工具</th>
-      <th>数据</th>
-      <th>操作</th>
+        <th>名称</th>
+        <th>地址</th>
+        <th>文件信息</th>
+        <th>更新时间</th>
+        <th>是否高清【填1为是2为否】</th>
+        <th>是否含字幕【填1为是2为否】</th>
+        <th>是否可下载【填1为是2为否】</th>
+        <th>操作</th>
     </tr>
 </thead>
-<tbody>
+<tbody id="linkage_body">
 EOF;
 
                         foreach ($flux_linkage as $key=>$link){
+                           $tm = isset($link->time)?$link->time:'';
+                           $obj = (array)$link;
                             echo <<<EOF
 <tr class="linkage_content" data-key={$key}>
 <td>
@@ -201,19 +206,32 @@ EOF;
                                    class="layui-input">
 </td>
 <td>
- <input type="text" name="linkage_url" data-name="tooltip" value="{$link->tooltip}"
-                                   class="layui-input">
-</td>
-<td>
 <input type="text" name="linkage_tooltip" data-name="meta" value="{$link->meta}"
                                    class="layui-input">
 </td>
+<td>{$tm}</td>
+<td>
+ <input type="text" name="linkage_issmall" data-name="issmall" value="{$obj['is-small']}"
+                                   class="layui-input">
+</td>
+<td>
+ <input type="text" name="linkage_iswarning" data-name="iswarning" value="{$obj['is-warning']}"
+                                   class="layui-input">
+</td>
+<td>
+ <input type="text" name="linkage_url" data-name="tooltip" value="{$link->tooltip}"
+                                   class="layui-input">
+</td>
+
 <td><button type="button" class="layui-btn layui-btn-normal layui-btn-sm delete_linkage"><i class="layui-icon"></i></button></td>
 </tr>
 EOF;
                         }
 echo '</tbody>';
                         ?>
+                    <tfoot>
+                        <tr><td colspan="10"><button id="create_linkage" type="button" class="layui-btn">添加</button></td></tr>
+                    </tfoot>
                 </table>
 
 
@@ -255,7 +273,7 @@ echo '</tbody>';
 
                 <div class="layui-form-item">
                     <div class="layui-input-block">
-                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">确认发布</button>
+                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">确认修改</button>
                         <a  class="layui-btn" href="javascript:history.back()" >返 回</a>
                     </div>
                 </div>
@@ -329,7 +347,51 @@ echo '</tbody>';
         componentSelect('actors',JSON.parse('<?=json_encode($selected_actors);?>'),JSON.parse('<?=json_encode($actors);?>'));
 
         var linkpage = {
-            data:JSON.parse('<?=$movie->flux_linkage?>'),
+            <?php if($flux_linkage){?>
+            data:[<?php foreach ($flux_linkage as $key=>$link){
+                        $obj = (array)$link;
+                        echo '{name:"'.$obj['name'].'",'.
+                         'url:"'.$obj['url'].'",'.
+                         'meta:"'.$obj['meta'].'",'.
+                         'issmall:"'.$obj['is-small'].'",'.
+                         'iswarning:"'.$obj['is-warning'].'",'.
+                         'tooltip:"'.$obj['tooltip'].'"'.
+                         '},';
+                 }?>],
+            <?php }else{?>
+            data:[{name:'',url:'',meta:'',issmall:'',iswarning:'',tooltip:''}],
+        <?php }?>
+            addApply:function(){
+                var html ='<tr class="linkage_content" data-key={$key}>\n' +
+                    '<td>\n' +
+                    '<input type="text" name="linkage_name" data-name="name" \n class="layui-input"></td>\n' +
+                    '<td>\n' +
+                    '<input type="text" name="linkage_url" data-name="url" class="layui-input">\n' +
+                    '</td>\n' +
+                    '<td>\n' +
+                    ' <input type="text" name="linkage_meta" data-name="meta" class="layui-input">\n' +
+                    '</td>\n' +
+                    '<td>\n' +
+                    '</td>\n' +
+                    '<td>\n' +
+                    '<input type="text" name="linkage_issmall" data-name="issmall" class="layui-input">\n' +
+                    '</td>\n' +
+                    '<td>\n' +
+                    '<input type="text" name="linkage_iswarning" data-name="iswarning" class="layui-input">\n' +
+                    '</td>\n' +
+                    '<td>\n' +
+                    '<input type="text" name="linkage_tooltip" data-name="tooltip" class="layui-input">\n' +
+                    '</td>\n' +
+                    '<td><button type="button" class="layui-btn layui-btn-normal layui-btn-sm delete_linkage"><i class="layui-icon"></i></button></td>\n' +
+                    '</tr>';
+                $('#create_linkage').click(function () {
+                    $('#linkage_body').append(html);
+                    linkpage.data.push({name:'',url:'',meta:'',issmall:'',iswarning:'',tooltip:''});
+                    linkpage.rearrange();
+                    linkpage.delApply().upApply();
+                });
+                return this;
+            },
             delApply:function () {
                 $(".delete_linkage").click(function(){
                     var r = confirm("确定删除链接？");
@@ -342,12 +404,15 @@ echo '</tbody>';
                     linkpage.rearrange();
                     $("input[name='flux_linkage']").val(JSON.stringify(linkpage.data).toString());
                 });
+                return this;
             },
             upApply:function(){
                 $("input[name='linkage_name']").change(linkpage.change);
                 $("input[name='linkage_url']").change(linkpage.change);
                 $("input[name='linkage_tooltip']").change(linkpage.change);
                 $("input[name='linkage_meta']").change(linkpage.change);
+                $("input[name='linkage_issmall']").change(linkpage.change);
+                $("input[name='linkage_iswarning']").change(linkpage.change);
                 return this;
             },
             change:function(){
@@ -357,6 +422,7 @@ echo '</tbody>';
                     linkpage.data[index][name] = $(this).val();
                     $("input[name='flux_linkage']").val(JSON.stringify(linkpage.data).toString());
                 }
+                console.log(linkpage.data)
             },
             rearrange:function () {
                 document.querySelectorAll('.linkage_content').forEach(function(element, index, array) {
@@ -364,10 +430,10 @@ echo '</tbody>';
                 });
             }
         };
-        linkpage.delApply();
+        linkpage.addApply().delApply().upApply();
 
         var actor = {
-            data:JSON.parse('<?=$movie->actor?>'),
+            data:JSON.parse('<?=$movie->actor?$movie->actor:'[]'?>'),
             delApply:function () {
                 $(".delete_actor").click(function(){
                     var r = confirm("确定删除演员？");

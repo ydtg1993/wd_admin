@@ -27,6 +27,7 @@ class ConfLogic extends HandleLogic
         CommConf::CONF_FRIENDY_LINK=>'FriendLinkLogic',//友情链接
         CommConf::CONF_PRIVACY_CLAUSE=>'PrivateItemLogic',//隐私条款
         CommConf::CONF_MAGNET_LINK=>'MagnetLinkLogic',//磁链使用教程
+        CommConf::CONF_COMMENT_NOTES=>'CommentNotesLogic',//短评须知
     );
 
 
