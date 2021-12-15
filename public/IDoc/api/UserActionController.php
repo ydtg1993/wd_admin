@@ -96,7 +96,7 @@ class UserActionController
 
 
     /**
-     * @api {Get} /api/user/add/action 用户片单操作【创建、修改、收藏、删除】
+     * @api {Post} /api/user/add/action 用户片单操作【创建、修改、收藏、删除】
      * @apiName 用户片单操作【收藏或者取消收藏】
      * @apiGroup 个人中心相关
      * @apiDescription 用户片单操作【收藏或者取消收藏】
@@ -127,36 +127,6 @@ class UserActionController
      * @apiSuccess {Number} id 收藏ID
      *
      */
-
-    /**
-     * @api {Get} /api/user/add/action 看过操作【取消或者添加】
-     * @apiName 看过操作【取消或者添加】
-     * @apiGroup 个人中心相关
-     * @apiDescription 看过操作【取消或者添加】
-     *
-     * @apiParam {Number} action_type  动作类型传3【必须是3】
-     * @apiParam {Number} mid  操作的影片
-     * @apiParam {Number} status  操作动作【1.添加2.取消】
-     * @apiParam {Number} score  评分1-10【status=1必须传】
-     * @apiParam {String} comment  评论【status=1必须传】
-     *
-     * @apiSuccess {Number} id 操作的ID
-     *
-     */
-
-    /**
-     * @api {Get} /api/user/add/action 用户想看操作【取消或者添加】
-     * @apiName 用户想看操作【取消或者添加】
-     * @apiGroup 个人中心相关
-     * @apiDescription 用户想看操作【取消或者添加】
-     *
-     * @apiParam {Number} action_type  动作类型传2【必须是2】
-     * @apiParam {Number} mid 想看或者取消想看的影片ID
-     * @apiParam {Number} status 操作动作【1.想看、2.取消想看】
-     *
-     * @apiSuccess {Number} id 收藏ID
-     *
-     */
     
     public function add()
     {
@@ -164,7 +134,7 @@ class UserActionController
     }
 
     /**
-     * @api {Get} /api/user/get/action/list 获取用户关注/粉丝列表
+     * @api {Post} /api/user/get/action/list 获取用户关注/粉丝列表
      * @apiName 获取用户关注/粉丝列表
      * @apiGroup 个人中心相关
      * @apiDescription 获取用户关注/粉丝列表
@@ -186,7 +156,7 @@ class UserActionController
      */
 
     /**
-     * @api {Get} /api/user/get/action/list 获取用户收藏演员列表
+     * @api {Post} /api/user/get/action/list 获取用户收藏演员列表
      * @apiName 获取用户收藏演员列表
      * @apiGroup 个人中心相关
      * @apiDescription 获取用户收藏演员列表
@@ -206,7 +176,7 @@ class UserActionController
      */
 
     /**
-     * @api {Get} /api/user/get/action/list 获取用户收藏导演列表
+     * @api {Post} /api/user/get/action/list 获取用户收藏导演列表
      * @apiName 获取用户收藏导演列表
      * @apiGroup 个人中心相关
      * @apiDescription 获取用户收藏导演列表
@@ -225,7 +195,7 @@ class UserActionController
      */
 
     /**
-     * @api {Get} /api/user/get/action/list 获取用户收藏片商列表
+     * @api {Post} /api/user/get/action/list 获取用户收藏片商列表
      * @apiName 获取用户收藏片商列表
      * @apiGroup 个人中心相关
      * @apiDescription 获取用户收藏片商列表
@@ -244,7 +214,7 @@ class UserActionController
      */
 
     /**
-     * @api {Get} /api/user/get/action/list 获取用户收藏番号列表
+     * @api {Post} /api/user/get/action/list 获取用户收藏番号列表
      * @apiName 获取用户收藏番号列表
      * @apiGroup 个人中心相关
      * @apiDescription 获取用户收藏番号列表
@@ -263,7 +233,7 @@ class UserActionController
      */
 
     /**
-     * @api {Get} /api/user/get/action/list 获取用户收藏系列列表
+     * @api {Post} /api/user/get/action/list 获取用户收藏系列列表
      * @apiName 获取用户收藏系列列表
      * @apiGroup 个人中心相关
      * @apiDescription 获取用户收藏系列列表
@@ -282,7 +252,7 @@ class UserActionController
      */
 
     /**
-     * @api {Get} /api/user/get/action/list 获取用户片单列表
+     * @api {Post} /api/user/get/action/list 获取用户片单列表
      * @apiName 获取用户片单列表
      * @apiGroup 个人中心相关
      * @apiDescription 获取用户片单列表
@@ -319,6 +289,7 @@ class UserActionController
      * @apiSuccess {String} createList.intro 片单描述
      * @apiSuccess {Number} createList.is_hot 是否热门【暂时好像没用】
      * @apiSuccess {Number} createList.authority 权限1公开2私有
+     * @apiSuccess {Number} createList.audit 审核状态，1=审核通过；0=待审核；2=审核不通过
      * @apiSuccess {Number} createList.type 类型1.用户创建.2.系统管理员创建、3.用户默认
      * @apiSuccess {String} createList.created_at 创建时间
      * @apiSuccess {Number} createList.a_id 关联ID
@@ -327,7 +298,7 @@ class UserActionController
      */
 
     /**
-     * @api {Get} /api/user/get/action/list 获取用户浏览记录列表
+     * @api {Post} /api/user/get/action/list 获取用户浏览记录列表
      * @apiName 获取用户浏览记录列表
      * @apiGroup 个人中心相关
      * @apiDescription 获取用户浏览记录列表
@@ -358,7 +329,7 @@ class UserActionController
 
 
     /**
-     * @api {Get} /api/user/get/action/list 获取用户想看记录列表
+     * @api {Post} /api/user/get/action/list 获取用户想看记录列表
      * @apiName 获取用户想看记录列表
      * @apiGroup 个人中心相关
      * @apiDescription 获取用户想看记录列表
@@ -391,7 +362,7 @@ class UserActionController
      */
 
     /**
-     * @api {Get} /api/user/get/action/list 获取用户看过记录列表
+     * @api {Post} /api/user/get/action/list 获取用户看过记录列表
      * @apiName 获取用户看过记录列表
      * @apiGroup 个人中心相关
      * @apiDescription 获取用户看过记录列表

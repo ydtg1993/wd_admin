@@ -28,6 +28,7 @@ class PieceListController
      * @apiSuccess {String} intro 描述
      * @apiSuccess {Number} is_hot 是否热门【待定】
      * @apiSuccess {Number} authority 权限1.公开、2.私有
+     * @apiSuccess {Number} audit 审核 1.审核通过、2.审核不通过，0.审核中
      * @apiSuccess {Number} type 片单类型1.用户创建、2.系统/管理员创建3.用户系统默认
      * @apiSuccess {String} created_at 创建时间
      * @apiSuccess {Object} userInfo 创建片单用户信息
@@ -123,6 +124,7 @@ class PieceListController
      * @apiSuccess {String} list.intro 片单描述
      * @apiSuccess {Number} list.is_hot 是否热门【暂时好像没用】
      * @apiSuccess {Number} list.authority 权限1公开2私有
+     * @apiSuccess {Number} list.audit 审核 1审核通过 2审核不通过 3审核中
      * @apiSuccess {Number} list.type 类型1.用户创建.2.系统管理员创建、3.用户默认
      * @apiSuccess {String} list.created_at 创建时间
      * @apiSuccess {String} list.avatar 用户头像

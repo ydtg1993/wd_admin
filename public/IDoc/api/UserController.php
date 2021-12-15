@@ -127,7 +127,7 @@ class UserController extends  BaseController
      * @apiParam {String} token 登录token
      *
      * @apiSuccess {String} number 用户识别码-本平台
-     * @apiSuccess {int} status 账号状态状态 1.正常  2.禁用/黑名单
+     * @apiSuccess {int} status 账号状态状态 1.正常  2.禁言  3.黑名单
      * @apiSuccess {string} phone 用户手机号
      * @apiSuccess {String} email 用户邮箱
      * @apiSuccess {String} nickname 用户昵称
@@ -181,7 +181,7 @@ class UserController extends  BaseController
      * @apiDescription 获取消息通知列表
      *
      * @apiParam {String} token 登录token
-     * @apiParam {int} type 消息类型 1.赞2.踩3.我的评论4.回复我的【5.关注99.公告内容 系统占时无】
+     * @apiParam {int} type 消息类型 1.赞 2.踩 3.我的评论 4.回复我的 5.关注 9. 系统消息【99.公告内容 系统占时无】
      * @apiParam {int} isRead 是否已读 0.未读 1.已读
      * @apiParam {int} page 页码
      * @apiParam {int} pageSize 每页数量
@@ -203,9 +203,9 @@ class UserController extends  BaseController
             "target_source_id": 7512,
             "is_read": 0,//是否已读
             "type": 2,//赞和踩的content格式一样
-            "sender_id": 2,
+            "sender_id": -9,  （系统消息=-9）
             "sender_avatar": 'uploads/avatar/my.jpg',//头像路径
-            "sender_name": "user"//发送人的昵称
+            "sender_name": "system"//发件人(系统消息=-1)
         },
         {
             "content": [
@@ -215,8 +215,8 @@ class UserController extends  BaseController
             "target_source_id": 7513,
             "is_read": 0,
             "type": 4,//回复我的
-            "sender_id": 3,
-            "sender_name": "user"
+            "sender_id": 3,      //用户id
+            "sender_name": "user" //发件人
             },
             {
             "content": [
@@ -259,6 +259,24 @@ class UserController extends  BaseController
     }
 
      */
+
+    /**
+     * @api {Get} /api/user/loginwithcode 通过验证码登陆
+     * @apiName 通过验证码登陆
+     * @apiGroup 用户相关
+     * @apiDescription 通过验证码登陆
+     *
+     * @apiParam {String} emailOrPhone 手机号码或电子邮箱
+     * @apiParam {String} code 验证码
+     *
+     * @apiSuccess {String} token 登录token
+     *
+     *
+     */
+    public function loginwithcode(Request $request)
+    {
+
+    }
 
 
     /**

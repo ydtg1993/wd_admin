@@ -11,8 +11,8 @@ class ConfController extends  BaseController
 {
 
     /**
-     * @api {get} /api/conf/getAllConf 基础信息
-     * @apiName  获取基础信息
+     * @api {get} /api/conf/getAllConf 所有基础信息
+     * @apiName  获取所有基础信息
      * @apiGroup 网站管理
      * @apiDescription 获取后台配置的招商广告等基础信
      *
@@ -56,6 +56,12 @@ class ConfController extends  BaseController
      *           "content": "<p>55566</p>"//内容富文本
      *           }
      *       }
+     *      "comment_notes": {//短评须知 type=7
+     *           "isopen": "1",    //开关 1=开；2=关
+     *           "countdown":"5"   //关闭倒计时（秒）
+     *           "content": "<p>55566</p>"//内容富文本
+     *           }
+     *       }
      *   }
      */
     public function getAllConf()
@@ -65,11 +71,11 @@ class ConfController extends  BaseController
 
 
   /**
-   * @api {get} /api/conf/getOneConf 获取单个信息
-   * @apiName  获取基础信息
+   * @api {get} /api/conf/getOneConf 单个基础信息
+   * @apiName  获取一条基础信息
    * @apiGroup 网站管理
    * @apiDescription 根据类型type获取单个信息 type=1 只返回一部分数据格式如上 example:/api/conf/getOneConf/1
-   * @apiParam {int} type  type 1,2,3,4,5,6
+   * @apiParam {int} type  type 1,2,3,4,5,6,7
    *
    * @apiSuccess {String} code 响应码 200 正确 其他错误 返回值格式参考如上
    * */
@@ -78,6 +84,41 @@ class ConfController extends  BaseController
 
     }
 
+  /**
+   * @api {get} /api/conf/domain  获取后台配置的域名列表
+   * @apiName  获取后台配置的域名列表
+   * @apiGroup 网站管理
+   * @apiDescription 获取后台配置的域名列表
+   *
+   * @apiSuccess {string} code 响应码 200 正确 其他错误 返回值格式参考如上
+   * @apiSuccess {list} data 数据列表
+   *
+   * */
+    public function domain()
+    {
+
+    }
+
+    /**
+   * @api {post} /api/ads/list  获取广告列表
+   * @apiName  获取广告列表
+   * @apiGroup 网站管理
+   * @apiDescription 获取广告列表
+   * @apiParam {String} type  top=顶部位置；left=左对联；right=右对联；foot=底部
+   *
+   * @apiSuccess {String} code 响应码 200 正确 其他错误 返回值格式参考如上
+   * @apiSuccess {list} data 数据列表
+   * @apiSuccess {Number} list.id       广告id
+   * @apiSuccess {String} list.location 广告位
+   * @apiSuccess {String} list.photo    图片
+   * @apiSuccess {String} list.url      链接
+   * @apiSuccess {String} list.is_close 是否可关 1=能关闭；2=不可关
+   *
+   * */
+    public function ads()
+    {
+
+    }
 
 
 }

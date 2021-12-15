@@ -5,7 +5,6 @@
  * Date: 2021/6/16
  * Time: 9:39
  */
-
 class MovieAttributesController
 {
 
@@ -15,7 +14,7 @@ class MovieAttributesController
      * @apiGroup 影片相关
      * @apiDescription 获取演员列表
      *
-     * @apiParam {Number} cid  类别ID【0.全部、1.有码、2.无码、3.欧美】
+     * @apiParam {Number} cid  类别ID【0.全部、1.有码、2.无码、3.欧美、10.国产】
      * @apiParam {Number} page 分页页码
      * @apiParam {Number} pageSize 分页长度
      *
@@ -44,7 +43,7 @@ class MovieAttributesController
      * @apiGroup 影片相关
      * @apiDescription 获取系列列表
      *
-     * @apiParam {Number} cid  类别ID【0.全部、1.有码、2.无码、3.欧美】
+     * @apiParam {Number} cid  类别ID【0.全部、1.有码、2.无码、3.欧美、10.国产】
      * @apiParam {Number} page 分页页码
      * @apiParam {Number} pageSize 分页长度
      *
@@ -70,7 +69,7 @@ class MovieAttributesController
      * @apiGroup 影片相关
      * @apiDescription 获取片商列表
      *
-     * @apiParam {Number} cid  类别ID【0.全部、1.有码、2.无码、3.欧美】
+     * @apiParam {Number} cid  类别ID【0.全部、1.有码、2.无码、3.欧美、10.国产】
      * @apiParam {Number} page 分页页码
      * @apiParam {Number} pageSize 分页长度
      *

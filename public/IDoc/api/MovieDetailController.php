@@ -18,9 +18,23 @@ class MovieDetailController extends  BaseController
      *
      * @apiParam {Number} id  【影片id】
      *
+     * @apiSuccess {String} flux_linkage 磁链说明
+     * @apiSuccess {String} flux_linkage.time 磁链更新时间【必填】
+     * @apiSuccess {String} flux_linkage.name 磁链名称 【必填】
+     * @apiSuccess {String} flux_linkage.meta 磁链描述【必填】
+     * @apiSuccess {String} flux_linkage.url 磁链下载地址【必填】
+     * @apiSuccess {Number} flux_linkage.is-small 1=高清【必填】
+     * @apiSuccess {Number} flux_linkage.is-warning 1=字幕【必填】
+     * @apiSuccess {Number} flux_linkage.tooltip 1=离线下载【必填】
+     * @apiSuccess {Number} flux_linkage.bluray 1=蓝光 【选填】
+     * @apiSuccess {String} flux_linkage.resolution 分辨率 【选填】
+     * @apiSuccess {Number} flux_linkage.size 文件大小 [选填]
+     * @apiSuccess {String} flux_linkage.ext 文件类型 [选填]
+     * @apiSuccess {String} flux_linkage.xt 加密类型 [选填]
+     * @apiSuccess {String} flux_linkage.md5 文件校验码 [选填]
+     * 
      * @apiSuccess {String} code 响应码 200 正确 其他错误
      * @apiSuccessExample  {json} success-example
-     *
     {
     "code": 200,
     "msg": "成功！",
@@ -385,6 +399,7 @@ class MovieDetailController extends  BaseController
      * @apiParam {String} comment  【内容6-255字】
      *
      * @apiSuccess {String} code 响应码 200 正确 其他错误
+     * @apiSuccess {string} warning 当碰到过滤词时，提示的警告
 
      */
     public function reply()
