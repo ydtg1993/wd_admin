@@ -44,5 +44,7 @@ Route::group(['namespace'=>'Api'],function (){
 
     Route::any('listFileUpload', 'ListFileController@upload')->name('api.listFileUpload');
     Route::any('listFileRemove', 'ListFileController@remove')->name('api.listFileRemove');
+
+    Route::any('autoCrop','CropController@index')->name('api.autoCrop');
 });
 

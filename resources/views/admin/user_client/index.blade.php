@@ -102,7 +102,7 @@
 @section('script')
     @can('user_client.index')
         <script>
-            var ids =new Array(); 
+            var ids =new Array();
 
             layui.use(['layer', 'table', 'form'], function () {
                 var $ = layui.jquery;
@@ -127,6 +127,7 @@
                         , {field: 'phone',  title: '手机号码'}
                         , {field: 'created_at', title: '注册时间'}
                         , {field: 'login_time', title: '最近登录'}
+                        , {field: 'avatar', title: '头像'}
                         , {field: 'login_ip', title: '用户最近登录ip'}
                         , {field: 'type', title: '用户类型'}
                         , {field: 'status', title: '用户状态'}
@@ -144,11 +145,18 @@
                             if (item.status === "已禁言") {
                               var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']");
                               tr.css("color","red");
-                            } 
+                            }
                             if (item.status === "已拉黑") {
                               var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']");
                               tr.css("color","#888800");
-                            } 
+                            }
+                        });
+                        $("[data-field='avatar']").children().each(function(){
+                            var val = "<img src={{config('app.url')}}resources/"+$(this).text()+" />";
+                            if($(this).text() == '照片'){
+                                return;
+                            }
+                            $(this).html(val)
                         });
                     }
                 });
@@ -160,18 +168,18 @@
                     if (layEvent === 'lock') {
 
                         //封禁操作
-                        var html = '<div style="margin:20px">' + 
-                                '<p style="margin:10px;">封禁类型：' + 
+                        var html = '<div style="margin:20px">' +
+                                '<p style="margin:10px;">封禁类型：' +
                                     '<input type="radio" name="ty'+ data.id +'" value="2" checked="checked"/>禁言 ' +
-                                    '<input type="radio" name="ty'+ data.id +'" value="3" />拉黑 </p>' + 
+                                    '<input type="radio" name="ty'+ data.id +'" value="3" />拉黑 </p>' +
                                 '<p style="margin:10px;">封禁时间：<select id="unlockday'+data.id+'">'+
                                     '<option value="1">1天</option>' +
                                     '<option value="3">3天</option>' +
                                     '<option value="7">7天</option>' +
                                     '<option value="30">30天</option>' +
                                     '<option value="99999">永久</option>' +
-                                '</select></p>' + 
-                                '<p style="margin:10px;">封禁原因：<textarea id="rk'+ data.id +'" rows="6"></textarea></p>' + 
+                                '</select></p>' +
+                                '<p style="margin:10px;">封禁原因：<textarea id="rk'+ data.id +'" rows="6"></textarea></p>' +
                                 '</div>';
 
                         layer.open({
@@ -261,18 +269,18 @@
                     }
 
                     //封禁操作
-                        var html = '<div style="margin:20px">' + 
-                                '<p style="margin:10px;">封禁类型：' + 
+                        var html = '<div style="margin:20px">' +
+                                '<p style="margin:10px;">封禁类型：' +
                                     '<input type="radio" name="tyall" value="2" checked="checked"/>禁言 ' +
-                                    '<input type="radio" name="tyall" value="3" />拉黑 </p>' + 
+                                    '<input type="radio" name="tyall" value="3" />拉黑 </p>' +
                                 '<p style="margin:10px;">封禁时间：<select id="unlockdayall">'+
                                     '<option value="1">1天</option>' +
                                     '<option value="3">3天</option>' +
                                     '<option value="7">7天</option>' +
                                     '<option value="30">30天</option>' +
                                     '<option value="99999">永久</option>' +
-                                '</select></p>' + 
-                                '<p style="margin:10px;">封禁原因：<textarea id="rkall" rows="6"></textarea></p>' + 
+                                '</select></p>' +
+                                '<p style="margin:10px;">封禁原因：<textarea id="rkall" rows="6"></textarea></p>' +
                                 '</div>';
 
                         layer.open({

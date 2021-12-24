@@ -266,11 +266,17 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
     Route::group(['middleware' => 'permission:movie.movie'], function () {
         Route::any('movie/movie', 'MovieController@index')->name('admin.movie.movie');
         Route::any('movie/movie.scoreList', 'MovieController@scoreList')->name('admin.movie.movie.scoreList');
-        Route::any('movie/movie.commentList', 'MovieController@commentList')->name('admin.movie.movie.commentList');
-        Route::any('movie/movie.commentDel', 'MovieController@commentDel')->name('admin.movie.movie.commentDel');
-        Route::any('movie/movie.commentDestroy', 'MovieController@commentDestroy')->name('admin.movie.movie.commentDestroy');
-        Route::any('movie/movie.commentShow', 'MovieController@commentShow')->name('admin.movie.movie.commentShow');
-        Route::any('movie/movie.commentAudit', 'MovieController@commentAudit')->name('admin.movie.movie.commentAudit');
+
+        Route::any('movie/movie.commentList', 'CommentController@commentList')->name('admin.movie.movie.commentList');
+        Route::any('movie/movie.commentDel', 'CommentController@commentDel')->name('admin.movie.movie.commentDel');
+        Route::any('movie/movie.commentDestroy', 'CommentController@commentDestroy')->name('admin.movie.movie.commentDestroy');
+        Route::any('movie/movie.commentShow', 'CommentController@commentShow')->name('admin.movie.movie.commentShow');
+        Route::any('movie/movie.commentAudit', 'CommentController@commentAudit')->name('admin.movie.movie.commentAudit');
+        Route::any('movie/movie.addComment', 'CommentController@add')->name('admin.movie.movie.addComment');
+        Route::any('movie/movie.commentEdit/{id}', 'CommentController@edit')->name('admin.movie.movie.commentEdit');
+        Route::any('movie/movie.commentReply/{id}', 'CommentController@reply')->name('admin.movie.movie.commentReply');
+        Route::any('movie/movie.addCommentList', 'CommentController@batchAdd')->name('admin.movie.movie.addCommentList');
+        Route::any('movie/movie.commentWorkers', 'CommentController@workers')->name('admin.movie.movie.commentWorkers');
         //批量删除评论
         Route::any('movie/movie.wantSeeList', 'MovieController@wantSeeList')->name('admin.movie.movie.wantSeeList');
         Route::any('movie/movie.sawList', 'MovieController@sawList')->name('admin.movie.movie.sawList');
@@ -406,7 +412,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
     Route::get('domain/lists/data', 'DomainController@data')->name('admin.conf.domain.data');
     Route::post('domain/lists/save', 'DomainController@save')->name('admin.conf.domain.save');
     Route::post('domain/lists/destroy', 'DomainController@del')->name('admin.conf.domain.destroy');
-    
+
     //短评须知
     Route::get('conf/comment_notes', 'ConfController@commentNotesView')->name('admin.conf.comment_notes');
     Route::put('conf/save_comment_notes', 'ConfController@saveCommentNotes')->name('admin.conf.save_comment_notes');
@@ -542,7 +548,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
 
     Route::get('userClient/filter/{id}/edit', 'FilterController@edit')->name('admin.user_client.filter.edit');
     Route::post('userClient/filter/update', 'FilterController@update')->name('admin.user_client.filter.update');
-    
+
     Route::any('userClient/filter/del', 'FilterController@destroy')->name('admin.user_client.filter.del');
 });
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => []], function () {
