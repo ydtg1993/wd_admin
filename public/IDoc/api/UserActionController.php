@@ -127,7 +127,7 @@ class UserActionController
      * @apiSuccess {Number} id 收藏ID
      *
      */
-    
+
     public function add()
     {
 
@@ -568,6 +568,23 @@ class UserActionController
      *
      */
     public function addCountActor( )
+    {
+
+    }
+
+    /**
+     * @api {Get} /api/user/give_score 电影点星评分
+     * @apiName 电影点星评分
+     * @apiGroup 个人中心相关
+     * @apiDescription 电影点星评分
+     *
+     * @apiParam {Number} mid  影片ID
+     * @apiParam {Number} score  评分1-10
+     *
+     * @apiSuccess {Number} score 当前影片分数
+     *
+     */
+    public function giveScore()
     {
 
     }

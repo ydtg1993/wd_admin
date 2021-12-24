@@ -22,7 +22,7 @@ class BatchComment extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = '评论上传评论入库';
 
     /**
      * Create a new command instance.

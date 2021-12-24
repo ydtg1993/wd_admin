@@ -255,6 +255,7 @@ echo '</tbody>';
                         <div class="file-loading">
                             <input id="small_cover" name="small_cover" type="file">
                         </div>
+                        <button type="button" id="auto_crop">系统切图</button>
                     </div>
 
                     <div class="layui-col-md4">
@@ -295,7 +296,7 @@ echo '</tbody>';
                 ,type: 'datetime'
             });
 
-        });       
+        });
 
         function componentSelect(name,selected,options) {
             function tagSelect() {
@@ -448,5 +449,24 @@ echo '</tbody>';
         addFileInput("{{$movie->id}}",'trailer','<?=$movie->trailer?>',1,'video');
 
         addFileInput("{{$movie->id}}",'map',JSON.parse('<?=$movie->map?>'),20,'image');
+
+        $('#auto_crop').click(function () {
+            $.ajax({
+                url: "{{ route('api.autoCrop') }}",
+                type:'POST',
+                data:{id:"{{$movie->id}}"},
+                beforeSend:function(){
+                    alert('正在处理裁剪图...');
+                },
+                success:function (res) {
+                    console.log(res);
+                    if(res.code != 0){
+                        alert(res.msg);
+                    }else {
+                        window.location.reload();
+                    }
+                }
+            })
+        });
     });
 </script>
