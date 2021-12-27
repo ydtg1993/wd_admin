@@ -459,11 +459,17 @@ echo '</tbody>';
                     alert('正在处理裁剪图...');
                 },
                 success:function (res) {
-                    console.log(res);
                     if(res.code != 0){
                         alert(res.msg);
                     }else {
-                        window.location.reload();
+                        //window.location.reload();
+                        var img = '<?php echo e(config('app.url')); ?>resources/' + res.msg;
+                        var html = "<div class=\"file-preview-frame krajee-default  file-preview-initial file-sortable kv-preview-thumb\" id=\"thumb-big_cove-init-0\" data-fileindex=\"init-0\" data-fileid=\"thumb-big_cove-init-0\" data-template=\"image\">" +
+                            "<div class=\"kv-file-content\">\n" +
+                            "<img src=\""+img+"\" class=\"file-preview-image kv-preview-data\" title=\""+res+"\" alt=\""+res+"\" style=\"width: auto; height: auto; max-width: 100%; max-height: 100%;\">\n" +
+                            "</div></div>";
+                        var dom = $('#small_cover').parent().parent().parent().parent().find(".file-preview  .clearfix");
+                        dom.html(html);
                     }
                 }
             })
