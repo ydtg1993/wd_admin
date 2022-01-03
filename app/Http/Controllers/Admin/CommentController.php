@@ -286,7 +286,7 @@ class CommentController extends Controller
 
     public function workers(Request $request)
     {
-        $file = resource_path('views/admin/comment/workers');
+        $file = public_path('/workers');
         if(!is_file($file)){
             file_put_contents($file,'');
         }
