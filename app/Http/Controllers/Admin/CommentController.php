@@ -287,6 +287,9 @@ class CommentController extends Controller
     public function workers(Request $request)
     {
         $file = resource_path('views/admin/comment/workers');
+        if(!is_file($file)){
+            file_put_contents($file,'');
+        }
         $ids = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         if ($request->method() == 'GET') {
             $workers = [];
