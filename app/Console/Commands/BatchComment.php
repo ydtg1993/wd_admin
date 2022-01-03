@@ -7,6 +7,7 @@ use App\Models\MovieComment;
 use App\Models\UserClient;
 use App\Models\BatchComment as BatchCommentModel;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class BatchComment extends Command
 {
@@ -45,7 +46,7 @@ class BatchComment extends Command
         foreach ($batches as $batch) {
             $sheet_list = (array)json_decode($batch->data,true);
             /*限定账户*/
-            $file = resource_path('views/admin/comment/workers');
+            $file = public_path('/comment_workers');
             $ids = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
             $workers = [];
             $users = UserClient::whereIn('id', $ids)->get();
@@ -115,12 +116,19 @@ class BatchComment extends Command
                 ];
             }
             try {
-                MovieComment::insert($insert_data);
+                DB::beginTransaction();
+                $comment_ids = [];
+                foreach ($insert_data as $data) {
+                    $comment_ids[] = MovieComment::insertGetId($data);
+                }
+                BatchCommentModel::where('id',$batch->id)->update(['status'=>1,'comment_ids'=>json_encode($comment_ids)]);
             }catch (\Exception $e){
+                DB::rollBack();
                 BatchCommentModel::where('id',$batch->id)->update(['msg'=>(string)$e->getMessage(),'status'=>2]);
                 return;
             }
-            BatchCommentModel::where('id',$batch->id)->update(['status'=>1]);
+            DB::commit();
+            return;
         }
     }
 }
