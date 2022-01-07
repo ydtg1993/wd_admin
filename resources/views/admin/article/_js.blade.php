@@ -1,4 +1,12 @@
+@section('script')
 
+    <script src="/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace( 'container', {
+                    language: 'zh-cn',
+                } );
+    </script>
+    
 <script>
     layui.use(['upload','layer','element','form'],function () {
         var $ = layui.jquery;
@@ -26,14 +34,4 @@
         })
 
     })
-</script>
-<link href="/baidu-editor/themes/default/css/umeditor.min.css" type="text/css" rel="stylesheet">
-<script src="/baidu-editor/third-party/jquery.min.js"></script>
-<!-- 配置文件 -->
-<script type="text/javascript" src="/baidu-editor/umeditor.config.js"></script>
-<!-- 编辑器源码文件 -->
-<script type="text/javascript" src="/baidu-editor/umeditor.min.js"></script>
-<!-- 实例化编辑器 -->
-<script type="text/javascript">
-    var ue = UM.getEditor('container');
 </script>

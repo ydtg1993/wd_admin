@@ -19,4 +19,10 @@
 
         })
     </script>
+    <script src="/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace( 'container', {
+                    language: 'zh-cn',
+                } );
+    </script>
 @endsection

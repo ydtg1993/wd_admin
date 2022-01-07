@@ -1,5 +1,4 @@
 @extends('admin.base')
-
 @section('content')
     <div class="layui-card">
         <div class="layui-card-header layuiadmin-card-header-auto">
@@ -19,5 +18,11 @@
         layui.use(['element','form'],function () {
 
         })
+    </script>
+    <script src="/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace( 'container', {
+                    language: 'zh-cn',
+                } );
     </script>
 @endsection

@@ -11,10 +11,7 @@
 <input type="hidden" name="type" value="1" >
 
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">公告内容</label>
-    <div class="layui-input-inline">
-        <textarea name="content"  placeholder="请输入公告内容" class="layui-textarea">{{ $announcement->content ?? '' }}</textarea>
-    </div>
+    <textarea id="container" name="content"  placeholder="请输入公告内容" style="width:90%">{{ $announcement->content ?? '' }}</textarea>
 </div>
 
 <div class="layui-form-item">
@@ -37,6 +34,6 @@
 <div class="layui-form-item">
     <div class="layui-input-block">
         <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">确 认</button>
-        <a  class="layui-btn" href="{{route('admin.content.index')}}" >返 回</a>
+        <a  class="layui-btn" href="{{route('admin.top.index')}}" >返 回</a>
     </div>
 </div>

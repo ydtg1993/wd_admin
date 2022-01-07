@@ -10,27 +10,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="/static/admin/layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/static/admin/layuiadmin/style/admin.css" media="all">
-    <!-- 样式文件 -->
-    <link rel="stylesheet" href="/baidu-editor/themes/default/css/umeditor.css">
     <!-- 引用jquery -->
     <script src="/baidu-editor/third-party/jquery.min.js"></script>
-    <!-- 配置文件 -->
-    <script type="text/javascript" src="/baidu-editor/umeditor.config.js"></script>
-    <!-- 编辑器源码文件 -->
-    <script type="text/javascript" src="/baidu-editor/umeditor.js"></script>
-    <!-- 语言包文件 -->
-    <script type="text/javascript" src="/baidu-editor/lang/zh-cn/zh-cn.js"></script>
-    <!-- 实例化编辑器代码 -->
-    <script type="text/javascript">
-        $(function(){
-            window.um = UM.getEditor('container', {
-                /* 传入配置参数,可配参数列表看umeditor.config.js */
-                toolbar: ['undo redo | bold italic underline']
-            });
-        });
-    </script>
-
-
 </head>
 <body>
 

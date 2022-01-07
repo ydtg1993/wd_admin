@@ -25,9 +25,9 @@
                 </div>
                 <div style="padding-left:100px">
                     <!-- 加载编辑器的容器 -->
-                    <script id="container" name="content" type="text/plain" style="width:600px;height:200px;">
-
-                    </script>
+                    <textarea id="container" name="content" type="text/plain" style="width:600px;height:200px;">
+                        {{$dataInfo['content']}}
+                    </textarea>
                 </div>
                 @can('conf.private_item.edit')
                     <div class="layui-form-item" style="padding-left:230px;padding-top: 20px">
@@ -48,14 +48,11 @@
         layui.use(['element','form'],function () {
 
         })
-        var ue = UM.getEditor("container");
-        //对编辑器的操作最好在编辑器ready之后再做
-        ue.ready(function(){
-            var content = "{!! $dataInfo['content'] !!}";
-            //设置编辑器的内容
-            ue.setContent(content);
-        });
-
-
+    </script>
+    <script src="/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace( 'container', {
+                    language: 'zh-cn',
+                } );
     </script>
 @endsection
