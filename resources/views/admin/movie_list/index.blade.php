@@ -79,7 +79,7 @@
 @endsection
 
 @section('script')
-    @can('system.role')
+
         <script>
             layui.use(['layer', 'table', 'form','laydate'], function () {
                 var $ = layui.jquery;
@@ -174,16 +174,16 @@
                     if (layEvent === 'audit') {
                         var img = "{{config('app.url')}}/resources/" + data.cover;
                         //审核弹框
-                        var html = '<div style="margin:20px">' + 
-                                '<p><input type="hidden" name="id" value="'+ data.id +'"/></p>' + 
-                                '<p style="margin:10px;">名称：<input type="text" value="'+ data.name +'"/></p>' + 
-                                '<p style="margin:10px;">简介：<input type="text" value="'+ data.intro +'"/></p>' + 
-                                '<p style="margin:10px;">用户：<input type="text" value="'+ data.nickname +'"/></p>' + 
-                                '<p style="margin:10px;">封面：<img src="'+ img +'" width="100" height="100"></p>' + 
-                                '<p style="margin:10px;">备注：<textarea id="rk'+ data.id +'">'+ data.remarks +'</textarea></p>' + 
+                        var html = '<div style="margin:20px">' +
+                                '<p><input type="hidden" name="id" value="'+ data.id +'"/></p>' +
+                                '<p style="margin:10px;">名称：<input type="text" value="'+ data.name +'"/></p>' +
+                                '<p style="margin:10px;">简介：<input type="text" value="'+ data.intro +'"/></p>' +
+                                '<p style="margin:10px;">用户：<input type="text" value="'+ data.nickname +'"/></p>' +
+                                '<p style="margin:10px;">封面：<img src="'+ img +'" width="100" height="100"></p>' +
+                                '<p style="margin:10px;">备注：<textarea id="rk'+ data.id +'">'+ data.remarks +'</textarea></p>' +
                                 '<p style="margin:10px;">审核：<input type="radio" name="ad'+ data.id +'" value="1" />通过 ' +
-                                '<input type="radio" name="ad'+ data.id +'" value="2" />不通过 ' + 
-                                '<input type="radio" name="ad'+ data.id +'" value="0" />待审核</p>' + 
+                                '<input type="radio" name="ad'+ data.id +'" value="2" />不通过 ' +
+                                '<input type="radio" name="ad'+ data.id +'" value="0" />待审核</p>' +
                                 '</div>';
                         layer.open({
                             type: 1,
@@ -247,5 +247,5 @@
                 });
             })
         </script>
-    @endcan
+
 @endsection
