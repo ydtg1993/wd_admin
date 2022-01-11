@@ -337,6 +337,15 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::any('movie/label/list', 'MovieLabelController@list')->name('admin.movie.label.list');
         Route::any('movie/label/create', 'MovieLabelController@create')->name('admin.movie.label.create')->middleware('permission:movie.label.create');
         Route::any('movie/label/{id}/edit', 'MovieLabelController@edit')->name('admin.movie.label.edit')->middleware('permission:movie.label.edit');
+        //子标签
+        Route::any('movie/label/min', 'MovieLabelController@index_min')->name('admin.movie.label.min');
+        Route::any('movie/label/min/create', 'MovieLabelController@create_min')->name('admin.movie.label.min.create');
+        Route::any('movie/label/min/{id}/edit', 'MovieLabelController@edit_min')->name('admin.movie.label.min.edit');
+        //标签分类
+        Route::any('movie/label/class', 'MovieLabelClassController@index')->name('admin.movie.label.class');
+        Route::any('movie/label/class/{id}/edit', 'MovieLabelClassController@edit')->name('admin.movie.label.class.edit');
+        Route::any('movie/label/class/create', 'MovieLabelClassController@create')->name('admin.movie.label.class.create');
+        Route::any('movie/label/class/destroy','MovieLabelClassController@destroy')->name('admin.movie.label.class.destroy');
     });
     //演员
     Route::group(['middleware' => 'permission:movie.actor'], function () {

@@ -126,7 +126,7 @@ class MovieController extends Controller
     }
 
     /**
-     * 删除影片 
+     * 删除影片
      */
     public function destroy(Request $request)
     {
@@ -157,7 +157,7 @@ class MovieController extends Controller
             //删除影片浏览记录表
             DB::table('movie_log')->whereIn('mid',$ids)->delete();
             //影片评论表
-            DB::table('movie_comment')->whereIn('mid',$ids)->delete();            
+            DB::table('movie_comment')->whereIn('mid',$ids)->delete();
             DB::commit();
             return Response::json(['code'=>0,'msg'=>'删除成功']);
         }catch (\Exception $exception){
@@ -167,7 +167,7 @@ class MovieController extends Controller
     }
 
     /**
-     * 上架影片 
+     * 上架影片
      */
     public function up(Request $request)
     {
@@ -179,7 +179,7 @@ class MovieController extends Controller
     }
 
     /**
-     * 下架影片 
+     * 下架影片
      */
     public function down(Request $request)
     {
@@ -477,17 +477,17 @@ class MovieController extends Controller
                     if(isset($v['issmall'])){
                         $arr['is-small'] = intval($v['issmall']);
                     }
-                    
+
                     if(isset($v['is-warning'])){
                         $arr['is-warning'] = intval($v['is-warning']);
                     }
                     if(isset($v['iswarning'])){
                         $arr['is-warning'] = intval($v['iswarning']);
                     }
-                    
+
                     $tempFlux_linkage[] = $arr;
                 }
-                
+
             }
             $flux_linkage = $tempFlux_linkage;
         }
@@ -621,123 +621,6 @@ class MovieController extends Controller
             'data' => $res->items(),
         ];
         return Response::json($data);
-    }
-
-    public function commentList(Request $request)
-    {
-        if ($request->method() == 'GET') {
-            return View::make('admin.movie.commentList');
-        }
-
-        $model = MovieComment::query();
-        $date = explode('~',$request->input('date'));
-        $model = $model->where('movie_comment.status','>', 0);//1是正常
-        if(isset($date[0]) && isset($date[1])){
-            $model = $model->whereBetween('movie.release_time',[trim($date[0]),trim($date[1])]);
-        }
-        if($request->input('number')){
-            $model = $model->where('movie.number', $request->input('number'));
-        }
-        if($request->input('nickname')){
-            $model->whereRaw('(user_client.nickname = \''.$request->input('nickname').'\' or movie_comment.nickname = \''.$request->input('nickname').'\')');
-        }
-        if(!is_null($request->input('audit')) && $request->input('audit')!=='')
-        {
-            $model = $model->where('movie_comment.audit', $request->input('audit'));
-        }
-        if(!is_null($request->input('source_type')) && $request->input('source_type')!=='')
-        {
-            $model = $model->where('movie_comment.source_type', $request->input('source_type'));
-        }
-        
-        $res = $model->orderBy('movie_comment.id', 'DESC')
-            ->leftJoin('user_client', 'user_client.id', '=', 'movie_comment.uid')
-            ->leftJoin('movie', 'movie.id', '=', 'movie_comment.mid')
-            ->select('movie_comment.id', 'movie_comment.comment_time',
-                'movie.number', 'movie.name as movie_name', 'movie_comment.comment as comment',
-                'user_client.nickname as nickname','movie_comment.nickname as cnickname','movie_comment.source_type as source_type','movie_comment.uid as uid','movie_comment.audit as audit','movie_comment.status as status')
-            ->paginate($request->get('limit', 30));
-
-        foreach ($res as &$val)
-        {
-            $val->nickname = ($val->nickname??($val->cnickname))??'';
-            $val->source_type = MovieComment::COMMENT_SORT_TYPE[$val->source_type]??'未知';
-            //$val->nickname = $val->nickname .((($val->uid??0) <= 0)?('['.$val->source_type.']'):('[uid:'.($val->uid??0).']'));
-            switch($val->audit)
-            {
-                case 0:
-                    $val->audit = '待审核';
-                    break;
-                case 1:
-                    $val->audit = '正常';
-                    break;
-                case -1:
-                    $val->audit = '审核不通过';
-                    break;
-            }
-            if($val->status==1)
-            {
-                $val->status = '显示';
-            }else{
-                $val->status = '隐藏';
-            }
-        }
-
-        $data = [
-            'code' => 0,
-            'msg' => '正在请求中...',
-            'count' => $res->total(),
-            'data' => $res->items(),
-        ];
-        return Response::json($data);
-    }
-
-    public function commentDel(Request $request)
-    {
-        MovieComment::where('id',$request->input('id')??0)->update(['status'=>2]);
-        return Redirect::to(URL::route('admin.movie.movie.commentList'))->with(['success' => '隐藏成功']);
-    }
-
-    /**
-     * 删除评论
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function commentDestroy(Request $request)
-    {
-        $ids = $request->input('ids');
-        if (!is_array($ids) || empty($ids)){
-            return Response::json(['code'=>1,'msg'=>'请选择隐藏项']);
-        }
-        if(count($ids) <= 0)
-        {
-            return Response::json(['code'=>1,'msg'=>'请选择隐藏项']);
-        }
-        try{
-            MovieComment::whereIn('id',$ids)->update(['status'=>2]);
-            return Response::json(['code'=>0,'msg'=>'隐藏成功']);
-        }catch (\Exception $exception){
-            return Response::json(['code'=>1,'msg'=>'隐藏失败']);
-        }
-    }
-
-    public function commentShow(Request $request)
-    {
-        MovieComment::where('id',$request->input('id')??0)->update(['status'=>1]);
-        return Response::json(['code'=>0,'msg'=>'回复显示成功']);
-    }
-
-    /**
-     * 审核评论
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function commentAudit(Request $request)
-    {
-        $id = $request->input('id');
-        $status = $request->input('status');
-        MovieComment::where('id',$id)->update(['audit'=>$status]);
-        return Response::json(['code'=>0,'msg'=>'操作成功']);
     }
 
     public function wantSeeList(Request $request)

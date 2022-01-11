@@ -17,7 +17,7 @@ class Permission extends \Spatie\Permission\Models\Permission
     //子权限
     public function childs()
     {
-        return $this->hasMany('App\Models\Permission','parent_id','id');
+        return $this->hasMany('App\Models\Permission','parent_id','id')->orderBy('sort', 'asc');
     }
 
     //所有子权限递归

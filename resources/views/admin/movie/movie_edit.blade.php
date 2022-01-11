@@ -255,6 +255,7 @@ echo '</tbody>';
                         <div class="file-loading">
                             <input id="small_cover" name="small_cover" type="file">
                         </div>
+                        <button type="button" id="auto_crop">系统切图</button>
                     </div>
 
                     <div class="layui-col-md4">
@@ -295,7 +296,7 @@ echo '</tbody>';
                 ,type: 'datetime'
             });
 
-        });       
+        });
 
         function componentSelect(name,selected,options) {
             function tagSelect() {
@@ -448,5 +449,30 @@ echo '</tbody>';
         addFileInput("{{$movie->id}}",'trailer','<?=$movie->trailer?>',1,'video');
 
         addFileInput("{{$movie->id}}",'map',JSON.parse('<?=$movie->map?>'),20,'image');
+
+        $('#auto_crop').click(function () {
+            $.ajax({
+                url: "{{ route('api.autoCrop') }}",
+                type:'POST',
+                data:{id:"{{$movie->id}}"},
+                beforeSend:function(){
+                    alert('正在处理裁剪图...');
+                },
+                success:function (res) {
+                    if(res.code != 0){
+                        alert(res.msg);
+                    }else {
+                        //window.location.reload();
+                        var img = '<?php echo e(config('app.url')); ?>resources/' + res.msg;
+                        var html = "<div class=\"file-preview-frame krajee-default  file-preview-initial file-sortable kv-preview-thumb\" id=\"thumb-big_cove-init-0\" data-fileindex=\"init-0\" data-fileid=\"thumb-big_cove-init-0\" data-template=\"image\">" +
+                            "<div class=\"kv-file-content\">\n" +
+                            "<img src=\""+img+"\" class=\"file-preview-image kv-preview-data\" title=\""+res+"\" alt=\""+res+"\" style=\"width: auto; height: auto; max-width: 100%; max-height: 100%;\">\n" +
+                            "</div></div>";
+                        var dom = $('#small_cover').parent().parent().parent().parent().find(".file-preview  .clearfix");
+                        dom.html(html);
+                    }
+                }
+            })
+        });
     });
 </script>

@@ -14,10 +14,10 @@ class MovieLabel extends Model
      * 写入一条数据
      * @param   string  $name   名称
      */
-    public static function create($name = '',$status = 1,$cid = 0)
+    public static function create($name = '',$sort = 0,$cid = 0)
     {
         //写入数据表
-        $da = ['name'=>$name, 'status'=>$status, 'cid'=>$cid];
+        $da = ['name'=>$name, 'sort'=>$sort, 'cid'=>$cid];
         $lid = DB::table('movie_label')->insertGetId($da);
 
         if($lid > 0)
@@ -27,6 +27,107 @@ class MovieLabel extends Model
             RedisCache::addSet('movie_label',$lid,$text);
         }
 
+        //更新数据，清除下缓存
+        RedisCache::delKey('label_lists');
+
         return $lid;
     }
+
+    /**
+     * 更新标签数据 
+    */
+    public static function edit($data,$id)
+    {
+        //更新
+        self::where('id', $id)->update(['name' => $data['name'], 'sort' => $data['sort']]);
+
+        //写入缓存
+        $text = base64_encode(trim($data['name']));
+        RedisCache::addSet('movie_label',$id,$text);
+    }
+
+    //更新子标签所属的父标签
+    public static function childrenEditParent($da,$lid)
+    {
+        foreach($da as $v)
+        {
+            self::where('id', $v)->update(['cid' => $lid]);
+        }
+    }
+
+    //计算父标签下级数量
+    public static function countChildren($lid=0)
+    {
+        $total = self::where('cid', $lid)->count();
+        self::where('id',$lid)->update(['item_num'=>$total]);
+    }
+
+    //不联表的情况下，读取父标签
+    public function listForName($name = '',$offset=0,$limit=20)
+    {
+        $wh = 'cid = 0 and status=1';
+        if($name){
+            $wh = $wh." and name like '".$name."%' ";
+        }
+        $res = DB::select("select id,name,item_num,sort,created_at,0 as cids from ".$this->table." where ".$wh." order by sort asc,id desc limit ".$offset.",".$limit.";");
+        return $res;
+    }
+
+    /**
+     * 不联表的情况下，读取父标签
+     */
+    public function countForName($name='')
+    {
+        $count = 0;
+        $wh = 'cid = 0 and status=1';
+        if($name){
+            $wh = $wh." and name like '".$name."%' ";
+        }
+        $res = DB::select("select count(0) as nums from ".$this->table." where ".$wh.";");
+
+        if($res && isset($res[0]))
+        {
+            $count = $res[0]->nums;
+        }
+        return $count;
+    } 
+
+    /**
+     * 根据分类id读取顶级列表 
+    */
+    public function listForCid($name= '',$cid=0,$offset=0,$limit=20)
+    {
+        $wh = 'L.cid = 0 and L.status=1';
+        if($name){
+            $wh = $wh." and L.name like '".$name."%' ";
+        }
+        if($cid>0){
+            $wh = $wh." and A.cid = ".$cid;
+        }
+        $res = DB::select("select L.id,L.name,L.item_num,L.sort,L.created_at,GROUP_CONCAT(A.cid) as cids from ".$this->table." as L join movie_label_category_associate as A on L.id=A.lid where ".$wh." group by A.lid order by L.sort asc,L.id desc limit ".$offset.",".$limit.";");
+
+        return $res;
+    }
+
+    /**
+     * 根据分类id读取顶级数量
+     */
+    public function countForCid($name='',$cid=0)
+    {
+        $count = 0;
+        $wh = 'L.cid = 0 and L.status=1';
+        if($name){
+            $wh = $wh." and L.name like '".$name."%' ";
+        }
+        if($cid>0){
+            $wh = $wh." and A.cid = ".$cid;
+        }
+        $res = DB::select("select count(distinct A.lid) as nums from ".$this->table." L join movie_label_category_associate A on L.id=A.lid where ".$wh.";");
+
+        if($res && isset($res[0]))
+        {
+            $count = $res[0]->nums;
+        }
+        return $count;
+    }   
 }
