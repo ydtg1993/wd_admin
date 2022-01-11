@@ -36,10 +36,6 @@ class CommentController extends Controller
     public function commentList(Request $request)
     {
         if ($request->method() == 'GET') {
-            $file = public_path('/comment_workers');
-            if(!is_file($file)){
-                file_put_contents($file,'');
-            }
             return View::make('admin.comment.commentList');
         }
 
@@ -150,7 +146,7 @@ class CommentController extends Controller
 
     public function add(Request $request)
     {
-        $file = public_path('/comment_workers');
+        $file = resource_path('views/admin/comment/workers');
         $ids = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         $workers = [];
         if (!empty($ids)) {
@@ -176,7 +172,7 @@ class CommentController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $file = public_path('/comment_workers');
+        $file = resource_path('views/admin/comment/workers');
         $ids = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         $workers = [];
         if (!empty($ids)) {
@@ -210,7 +206,7 @@ class CommentController extends Controller
 
     public function reply(Request $request, $id)
     {
-        $file = public_path('/comment_workers');
+        $file = resource_path('views/admin/comment/workers');
         $ids = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         $workers = [];
         if (!empty($ids)) {
@@ -290,7 +286,7 @@ class CommentController extends Controller
 
     public function workers(Request $request)
     {
-        $file = public_path('/comment_workers');
+        $file = resource_path('views/admin/comment/workers');
         $ids = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         if ($request->method() == 'GET') {
             $workers = [];

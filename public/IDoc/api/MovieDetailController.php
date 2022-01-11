@@ -32,7 +32,7 @@ class MovieDetailController extends  BaseController
      * @apiSuccess {String} flux_linkage.ext 文件类型 [选填]
      * @apiSuccess {String} flux_linkage.xt 加密类型 [选填]
      * @apiSuccess {String} flux_linkage.md5 文件校验码 [选填]
-     *
+     * 
      * @apiSuccess {String} code 响应码 200 正确 其他错误
      * @apiSuccessExample  {json} success-example
     {
@@ -426,28 +426,5 @@ class MovieDetailController extends  BaseController
 
     }
 
-    /**
-     * @api {Post} /api/movie/my_score 我的评分
-     * @apiName 我的评分
-     * @apiGroup 影片
-     * @apiDescription 我对影片的评分
-     *
-     * @apiParam {Number} id  【影片id】
-     *
-     *
-     * @apiSuccess {String} code 响应码 200 正确 其他错误
-     * @apiSuccessExample  {json} success-example
-     *
-    {
-    "code": 200,
-    "msg": "成功！",
-    "data": {
-        "score":5
-    }
-    }
-     */
-    public function myScore()
-    {
 
-    }
 }

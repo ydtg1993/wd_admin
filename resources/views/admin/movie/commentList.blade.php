@@ -80,7 +80,7 @@
 @endsection
 
 @section('script')
-
+    @can('system.role')
         <script>
             layui.use(['layer', 'table', 'form','laydate'], function () {
                 var $ = layui.jquery;
@@ -123,7 +123,7 @@
                             if (item.status == '显示') {
                               var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']");
                               tr.find("[lay-event='show']").css("display","none");
-                            }
+                            } 
                             if (item.status == '隐藏') {
                               var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']");
                               tr.find("[lay-event='del']").css("display","none");
@@ -131,7 +131,7 @@
                             if (item.audit =="正常") {
                               var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']");
                               tr.find("[lay-event='audit']").css("display","none");
-                            }
+                            } 
                         });
 
                     }
@@ -142,7 +142,7 @@
                 table.on('tool(dataTable)', function (obj) { //注：tool是工具条事件名，dataTable是table原始容器的属性 lay-filter="对应的值"
                     var data = obj.data //获得当前行数据
                         , layEvent = obj.event; //获得 lay-event 对应的值
-
+                        
                     if (layEvent === 'show') {
                         layer.confirm('需要恢复显示吗 '+data.id, function(index){
                             $.ajax({
@@ -186,21 +186,21 @@
                             layer.close(index);
                         });
                     }
-
+                    
                     if (layEvent === 'lock') {
                         //封禁操作
-                        var html = '<div style="margin:20px">' +
-                                '<p style="margin:10px;">封禁类型：' +
+                        var html = '<div style="margin:20px">' + 
+                                '<p style="margin:10px;">封禁类型：' + 
                                     '<input type="radio" name="ty'+ data.id +'" value="2" checked="checked"/>禁言 ' +
-                                    '<input type="radio" name="ty'+ data.id +'" value="3" />拉黑 </p>' +
+                                    '<input type="radio" name="ty'+ data.id +'" value="3" />拉黑 </p>' + 
                                 '<p style="margin:10px;">封禁时间：<select id="unlockday'+data.id+'">'+
                                     '<option value="1">1天</option>' +
                                     '<option value="3">3天</option>' +
                                     '<option value="7">7天</option>' +
                                     '<option value="30">30天</option>' +
                                     '<option value="99999">永久</option>' +
-                                '</select></p>' +
-                                '<p style="margin:10px;">封禁原因：<textarea id="rk'+ data.id +'" rows="6"></textarea></p>' +
+                                '</select></p>' + 
+                                '<p style="margin:10px;">封禁原因：<textarea id="rk'+ data.id +'" rows="6"></textarea></p>' + 
                                 '</div>';
 
                         layer.open({
@@ -245,14 +245,14 @@
                     if (layEvent === 'audit') {
                         var img = "{{config('app.url')}}/resources/" + data.cover;
                         //审核弹框
-                        var html = '<div style="margin:20px">' +
-                                '<p style="margin:10px;">影片番号：<input type="text" value="'+ data.number +'" readonly="readonly"/></p>' +
-                                '<p style="margin:10px;">影片：<input type="text" value="'+ data.movie_name +'" readonly="readonly"/></p>' +
-                                '<p style="margin:10px;">用户名：<input type="text" value="'+ data.nickname +'" readonly="readonly"/></p>' +
-                                '<p style="margin:10px;">评论记录：<textarea rows="6">'+ data.comment +'</textarea></p>' +
+                        var html = '<div style="margin:20px">' + 
+                                '<p style="margin:10px;">影片番号：<input type="text" value="'+ data.number +'" readonly="readonly"/></p>' + 
+                                '<p style="margin:10px;">影片：<input type="text" value="'+ data.movie_name +'" readonly="readonly"/></p>' + 
+                                '<p style="margin:10px;">用户名：<input type="text" value="'+ data.nickname +'" readonly="readonly"/></p>' + 
+                                '<p style="margin:10px;">评论记录：<textarea rows="6">'+ data.comment +'</textarea></p>' + 
                                 '<p style="margin:10px;">审核：<input type="radio" name="ad'+ data.id +'" value="1" checked/>通过 ' +
-                                '<input type="radio" name="ad'+ data.id +'" value="-1" />不通过 ' +
-                                '<input type="radio" name="ad'+ data.id +'" value="0" />取消</p>' +
+                                '<input type="radio" name="ad'+ data.id +'" value="-1" />不通过 ' + 
+                                '<input type="radio" name="ad'+ data.id +'" value="0" />取消</p>' + 
                                 '</div>';
                         layer.open({
                             type: 1,
@@ -348,5 +348,5 @@
                 });
             })
         </script>
-
+    @endcan
 @endsection

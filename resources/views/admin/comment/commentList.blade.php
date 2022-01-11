@@ -89,7 +89,7 @@
 @endsection
 
 @section('script')
-
+    @can('system.role')
         <script>
             $('#create').click(function () {
                 location.href = $(this).attr('data-href');
@@ -376,5 +376,5 @@
                 });
             })
         </script>
-
+    @endcan
 @endsection

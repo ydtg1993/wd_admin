@@ -63,7 +63,7 @@
 @endsection
 
 @section('script')
-
+    @can('system.role')
         <script>
             layui.use(['layer', 'table', 'form','laydate'], function () {
                 var $ = layui.jquery;
@@ -144,5 +144,5 @@
                 });
             })
         </script>
-
+    @endcan
 @endsection

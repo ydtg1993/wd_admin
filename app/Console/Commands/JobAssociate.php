@@ -20,7 +20,7 @@ class JobAssociate extends Command
      *
      * @var string
      */
-    protected $description = '每天12点后统计关系表【演员，导演，片商，系列，番号组，标签】之间的计数，计划任务';
+    protected $description = '每天12点后统计关系表【演员，导演，片商，系列，番号组】之间的计数，计划任务';
 
     /**
      * Create a new command instance.
@@ -62,11 +62,7 @@ class JobAssociate extends Command
         //获取系列
         echo '开始统计番号组对应计数器:'.PHP_EOL;
         $this->countNumber(0);
-
-        //获取标签
-        echo '开始统计标签对应计数器:'.PHP_EOL;
-        $this->countLabel(0);
-        echo '结束标签统计'.PHP_EOL;
+        echo '结束番号统计'.PHP_EOL;
 
     }
 
@@ -179,27 +175,5 @@ class JobAssociate extends Command
 
         //递归自身
         $this->countNumber($startId);
-    }
-
-    private function countLabel($startId = 0)
-    {
-        $res = DB::select('SELECT cid,count(0) as nums FROM movie_label_associate where cid>'.$startId.' group by cid order by cid asc limit 100');
-
-        //获取不到这个值后，跳出循环
-        if(count($res)<1){
-            return 0;
-        }
-        
-        //循环写入数据
-        foreach($res as $val)
-        {
-            $startId = $val->cid;
-            $nums = $val->nums;
-            DB::table('movie_label')->where('id',$startId)->update(['item_num'=>$nums]);
-            echo '开始计数:'.$startId.','.$nums.PHP_EOL;
-        }
-
-        //递归自身
-        $this->countLabel($startId);
     }
 }

@@ -219,7 +219,7 @@ class MovieUpController extends Controller
                     $lid    = RedisCache::getSetScore($this->keyLabel,$lkey);
                     if($lid == false)
                     {
-                        $lid = MovieLabel::create($v,1,1);
+                        $lid = MovieLabel::create($v,1,0);
                         echo '<p>新增标签：'.$v.PHP_EOL.'</p>';
                     }
                     //标签id数组
