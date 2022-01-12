@@ -68,6 +68,7 @@
                 <a class="layui-btn layui-btn-sm" id="create" data-href="{{route('admin.movie.movie.addComment')}}" >添 加</a>
                 <a class="layui-btn layui-btn-sm" id="batch_create" data-href="{{route('admin.movie.movie.addCommentList')}}" >批量上传</a>
                 <a class="layui-btn layui-btn-sm" id="workers" data-href="{{route('admin.movie.movie.commentWorkers')}}" >人员列表</a>
+                <a class="layui-btn layui-btn-sm" href="{{config('app.url').'/批量评论样例.xlsx'}}"  target="_blank">样例下载</a>
             </div>
         </div>
         <div class="layui-card-body">
