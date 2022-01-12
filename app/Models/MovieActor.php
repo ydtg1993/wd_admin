@@ -35,4 +35,14 @@ class MovieActor extends Model
 
         return $lid;
     }
+
+    /**
+     * 通过影片id，来读取列表 
+     */
+    public static function getForMid($mid = 0)
+    {
+        $res = DB::select("select D.name,A.sex from movie_actor as D left join movie_actor_associate as A on D.id=A.aid where A.mid=$mid and A.status=1 and D.status=1 limit 100;");
+
+        return $res;
+    }
 }

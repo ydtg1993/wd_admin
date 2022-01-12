@@ -41,6 +41,10 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+
+//sql-log
+$app->singleton(Mnabialek\LaravelSqlLogger\Providers\ServiceProvider::class);
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application

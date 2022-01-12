@@ -29,4 +29,16 @@ class MovieCategory extends Model
 
         return $lid;
     }
+
+    public static function getName($cid = 0)
+    {
+        $res = '';
+        $row = self::select('name')->where('id',$cid)->first();
+        if(isset($row) && isset($row->name))
+        {
+            $res = $row->name;
+        }
+        
+        return $res;
+    }
 }

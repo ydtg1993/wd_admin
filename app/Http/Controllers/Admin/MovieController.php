@@ -39,12 +39,14 @@ class MovieController extends Controller
             $categories = MovieCategory::where('status',1)->pluck( 'name','id');
             return View::make('admin.movie.movie',compact('categories'));
         }
-        $model = Movie::query();
+        
         $table = 'movie';
+        $model = Movie::where($table.'.status',1);
+        
         /*search*/
         $date = explode('~',$request->input('date'));
         if(isset($date[0]) && isset($date[1])){
-            $model = $model->whereBetween($table.'.created_at',[trim($date[0]),trim($date[1])]);
+            $model = $model->whereBetween($table.'.updated_at',[trim($date[0]),trim($date[1])]);
         }
         $rdate = explode('~',$request->input('rdate'));
         if(isset($rdate[0]) && isset($rdate[1])){
@@ -188,6 +190,104 @@ class MovieController extends Controller
         Movie::down($aIds);
 
         return Response::json(['code'=>0,'msg'=>'下架成功']);
+    }
+
+    public function collection(Request $request)
+    {
+        $id = $request->input('id');
+        //获取参数
+        $id = intval($request->input('id'));
+
+        //变更自身状态
+        Movie::where('id',$id)->update(['status'=>2]);
+
+        //读取原表数据
+        $MV = Movie::findOrFail($id);
+        $oid = $MV->oid;
+
+        //判断是否已经添加
+        $CM = CollectionMovie::select('id')->where('id',$oid)->first();
+        if($CM && isset($CM->id) && $CM->id>0)
+        {
+            //直接变更状态就好
+            CollectionMovie::where('id',$CM->id)->update(['resources_status'=>3,'status'=>1]);
+        }else{
+            //读取关联的基础数据
+
+            //进行番号组处理
+            $sGroup = '';
+            $numberExp = ['.','-'];
+            //切割番号
+            $numberGroup = [];
+            for($i=0; $i<count($numberExp); $i++)
+            {
+                $numberGroup = explode($numberExp[$i],$mNumber);
+            }
+            if(count($numberGroup)>1)
+            {
+                $sGroup = $numberGroup[0];
+            }
+            //导演
+            $director = MovieDirector::getForMid($id);
+            //演员
+            $actor = json_encode(MovieActor::getForMid($id));
+            //系列
+            $series = MovieSeries::getForMid($id);
+            //片商
+            $film = MovieFilmCompanies::getForMid($id);
+            //分类名称
+            $category = MovieCategory::getName($id);
+            //得到标签
+            $label = json_encode(MovieLabel::getForMid($id));
+
+            //同步数据过去
+            $data = array();
+
+            $data['number'] = $MV->number;
+            $data['number_source'] = $MV->number_source;
+            $data['number_name'] = $sGroup;   //番号组
+            $data['db_name'] = '';
+            $data['name'] = $MV->name;
+
+            $data['source_site'] = '';
+            $data['source_url'] = '';
+            $data['director'] = $director;   //导演
+            $data['sell'] = $MV->sell;
+            $data['time'] = $MV->time;
+            
+            $data['release_time'] = $MV->release_time;
+            $data['small_cover'] = $MV->small_cover;
+            $data['big_cove'] = $MV->big_cove;
+            $data['trailer'] = $MV->trailer;
+            $data['map'] = $MV->map;
+
+            $data['series'] = $series;   //系列
+            $data['film_companies'] = $film;   //片商
+            $data['issued'] = $MV->issued;
+            $data['actor'] = $actor;   //演员
+            $data['category'] = $category;   //分类
+
+            $data['label'] = $label;   //标签（需要补）
+            $data['score'] = $MV->score;
+            $data['score_people'] = $MV->score_people;
+            $data['comment_num'] = $MV->comment_num;
+
+            $data['actual_source'] = '';
+            $data['flux_linkage_num'] = $MV->flux_linkage_num;
+            $data['flux_linkage'] = $MV->flux_linkage;
+            $data['is_download'] = $MV->is_download;
+            $data['is_subtitle'] = $MV->is_subtitle;
+
+            $data['is_new'] = 2;
+            $data['status'] = 1;
+            $data['resources_status'] = 3;
+            $data['resources_info'] = '';   //资源列表（需要补）
+
+            //同步到数据表
+            CollectionMovie::insertGetId($data);
+        }
+
+        return Response::json(['code'=>0,'msg'=>'操作成功']);
     }
 
 

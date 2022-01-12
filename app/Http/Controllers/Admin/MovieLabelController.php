@@ -301,5 +301,33 @@ class MovieLabelController extends Controller
         }
         return Redirect::to(URL::route('admin.movie.label.min'))->with(['success' => '更新成功']);
     }
+
+    /**
+     * 删除 
+     */
+    public function destroy(Request $request)
+    {
+        $id = $request->input('id');
+        if($id<1){
+            return Response::json(['code' => 1, 'msg' => '缺少id']);
+        }
+
+        //判断分类下面有内容，不可用删除
+        $ass = MovieLabel::where('id', $id)->first();
+        if($ass && $ass->item_num>0){
+            return Response::json(['code' => 1, 'msg' => '该标签下存在数据不能直接删除，请先移除标签下的内容']);
+        }
+
+        MovieLabel::where('id', $id)->update(['status'=>2]);
+
+        //更新上一层数量(子标签)
+        if(isset($ass) && $ass->cid>0){
+            //更新上一层数量
+            $count = MovieLabel::countChildren($ass->cid);
+            MovieLabel::where('id', $ass->cid)->update(['item_num'=>$count]);
+        }
+
+        return Response::json(['code'=>0,'msg'=>'删除成功']);
+    }
 }
 

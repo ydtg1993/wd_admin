@@ -129,5 +129,15 @@ class MovieLabel extends Model
             $count = $res[0]->nums;
         }
         return $count;
-    }   
+    }
+
+    /**
+     * 通过影片id，来读取列表 
+     */
+    public static function getForMid($mid = 0)
+    {
+        $res = DB::select("select D.name from movie_label as D left join movie_label_associate as A on D.id=A.cid where A.mid=$mid and A.status=1 and D.status=1 limit 100;");
+
+        return $res;
+    }
 }

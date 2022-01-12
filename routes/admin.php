@@ -296,6 +296,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::any('movie/movie/up','MovieController@up')->name('admin.movie.movie.up');
         //下架
         Route::any('movie/movie/down','MovieController@down')->name('admin.movie.movie.down');
+        //删除
+        Route::any('movie/movie/collection','MovieController@collection')->name('admin.movie.movie.collection');
     });
     //发行商
     Route::group(['middleware' => 'permission:movie.companies'], function () {
@@ -341,6 +343,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::any('movie/label/min', 'MovieLabelController@index_min')->name('admin.movie.label.min');
         Route::any('movie/label/min/create', 'MovieLabelController@create_min')->name('admin.movie.label.min.create');
         Route::any('movie/label/min/{id}/edit', 'MovieLabelController@edit_min')->name('admin.movie.label.min.edit');
+        Route::any('movie/label/destroy', 'MovieLabelController@destroy')->name('admin.movie.label.destroy');
         //标签分类
         Route::any('movie/label/class', 'MovieLabelClassController@index')->name('admin.movie.label.class');
         Route::any('movie/label/class/{id}/edit', 'MovieLabelClassController@edit')->name('admin.movie.label.class.edit');

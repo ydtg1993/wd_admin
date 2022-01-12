@@ -162,7 +162,8 @@ class Movie extends Model
                 'is_download' => $data['is_download'],
                 'is_subtitle' => $data['is_subtitle'],
                 'is_hot' => $data['is_hot'],
-                'cid' => $data['category_id']
+                'cid' => $data['category_id'],
+                'status' => 1
             ]);
 
             /*标签*/

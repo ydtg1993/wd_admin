@@ -708,6 +708,50 @@ define({ "api": [
   },
   {
     "type": "Get",
+    "url": "/api/user/give_score",
+    "title": "电影点星评分",
+    "name": "电影点星评分",
+    "group": "个人中心相关",
+    "description": "<p>电影点星评分</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "mid",
+            "description": "<p>影片ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "score",
+            "description": "<p>评分1-10</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "score",
+            "description": "<p>当前影片分数</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/UserActionController.php",
+    "groupTitle": "个人中心相关"
+  },
+  {
+    "type": "Get",
     "url": "/api/user/getHomeUserAction",
     "title": "获取其他用户关注/粉丝列表",
     "name": "获取其他用户关注/粉丝列表",
@@ -3451,6 +3495,202 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "api/MovieDetailController.php",
     "groupTitle": "影片"
+  },
+  {
+    "type": "Post",
+    "url": "/api/movie/my_score",
+    "title": "我的评分",
+    "name": "我的评分",
+    "group": "影片",
+    "description": "<p>我对影片的评分</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>【影片id】</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "success-example",
+          "content": "\n{\n\"code\": 200,\n\"msg\": \"成功！\",\n\"data\": {\n    \"score\":5\n}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "api/MovieDetailController.php",
+    "groupTitle": "影片"
+  },
+  {
+    "type": "Post",
+    "url": "/api/label/category",
+    "title": "标签分类",
+    "name": "获取标签分类",
+    "group": "影片标签",
+    "description": "<p>获取标签分类列表 *</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>错误提示</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>分类ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>分类名称</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/LabelController.php",
+    "groupTitle": "影片标签"
+  },
+  {
+    "type": "Post",
+    "url": "/api/label/list",
+    "title": "标签列表",
+    "name": "获取标签列表",
+    "group": "影片标签",
+    "description": "<p>获取标签列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "cid",
+            "description": "<p>标签分类id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>响应码 200 正确 其他错误</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>错误提示</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>父标签id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>父标签名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.cids",
+            "description": "<p>父标签所属分类id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.children",
+            "description": "<p>子标签【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.children.id",
+            "description": "<p>子标签id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.children.name",
+            "description": "<p>子标签名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.children.parent_id",
+            "description": "<p>子标签所属父标签id</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/LabelController.php",
+    "groupTitle": "影片标签"
   },
   {
     "type": "Post",
@@ -7967,6 +8207,197 @@ define({ "api": [
             "optional": false,
             "field": "home_type",
             "description": "<p>首页类型4必须传4</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "is_subtitle",
+            "description": "<p>状态：1.不含字幕、2.含字幕</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "is_download",
+            "description": "<p>状态：1.不可下载、2.可下载</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "is_short_comment",
+            "description": "<p>状态：1.不含短评、2.含短评</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>分页页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>分页长度</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "sum",
+            "description": "<p>数据总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>列表【数组】</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.id",
+            "description": "<p>影片ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.name",
+            "description": "<p>影片ID名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.number",
+            "description": "<p>影片番号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.release_time",
+            "description": "<p>发行时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.created_at",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_download",
+            "description": "<p>状态：1.不可下载、2.可下载</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_subtitle",
+            "description": "<p>状态：1.不含字幕、2.含字幕</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_short_comment",
+            "description": "<p>状态：1.不含短评、2.含短评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_hot",
+            "description": "<p>是否热门待定</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_new_comment",
+            "description": "<p>0.无状态、1.今日新评、2.无状态、3.昨日新评</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.is_flux_linkage",
+            "description": "<p>0.无状态1.今日新种、2.无状态、3.昨日新种</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.comment_num",
+            "description": "<p>评论数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "list.score",
+            "description": "<p>评分</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.small_cover",
+            "description": "<p>小图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list.big_cove",
+            "description": "<p>大图</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "api/HomeController.php",
+    "groupTitle": "首页相关"
+  },
+  {
+    "type": "Get",
+    "url": "/api/home",
+    "title": "获取首页标签影片列表",
+    "name": "获取首页标签影片列表",
+    "group": "首页相关",
+    "description": "<p>获取首页标签影片列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "home_type",
+            "description": "<p>首页类型5必须传5</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "cid",
+            "description": "<p>标签的id</p>"
           },
           {
             "group": "Parameter",

@@ -29,4 +29,19 @@ class MovieSeries extends Model
 
         return $lid;
     }
+
+    /**
+     * 通过影片id，来读取名称
+     */
+    public static function getForMid($mid = 0)
+    {
+        $res = '';
+        $row = DB::select("select D.id,D.name,A.mid from movie_series as D left join movie_series_associate as A on D.id=A.series_id where A.mid=$mid and A.status=1 and D.status=1 limit 1;");
+
+        if(isset($row) && isset($row[0]))
+        {
+            $res = $row[0]->name;
+        }
+        return $res;
+    }
 }

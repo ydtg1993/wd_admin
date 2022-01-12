@@ -25,7 +25,7 @@ class MovieLabelClassController extends Controller
         if($request->method() == 'GET') {
             return View::make('admin.movie_label.class');
         }
-        $model = MovieLabelCategory::query();
+        $model = MovieLabelCategory::where('status',1);
 
         if($request->input('name')){
             $model = $model->where('name','like', $request->input('name').'%');
@@ -98,7 +98,7 @@ class MovieLabelClassController extends Controller
             return Response::json(['code' => 1, 'msg' => '该分类下存在数据不能直接删除，请先移除分类下的标签']);
         }
 
-        MovieLabelCategory::where('id', $id)->update(['status'=>1]);
+        MovieLabelCategory::where('id', $id)->update(['status'=>2]);
         return Response::json(['code'=>0,'msg'=>'删除成功']);
     }
 }
