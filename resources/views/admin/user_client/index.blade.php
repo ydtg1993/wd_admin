@@ -156,7 +156,11 @@
                             if($(this).text() == '头像'){
                                 return;
                             }
-                            $(this).html(val)
+                            if($(this).text()) {
+                                $(this).html(val);
+                            }else{
+                                return $(this).html('-');
+                            }
                         });
                     }
                 });
