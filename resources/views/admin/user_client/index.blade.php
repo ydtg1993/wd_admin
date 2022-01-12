@@ -153,7 +153,7 @@
                         });
                         $("[data-field='avatar']").children().each(function(){
                             var val = "<img src={{config('app.url')}}resources/"+$(this).text()+" />";
-                            if($(this).text() == '照片'){
+                            if($(this).text() == '头像'){
                                 return;
                             }
                             $(this).html(val)
