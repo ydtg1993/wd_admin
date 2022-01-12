@@ -14,30 +14,38 @@ class CropController extends Controller
     //文件上传
     public function index(Request $request)
     {
+        set_time_limit(0);
+        ini_set('memory_limit','256M');
         $id = $request->input('id');
         $start_time = time();
-        $data = [
-            'code' => 1,
-            'msg' => '裁剪失败',
-        ];
 
         $movie = Movie::where('id',$id)->first();
         if(!$movie->big_cove){
-            return response()->json($data);
+            return response()->json([
+                'code' => 1,
+                'msg' => '无效影片记录id',
+            ]);
         }
-        $img = public_path('resources') . '/' . $movie->big_cove;
+        $img = rtrim(public_path('resources'),'/') . '/' . $movie->big_cove;
         if(!is_file($img)){
-            return response()->json($data);
+            return response()->json([
+                'code' => 1,
+                'msg' => '大图资源获取失败',
+            ]);
         }
-        $movie = Movie::where('id',$id)->first();
-        $file = public_path('resources').$movie->big_cove;
-        $res = $this->crop($file,$movie->big_cove);
+        $res = $this->crop($img,$movie->big_cove);
         if($res == false){
-            return response()->json($data);
+            return response()->json([
+                'code' => 1,
+                'msg' => '裁剪失败',
+            ]);
         }
         while (true){
             if(time() - $start_time > 15){
-                return response()->json($data);
+                return response()->json([
+                    'code' => 1,
+                    'msg' => '裁剪超时',
+                ]);
             }
             if(is_file(public_path('resources') . '/' . $res)){
                 break;
