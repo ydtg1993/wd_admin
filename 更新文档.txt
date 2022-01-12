@@ -1,0 +1,22 @@
+1.excel文本工具库
+COMPOSER_MEMORY_LIMIT=-1 composer require phpoffice/phpspreadsheet
+
+apt-get install -y \
+        zlib1g-dev \
+        zip \
+  && docker-php-ext-install zip
+
+任务计划添加 */1 * * * * php artisan batchComment
+
+2.安装imagick
+apt-get install imagemagick
+
+pecl install imagick
+
+php.ini添加extension=imagick.so
+
+开放目录权限
+chmod -R 0777 后台项目/public/resources
+
+参考
+https://blog.whsir.com/post-4736.html
