@@ -21,6 +21,7 @@ use App\Models\User;
 use App\Models\UserClient;
 use App\Models\UserSeenMovie;
 use App\Models\UserWantSeeMovie;
+use App\Services\Logic\RedisCache;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -241,7 +242,13 @@ class CommentController extends Controller
             'mid' => $movie->id,
             'reply_uid' => $record->uid,
             'uid' => $uid]);
-        Movie::where('id', $movie->id)->update(['comment_num' => MovieComment::where('mid', $movie->id)->count(), 'new_comment_time' => date('Y-m-d H:i:s')]);
+        //更新评论统计数据
+        $commentNum = MovieComment::where('mid',$movie->id)->where('status',1)->count();
+        Movie::where('id',$movie->id)->update([
+            'comment_num' =>$commentNum,
+            'new_comment_time'=>date('Y-m-d H:i:s',time())
+        ]);
+        RedisCache::clearCacheManageAllKey('movie');
         return Redirect::to(URL::route('admin.movie.movie.commentList'))->with(['success' => '回复成功']);
     }
 

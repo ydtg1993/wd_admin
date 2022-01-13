@@ -6,6 +6,7 @@ use App\Models\Movie;
 use App\Models\MovieComment;
 use App\Models\UserClient;
 use App\Models\BatchComment as BatchCommentModel;
+use App\Services\Logic\RedisCache;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -120,6 +121,16 @@ class BatchComment extends Command
                 $comment_ids = [];
                 foreach ($insert_data as $data) {
                     $comment_ids[] = MovieComment::insertGetId($data);
+                    $mid = $data['mid'];
+                    //更新评论统计数据
+                    $commentNum = MovieComment::where('mid',$mid)->where('status',1)->count();
+                    if($data['type'] == 1) {//评论增加权重 回复不加
+                        Movie::where('id', $mid)->increment('weight');
+                    }
+                    Movie::where('id',$mid)->update([
+                        'comment_num' =>$commentNum,
+                        'is_short_comment'=>($commentNum<=0?1:2),
+                    ]);
                 }
                 BatchCommentModel::where('id',$batch->id)->update(['status'=>1,'comment_ids'=>json_encode($comment_ids)]);
             }catch (\Exception $e){
@@ -127,6 +138,7 @@ class BatchComment extends Command
                 BatchCommentModel::where('id',$batch->id)->update(['msg'=>(string)$e->getMessage(),'status'=>2]);
                 return;
             }
+            RedisCache::clearCacheManageAllKey('movie');
             DB::commit();
             return;
         }
