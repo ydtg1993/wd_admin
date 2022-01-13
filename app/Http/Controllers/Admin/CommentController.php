@@ -38,8 +38,8 @@ class CommentController extends Controller
     {
         if ($request->method() == 'GET') {
             $file = public_path('/comment_workers');
-            if(!is_file($file)){
-                file_put_contents($file,'');
+            if (!is_file($file)) {
+                file_put_contents($file, '');
             }
             return View::make('admin.comment.commentList');
         }
@@ -241,12 +241,13 @@ class CommentController extends Controller
             'comment' => $reply,
             'mid' => $movie->id,
             'reply_uid' => $record->uid,
+            'cid' => $id,
             'uid' => $uid]);
         //更新评论统计数据
-        $commentNum = MovieComment::where('mid',$movie->id)->where('status',1)->count();
-        Movie::where('id',$movie->id)->update([
-            'comment_num' =>$commentNum,
-            'new_comment_time'=>date('Y-m-d H:i:s',time())
+        $commentNum = MovieComment::where('mid', $movie->id)->where('status', 1)->count();
+        Movie::where('id', $movie->id)->update([
+            'comment_num' => $commentNum,
+            'new_comment_time' => date('Y-m-d H:i:s', time())
         ]);
         RedisCache::clearCacheManageAllKey('movie');
         return Redirect::to(URL::route('admin.movie.movie.commentList'))->with(['success' => '回复成功']);
@@ -254,9 +255,9 @@ class CommentController extends Controller
 
     public function batchAdd(Request $request)
     {
-        $batches = BatchComment::where('status',0)->get();
+        $batches = BatchComment::where('status', 0)->get();
         if ($request->method() == 'GET') {
-            return View::make('admin.comment.batch',compact('batches'));
+            return View::make('admin.comment.batch', compact('batches'));
         }
         $file = $_FILES['list'];
         if (isset($file['type']) && $file['type'] !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
@@ -286,8 +287,8 @@ class CommentController extends Controller
                 ];
             }
             BatchComment::insert([
-                'data'=>json_encode($sheet_list),
-                'admin_id'=>Auth::id(),
+                'data' => json_encode($sheet_list),
+                'admin_id' => Auth::id(),
             ]);
         } catch (\Exception $e) {
             return Response::json(['code' => 1, 'msg' => '读取表格失败：' . $e->getMessage()]);
