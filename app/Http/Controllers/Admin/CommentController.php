@@ -277,12 +277,12 @@ class CommentController extends Controller
             for ($row = 2; $row <= $highestRow; ++$row) {
                 $node = $worksheet->getCellByColumnAndRow(1, $row)->getValue();
                 $number = $worksheet->getCellByColumnAndRow(2, $row)->getValue();
-                $nickname = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+                $account = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
                 $comment = $worksheet->getCellByColumnAndRow(4, $row)->getValue();
                 $sheet_list[] = [
                     'node' => trim($node),
                     'number' => trim($number),
-                    'nickname' => trim($nickname),
+                    'account' => trim($account),
                     'comment' => trim($comment)
                 ];
             }

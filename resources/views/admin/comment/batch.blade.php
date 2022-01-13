@@ -42,32 +42,37 @@
         layui.use(['element','form'],function () {
 
         });
-        var importFile = {
+        var upload = {
             lock:false,
             init:function () {
-                $("#import").click(importFile.apply)
+                $("#import").click(upload.apply);
             },
             apply:function () {
-                if(importFile.lock == true){
-                    alert('任务处理中。。。');
+                if(upload.lock){
+                    alert('任务已经提交 请稍等');
+                    location.reload();
+                    return;
                 }
-                importFile.lock = true;
+                upload.lock = true;
                 var formData = new FormData($( "#uploadForm" )[0]);
                 $.ajax({
                     type: 'POST',
                     url: "{{route('admin.movie.movie.addCommentList')}}",
                     data: formData,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
                     success: function (res) {
-                        importFile.lock = false;
                         if(res['code'] !== 0){
                             alert(res['msg']);
                             return
                         }
-                        alert(res['msg']);
                         location.reload();
                     }
                 });
+                alert('任务已经提交 请稍等');
             }
-        };
+        }
+        upload.init();
     </script>
 @endsection
