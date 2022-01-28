@@ -188,6 +188,17 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         //删除
         Route::delete('tag/destroy', 'TagController@destroy')->name('admin.tag.destroy')->middleware('permission:information.tag.destroy');
     });
+    //评论
+    Route::any('article/commentList', 'ArticleCommentController@commentList')->name('admin.article.commentList');
+    Route::any('article/commentDel', 'ArticleCommentController@commentDel')->name('admin.article.commentDel');
+    Route::any('article/commentDestroy', 'ArticleCommentController@commentDestroy')->name('admin.article.commentDestroy');
+    Route::any('article/commentShow', 'ArticleCommentController@commentShow')->name('admin.article.commentShow');
+    Route::any('article/commentAudit', 'ArticleCommentController@commentAudit')->name('admin.article.commentAudit');
+    Route::any('article/addComment', 'ArticleCommentController@add')->name('admin.article.addComment');
+    Route::any('article/commentEdit/{id}', 'ArticleCommentController@edit')->name('admin.article.commentEdit');
+    Route::any('article/commentReply/{id}', 'ArticleCommentController@reply')->name('admin.article.commentReply');
+    Route::any('article/addCommentList', 'ArticleCommentController@batchAdd')->name('admin.article.addCommentList');
+    Route::any('article/commentWorkers', 'ArticleCommentController@workers')->name('admin.article.commentWorkers');
 });
 
 /*

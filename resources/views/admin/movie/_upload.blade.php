@@ -17,6 +17,8 @@
 <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.1/themes/fa/theme.js"></script>
 <!-- optionally if you need translation for your language then include  locale file as mentioned below (replace LANG.js with your locale file) -->
 <script src="/bootfile/js/locales/zh.js"></script>
+<script src="/croppie/croppie.min.js"></script>
+<link rel="stylesheet" href="/croppie/croppie.css" media="all">
 <style>
     .layui-col-md4>.file-input{
         margin: 0 60px 0 0!important;

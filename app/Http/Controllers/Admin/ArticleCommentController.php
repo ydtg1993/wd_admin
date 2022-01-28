@@ -2,25 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+
 use App\Models\Article;
+use App\Models\ArticleComment;
 use App\Models\BatchComment;
-use App\Models\Category;
-use App\Models\CollectionMovie;
-use App\Models\MovieActor;
-use App\Models\MovieCategory;
-use App\Models\MovieComment;
-use App\Models\MovieDirector;
-use App\Models\MovieFilmCompanies;
-use App\Models\MovieLabel;
 use App\Models\Movie;
-use App\Models\MovieNumbers;
-use App\Models\MovieScore;
-use App\Models\MovieSeries;
-use App\Models\Tag;
-use App\Models\User;
 use App\Models\UserClient;
-use App\Models\UserSeenMovie;
-use App\Models\UserWantSeeMovie;
 use App\Services\Logic\RedisCache;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -29,10 +16,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\DB;
-use mysql_xdevapi\Exception;
 
-class CommentController extends Controller
+class ArticleCommentController extends Controller
 {
     public function commentList(Request $request)
     {
@@ -41,40 +26,35 @@ class CommentController extends Controller
             if (!is_file($file)) {
                 file_put_contents($file, '');
             }
-            return View::make('admin.comment.commentList');
+            return View::make('admin.article_comment.commentList');
         }
 
-        $model = MovieComment::query();
+        $model = ArticleComment::query();
         $date = explode('~', $request->input('date'));
-        $model = $model->where('movie_comment.status', '>', 0);//1是正常
+        $model = $model->where('article_comment.status', '>', 0);//1是正常
         if (isset($date[0]) && isset($date[1])) {
             $model = $model->whereBetween('movie.release_time', [trim($date[0]), trim($date[1])]);
         }
-        if ($request->input('number')) {
-            $model = $model->where('movie.number', $request->input('number'));
+        if ($request->input('title')) {
+            $model = $model->where('articles.title','like', "%".$request->input('title')."%");
         }
         if ($request->input('nickname')) {
-            $model->whereRaw('(user_client.nickname = \'' . $request->input('nickname') . '\' or movie_comment.nickname = \'' . $request->input('nickname') . '\')');
+            $model->whereRaw('(user_client.nickname = \'' . $request->input('nickname') . '\' or article_comment.nickname = \'' . $request->input('nickname') . '\')');
         }
         if (!is_null($request->input('audit')) && $request->input('audit') !== '') {
-            $model = $model->where('movie_comment.audit', $request->input('audit'));
-        }
-        if (!is_null($request->input('source_type')) && $request->input('source_type') !== '') {
-            $model = $model->where('movie_comment.source_type', $request->input('source_type'));
+            $model = $model->where('article_comment.audit', $request->input('audit'));
         }
 
-        $res = $model->orderBy('movie_comment.id', 'DESC')
-            ->leftJoin('user_client', 'user_client.id', '=', 'movie_comment.uid')
-            ->leftJoin('movie', 'movie.id', '=', 'movie_comment.mid')
-            ->select('movie_comment.id', 'movie_comment.comment_time',
-                'movie.number', 'movie.name as movie_name', 'movie_comment.comment as comment',
-                'user_client.nickname as nickname', 'movie_comment.nickname as cnickname', 'movie_comment.source_type as source_type', 'movie_comment.uid as uid', 'movie_comment.audit as audit', 'movie_comment.status as status')
+        $res = $model->orderBy('article_comment.id', 'DESC')
+            ->leftJoin('user_client', 'user_client.id', '=', 'article_comment.uid')
+            ->leftJoin('articles', 'articles.id', '=', 'article_comment.aid')
+            ->select('articles.title as title','article_comment.aid as aid',
+                'article_comment.id', 'article_comment.comment_time', 'article_comment.comment as comment',
+                'user_client.nickname as nickname',
+                'article_comment.uid as uid', 'article_comment.audit as audit', 'article_comment.status as status')
             ->paginate($request->get('limit', 30));
 
         foreach ($res as &$val) {
-            $val->nickname = ($val->nickname ?? ($val->cnickname)) ?? '';
-            $val->source_type = MovieComment::COMMENT_SORT_TYPE[$val->source_type] ?? '未知';
-            //$val->nickname = $val->nickname .((($val->uid??0) <= 0)?('['.$val->source_type.']'):('[uid:'.($val->uid??0).']'));
             switch ($val->audit) {
                 case 0:
                     $val->audit = '待审核';
@@ -104,8 +84,8 @@ class CommentController extends Controller
 
     public function commentDel(Request $request)
     {
-        MovieComment::where('id', $request->input('id') ?? 0)->update(['status' => 2]);
-        return Redirect::to(URL::route('admin.movie.movie.commentList'))->with(['success' => '隐藏成功']);
+        ArticleComment::where('id', $request->input('id') ?? 0)->update(['status' => 2]);
+        return Redirect::to(URL::route('admin.article.commentList'))->with(['success' => '隐藏成功']);
     }
 
     /**
@@ -123,7 +103,7 @@ class CommentController extends Controller
             return Response::json(['code' => 1, 'msg' => '请选择隐藏项']);
         }
         try {
-            MovieComment::whereIn('id', $ids)->update(['status' => 2]);
+            ArticleComment::whereIn('id', $ids)->update(['status' => 2]);
             return Response::json(['code' => 0, 'msg' => '隐藏成功']);
         } catch (\Exception $exception) {
             return Response::json(['code' => 1, 'msg' => '隐藏失败']);
@@ -132,7 +112,7 @@ class CommentController extends Controller
 
     public function commentShow(Request $request)
     {
-        MovieComment::where('id', $request->input('id') ?? 0)->update(['status' => 1]);
+        ArticleComment::where('id', $request->input('id') ?? 0)->update(['status' => 1]);
         return Response::json(['code' => 0, 'msg' => '回复显示成功']);
     }
 
@@ -145,7 +125,7 @@ class CommentController extends Controller
     {
         $id = $request->input('id');
         $status = $request->input('status');
-        MovieComment::where('id', $id)->update(['audit' => $status]);
+        ArticleComment::where('id', $id)->update(['audit' => $status]);
         return Response::json(['code' => 0, 'msg' => '操作成功']);
     }
 
@@ -161,18 +141,17 @@ class CommentController extends Controller
             }
         }
         if ($request->method() == 'GET') {
-            return View::make('admin.comment.add', compact('workers'));
+            return View::make('admin.article_comment.add', compact('workers'));
         }
-        $number = $request->input('number');
+        $aid = $request->input('aid');
         $uid = $request->input('uid');
         $comment = $request->input('comment');
-        $movie = Movie::where('number', $number)->first();
-        if (!$movie) {
-            return Redirect::back()->withErrors('番号不存在');
+        $article = Article::where('id', $aid)->first();
+        if (!$article) {
+            return Redirect::back()->withErrors('话题不存在');
         }
-        MovieComment::insert(['comment' => $comment, 'mid' => $movie->id, 'uid' => $uid]);
-        Movie::where('id', $movie->id)->update(['comment_num' => MovieComment::where('mid', $movie->id)->count(), 'new_comment_time' => date('Y-m-d H:i:s')]);
-        return Redirect::to(URL::route('admin.movie.movie.commentList'))->with(['success' => '添加成功']);
+        ArticleComment::insert(['comment' => $comment, 'aid' => $article->id, 'uid' => $uid]);
+        return Redirect::to(URL::route('admin.article.commentList'))->with(['success' => '添加成功']);
     }
 
     public function edit(Request $request, $id)
@@ -187,26 +166,26 @@ class CommentController extends Controller
             }
         }
         if ($request->method() == 'GET') {
-            $comment = MovieComment::where('movie_comment.id', $id)
-                ->leftJoin('user_client', 'user_client.id', '=', 'movie_comment.uid')
-                ->leftJoin('movie', 'movie.id', '=', 'movie_comment.mid')
-                ->select('movie_comment.id', 'movie_comment.comment',
-                    'movie.number', 'user_client.nickname as nickname')->first();
-            return View::make('admin.comment.edit', compact('comment'));
+            $comment = ArticleComment::where('article_comment.id', $id)
+                ->leftJoin('user_client', 'user_client.id', '=', 'article_comment.uid')
+                ->leftJoin('articles', 'articles.id', '=', 'article_comment.aid')
+                ->select('article_comment.id', 'article_comment.comment',
+                    'article_comment.aid', 'user_client.nickname as nickname')->first();
+            return View::make('admin.article_comment.edit', compact('comment'));
         }
-        $number = $request->input('number');
+        $aid = $request->input('aid');
         $nickname = $request->input('nickname');
         $comment = $request->input('comment');
-        $movie = Movie::where('number', $number)->first();
-        if (!$movie) {
-            return Redirect::back()->withErrors('番号不存在');
+        $article = Article::where('id', $aid)->first();
+        if (!$article) {
+            return Redirect::back()->withErrors('话题不存在');
         }
         $user = UserClient::where('nickname', $nickname)->first();
         if (!$user) {
             return Redirect::back()->withErrors('用户不存在');
         }
-        MovieComment::where('id', $id)->update(['comment' => $comment, 'mid' => $movie->id, 'uid' => $user->id]);
-        return Redirect::to(URL::route('admin.movie.movie.commentList'))->with(['success' => '修改成功']);
+        ArticleComment::where('id', $id)->update(['comment' => $comment, 'aid' => $article->id, 'uid' => $user->id]);
+        return Redirect::to(URL::route('admin.article.commentList'))->with(['success' => '修改成功']);
     }
 
     public function reply(Request $request, $id)
@@ -221,43 +200,36 @@ class CommentController extends Controller
             }
         }
         if ($request->method() == 'GET') {
-            $comment = MovieComment::where('movie_comment.id', $id)
-                ->leftJoin('user_client', 'user_client.id', '=', 'movie_comment.uid')
-                ->leftJoin('movie', 'movie.id', '=', 'movie_comment.mid')
-                ->select('movie_comment.id', 'movie_comment.comment',
-                    'movie.number', 'user_client.nickname as nickname')->first();
-            return View::make('admin.comment.reply', compact('comment', 'workers'));
+            $comment = ArticleComment::where('article_comment.id', $id)
+                ->leftJoin('user_client', 'user_client.id', '=', 'article_comment.uid')
+                ->leftJoin('articles', 'articles.id', '=', 'article_comment.aid')
+                ->select('article_comment.id', 'article_comment.comment',
+                    'article_comment.aid as aid', 'user_client.nickname as nickname')->first();
+            return View::make('admin.article_comment.reply', compact('comment', 'workers'));
         }
-        $number = $request->input('number');
+        $aid = $request->input('aid');
         $uid = $request->input('uid');
         $reply = $request->input('reply');
-        $movie = Movie::where('number', $number)->first();
-        if (!$movie) {
-            return Redirect::back()->withErrors('番号不存在');
+        $article = Article::where('id', $aid)->first();
+        if (!$article) {
+            return Redirect::back()->withErrors('话题不存在');
         }
-        $record = MovieComment::where('id', $id)->first();
-        MovieComment::insert([
+        $record = ArticleComment::where('id', $id)->first();
+        ArticleComment::insert([
             'type' => 2,
             'comment' => $reply,
-            'mid' => $movie->id,
+            'aid' => $article->id,
             'reply_uid' => $record->uid,
             'cid' => $id,
             'uid' => $uid]);
-        //更新评论统计数据
-        $commentNum = MovieComment::where('mid', $movie->id)->where('status', 1)->count();
-        Movie::where('id', $movie->id)->update([
-            'comment_num' => $commentNum,
-            'new_comment_time' => date('Y-m-d H:i:s', time())
-        ]);
-        RedisCache::clearCacheManageAllKey('movie');
-        return Redirect::to(URL::route('admin.movie.movie.commentList'))->with(['success' => '回复成功']);
+        return Redirect::to(URL::route('admin.article.commentList'))->with(['success' => '回复成功']);
     }
 
     public function batchAdd(Request $request)
     {
-        $batches = BatchComment::where('status', 0)->where('type',0)->get();
+        $batches = BatchComment::where('status', 0)->where('type',1)->get();
         if ($request->method() == 'GET') {
-            return View::make('admin.comment.batch', compact('batches'));
+            return View::make('admin.article_comment.batch', compact('batches'));
         }
         $file = $_FILES['list'];
         if (isset($file['type']) && $file['type'] !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
@@ -289,6 +261,7 @@ class CommentController extends Controller
             BatchComment::insert([
                 'data' => json_encode($sheet_list),
                 'admin_id' => Auth::id(),
+                'type' => 1
             ]);
         } catch (\Exception $e) {
             return Response::json(['code' => 1, 'msg' => '读取表格失败：' . $e->getMessage()]);
@@ -309,14 +282,14 @@ class CommentController extends Controller
                 }
             }
             $workers = join("\r\n", $workers);
-            return View::make('admin.comment.workers', compact('workers'));
+            return View::make('admin.article_comment.workers', compact('workers'));
         }
         $list = $request->input('workers');
         $workers = explode("\r\n", $list);
         $ids = UserClient::whereIn('email', $workers)->orWhereIn('phone', $workers)->pluck('id')->all();
         $content = join("\r\n", $ids);
         file_put_contents($file, $content);
-        return Redirect::to(URL::route('admin.movie.movie.commentList'))->with(['success' => '修改成功']);
+        return Redirect::to(URL::route('admin.article.commentList'))->with(['success' => '修改成功']);
     }
 }
 

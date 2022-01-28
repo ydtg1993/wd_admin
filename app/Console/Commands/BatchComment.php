@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Article;
+use App\Models\ArticleComment;
 use App\Models\Movie;
 use App\Models\MovieComment;
 use App\Models\UserClient;
@@ -24,7 +26,7 @@ class BatchComment extends Command
      *
      * @var string
      */
-    protected $description = '评论上传评论入库';
+    protected $description = '评论上传评论批处理';
 
     protected $now;
     protected $yesterday_time;
@@ -69,18 +71,57 @@ class BatchComment extends Command
      */
     public function handle()
     {
-        $batches = BatchCommentModel::where('status',0)->get();
+        $this->movieCommentBatch();
+        $this->articleCommentBatch();
+    }
+
+    protected function articleCommentBatch()
+    {
+        $batches = BatchCommentModel::where('status',0)->where('type',1)->get();
+        foreach ($batches as $batch) {
+            $sheet_list = (array)json_decode($batch->data,true);
+
+            DB::beginTransaction();
+            $flag = $this->walk_sheet_parent_article($batch->id,$sheet_list);
+            if(!$flag){
+                $this->clear();
+                continue;
+            }
+
+            $flag = $this->walk_sheet_children_article($batch->id,$this->sheet_list_children);
+            if(!$flag){
+                $this->clear();
+                continue;
+            }
+            try {
+                BatchCommentModel::where('id', $batch->id)->update(['status' => 1, 'comment_ids' => json_encode($this->comment_ids)]);
+            }catch (\Exception $e){
+                DB::rollBack();
+                $this->clear();
+                BatchCommentModel::where('id',$batch->id)->update(['msg'=>(string)$e->getMessage(),'status'=>2]);
+                continue;
+            }
+            $this->clear();
+            DB::commit();
+        }
+    }
+
+    protected function movieCommentBatch()
+    {
+        $batches = BatchCommentModel::where('status',0)->where('type',0)->get();
         foreach ($batches as $batch) {
             $sheet_list = (array)json_decode($batch->data,true);
 
             DB::beginTransaction();
             $flag = $this->walk_sheet_parent($batch->id,$sheet_list);
             if(!$flag){
+                $this->clear();
                 continue;
             }
 
             $flag = $this->walk_sheet_children($batch->id,$this->sheet_list_children);
             if(!$flag){
+                $this->clear();
                 continue;
             }
             try {
@@ -88,11 +129,22 @@ class BatchComment extends Command
                 BatchCommentModel::where('id', $batch->id)->update(['status' => 1, 'comment_ids' => json_encode($this->comment_ids)]);
             }catch (\Exception $e){
                 DB::rollBack();
+                $this->clear();
                 BatchCommentModel::where('id',$batch->id)->update(['msg'=>(string)$e->getMessage(),'status'=>2]);
                 continue;
             }
+            $this->clear();
             DB::commit();
         }
+    }
+
+    protected function clear()
+    {
+        $this->node_tree = [];
+        $this->parent_comment_id_hash = [];
+        $this->sheet_list_children = [];
+        $this->comment_ids = [];
+        $this->movie_id_hash = [];
     }
 
     protected function statistics()
@@ -200,6 +252,97 @@ class BatchComment extends Command
         try {
             foreach ($insert_data as $data) {
                 $comment_id = MovieComment::insertGetId($data);
+                $this->comment_ids[] = $comment_id;
+            }
+        }catch (\Exception $e){
+            DB::rollBack();
+            BatchCommentModel::where('id',$batch_id)->update(['msg'=>(string)$e->getMessage(),'status'=>2]);
+            return false;
+        }
+        return true;
+    }
+
+    protected function walk_sheet_parent_article($batch_id,$sheet_list)
+    {
+        $insert_data = [];
+        foreach ($sheet_list as $item) {
+            if (!isset($this->workers[$item['account']])) {
+                continue;
+            }
+            $uid = $this->workers[$item['account']];
+            $article = Article::where('id', $item['number'])->first();
+            if (!$article) {
+                continue;
+            }
+            if (($item['node'] - (int)$item['node']) == 0) {//正整数
+                $date = date('Y-m-d H:i:s', rand($this->yesterday_time, $this->today_time));
+                $this->node_tree[$item['node']] = $uid;
+                $insert_data[] = [
+                    'node' => $item['node'],
+                    'comment' => $item['comment'],
+                    'aid' => $article->id,
+                    'uid' => $uid,
+                    'comment_time' => $date,
+                    'created_at' => $date,
+                    'updated_at' => $date,
+                    'reply_uid' => 0,
+                    'type' => 1
+                ];
+                continue;
+            }
+            $this->sheet_list_children[] = $item;
+        }
+        try {
+            foreach ($insert_data as $data) {
+                $node = (string)$data['node'];
+                unset($data['node']);
+                $comment_id = ArticleComment::insertGetId($data);
+                $this->parent_comment_id_hash[$node] = $comment_id;
+                $this->comment_ids[] = $comment_id;
+            }
+        }catch (\Exception $e){
+            DB::rollBack();
+            BatchCommentModel::where('id',$batch_id)->update(['msg'=>(string)$e->getMessage(),'status'=>2]);
+            return false;
+        }
+        return true;
+    }
+
+    protected function walk_sheet_children_article($batch_id,$sheet_list_children)
+    {
+        $insert_data = [];
+        foreach ($sheet_list_children as $child) {
+            $parent_node = (int)$child['node'];
+            if (!isset($this->node_tree[$parent_node])) {
+                continue;
+            }
+            if(!isset($this->parent_comment_id_hash[$parent_node])){
+                continue;
+            }
+            if (!isset($this->workers[$child['account']])) {
+                continue;
+            }
+            $uid = $this->workers[$child['account']];
+            $article = Article::where('id', $child['number'])->first();
+            if (!$article) {
+                continue;
+            }
+            $date = date('Y-m-d H:i:s', rand($this->today_time, $this->now));
+            $insert_data[] = [
+                'comment' => $child['comment'],
+                'aid' => $article->id,
+                'uid' => $uid,
+                'comment_time' => $date,
+                'created_at' => $date,
+                'updated_at' => $date,
+                'reply_uid' => $this->node_tree[$parent_node],
+                'type' => 2,
+                'cid'=> $this->parent_comment_id_hash[$parent_node]
+            ];
+        }
+        try {
+            foreach ($insert_data as $data) {
+                $comment_id = ArticleComment::insertGetId($data);
                 $this->comment_ids[] = $comment_id;
             }
         }catch (\Exception $e){

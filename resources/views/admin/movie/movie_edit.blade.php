@@ -255,7 +255,7 @@ echo '</tbody>';
                         <div class="file-loading">
                             <input id="small_cover" name="small_cover" type="file">
                         </div>
-                        <button type="button" id="auto_crop">系统切图</button>
+                        <button type="button" id="manual_crop">手动切图</button>
                     </div>
 
                     <div class="layui-col-md4">
@@ -265,6 +265,9 @@ echo '</tbody>';
                         </div>
                     </div>
                 </div>
+                    <div id="manual_crop_area"></div>
+                    <button type="button" style="display: none" id="cancel_manual_crop">取消切图</button>
+                    <button type="button" style="display: none" id="confirm_manual_crop">确认裁剪</button>
                 </div>
                 <hr/>
 
@@ -450,29 +453,68 @@ echo '</tbody>';
 
         addFileInput("{{$movie->id}}",'map',JSON.parse('<?=$movie->map?>'),20,'image');
 
-        $('#auto_crop').click(function () {
-            $.ajax({
-                url: "{{ route('api.autoCrop') }}",
-                type:'POST',
-                data:{id:"{{$movie->id}}"},
-                beforeSend:function(){
-                    alert('正在处理裁剪图...');
-                },
-                success:function (res) {
-                    if(res.code != 0){
-                        alert(res.msg);
-                    }else {
-                        //window.location.reload();
-                        var img = '<?php echo e(config('app.url')); ?>resources/' + res.msg;
-                        var html = "<div class=\"file-preview-frame krajee-default  file-preview-initial file-sortable kv-preview-thumb\" id=\"thumb-big_cove-init-0\" data-fileindex=\"init-0\" data-fileid=\"thumb-big_cove-init-0\" data-template=\"image\">" +
-                            "<div class=\"kv-file-content\">\n" +
-                            "<img src=\""+img+"\" class=\"file-preview-image kv-preview-data\" title=\""+res+"\" alt=\""+res+"\" style=\"width: auto; height: auto; max-width: 100%; max-height: 100%;\">\n" +
-                            "</div></div>";
-                        var dom = $('#small_cover').parent().parent().parent().parent().find(".file-preview  .clearfix");
-                        dom.html(html);
-                    }
+
+        var manual_crop = {
+            lock:false,
+            basic:{},
+            init:function () {
+                $('#manual_crop').click(manual_crop.apply);
+                $('#confirm_manual_crop').click(manual_crop.crop);
+                $('#cancel_manual_crop').click(manual_crop.cancel);
+            },
+            apply:function () {
+                if(!manual_crop.lock) {
+                    $('#confirm_manual_crop').show();
+                    $('#cancel_manual_crop').show();
+                    manual_crop.lock= true;
+                    manual_crop.basic = $('#manual_crop_area').croppie({
+                        viewport: {
+                            width: 285,
+                            height: 160
+                        },
+                        showZoomer: false,
+                    });
+                    manual_crop.basic.croppie('bind', {
+                        url: '<?php echo e(config('app.url')); ?>resources/' + '<?=$movie->big_cove?>',
+                    });
+                }else{
+                    manual_crop.cancel();
                 }
-            })
-        });
+            },
+            crop:function () {
+                var result = manual_crop.basic.croppie('get');
+                if(manual_crop.lock){
+                    $.ajax({
+                        url: "{{ route('api.autoCrop') }}",
+                        type:'POST',
+                        data:{id:"{{$movie->id}}",points:result.points},
+                        beforeSend:function(){
+
+                        },
+                        success:function (res) {
+                            manual_crop.cancel();
+                            if(res.code != 0){
+                                alert(res.msg);
+                            }else {
+                                var img = '<?php echo e(config('app.url')); ?>resources/' + res.msg + "?tempid=" + Math.random();
+                                var html = "<div class=\"file-preview-frame krajee-default  file-preview-initial file-sortable kv-preview-thumb\" id=\"thumb-big_cove-init-0\" data-fileindex=\"init-0\" data-fileid=\"thumb-big_cove-init-0\" data-template=\"image\">" +
+                                    "<div class=\"kv-file-content\">\n" +
+                                    "<img src=\""+img+"\" class=\"file-preview-image kv-preview-data\" title=\""+res+"\" alt=\""+res+"\" style=\"width: auto; height: auto; max-width: 100%; max-height: 100%;\">\n" +
+                                    "</div></div>";
+                                var dom = $('#small_cover').parent().parent().parent().parent().find(".file-preview  .clearfix");
+                                dom.html(html);
+                            }
+                        }
+                    })
+                }
+            },
+            cancel:function () {
+                $('#confirm_manual_crop').hide();
+                $('#cancel_manual_crop').hide();
+                $('#manual_crop_area').croppie('destroy');
+                manual_crop.lock= false;
+            }
+        };
+        manual_crop.init();
     });
 </script>

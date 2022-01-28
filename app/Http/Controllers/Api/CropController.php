@@ -17,6 +17,7 @@ class CropController extends Controller
         set_time_limit(0);
         ini_set('memory_limit','256M');
         $id = $request->input('id');
+        $points = $request->input('points');
         $start_time = time();
 
         $movie = Movie::where('id',$id)->first();
@@ -33,7 +34,7 @@ class CropController extends Controller
                 'msg' => '大图资源获取失败',
             ]);
         }
-        $res = $this->crop($img,$movie->big_cove);
+        $res = $this->crop($img,$movie->big_cove,$points);
         if($res == false){
             return response()->json([
                 'code' => 1,
@@ -58,7 +59,7 @@ class CropController extends Controller
         ]);
     }
 
-    public function crop($file,$filename)
+    public function crop($file,$filename,$points)
     {
         if(!is_file($file)){
             return false;
@@ -75,12 +76,9 @@ class CropController extends Controller
             $src_w = $im->getImageWidth();
             $src_h = $im->getImageHeight();
 
-            $aim_w = 183;
-            $aim_h = 250;
-            $scale = $aim_w / $aim_h;
-            if (1.47 < ($src_w / $src_h)) {
-                $im->cropImage($scale * $src_h, $src_h, $src_w - $scale * $src_h, 0);
-            }
+            $aim_w = 285;
+            $aim_h = 160;
+            $im->cropImage($points[2]-$points[0], $points[3]-$points[1], $points[0], $points[1]);
             $im->setImageCompressionQuality(100);
             $im->scaleImage($aim_w, $aim_h);
             $im->writeImage(public_path('resources') . '/' . $new_file);
