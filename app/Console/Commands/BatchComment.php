@@ -11,6 +11,7 @@ use App\Models\BatchComment as BatchCommentModel;
 use App\Services\Logic\RedisCache;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class BatchComment extends Command
 {
@@ -177,6 +178,10 @@ class BatchComment extends Command
                 continue;
             }
             if (($item['node'] - (int)$item['node']) == 0) {//正整数
+                if(MovieComment::where(['mid'=>$movie->id, 'uid' => $uid, 'type' => 1,'status'=>1])->exists()){
+                    //该用户已经有过评论记录
+                    continue;
+                }
                 $date = date('Y-m-d H:i:s', rand($this->yesterday_time, $this->today_time));
                 $this->node_tree[$item['node']] = $uid;
                 $insert_data[] = [
@@ -275,6 +280,10 @@ class BatchComment extends Command
                 continue;
             }
             if (($item['node'] - (int)$item['node']) == 0) {//正整数
+                if(ArticleComment::where(['aid'=>$article->id, 'uid' => $uid, 'type' => 1,'status'=>1])->exists()){
+                    //该用户已经有过评论记录
+                    continue;
+                }
                 $date = date('Y-m-d H:i:s', rand($this->yesterday_time, $this->today_time));
                 $this->node_tree[$item['node']] = $uid;
                 $insert_data[] = [

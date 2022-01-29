@@ -120,6 +120,7 @@
                         , {field: 'number', title: '影片番号'}
                         , {field: 'movie_name', title: '影片'}
                         , {field: 'nickname', title: '用户名'}
+                        , {field: 'score', title: '评分'}
                         , {field: 'source_type', title: '评论用户类型'}
                         , {field: 'audit', title: '审核状态'}
                         , {field: 'status', title: '显示状态'}

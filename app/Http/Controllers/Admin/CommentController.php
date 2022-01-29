@@ -2,25 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Article;
 use App\Models\BatchComment;
-use App\Models\Category;
-use App\Models\CollectionMovie;
-use App\Models\MovieActor;
-use App\Models\MovieCategory;
 use App\Models\MovieComment;
-use App\Models\MovieDirector;
-use App\Models\MovieFilmCompanies;
-use App\Models\MovieLabel;
 use App\Models\Movie;
-use App\Models\MovieNumbers;
-use App\Models\MovieScore;
-use App\Models\MovieSeries;
-use App\Models\Tag;
-use App\Models\User;
+use App\Models\MovieScoreNotes;
 use App\Models\UserClient;
-use App\Models\UserSeenMovie;
-use App\Models\UserWantSeeMovie;
 use App\Services\Logic\RedisCache;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -29,8 +15,6 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\DB;
-use mysql_xdevapi\Exception;
 
 class CommentController extends Controller
 {
@@ -66,15 +50,14 @@ class CommentController extends Controller
         $res = $model->orderBy('movie_comment.id', 'DESC')
             ->leftJoin('user_client', 'user_client.id', '=', 'movie_comment.uid')
             ->leftJoin('movie', 'movie.id', '=', 'movie_comment.mid')
-            ->select('movie_comment.id', 'movie_comment.comment_time',
-                'movie.number', 'movie.name as movie_name', 'movie_comment.comment as comment',
+            ->select('movie_comment.id', 'movie_comment.comment_time', 'movie_comment.score as score',
+                'movie.number', 'movie.name as movie_name', 'movie_comment.comment as comment', 'movie_comment.type as type',
                 'user_client.nickname as nickname', 'movie_comment.nickname as cnickname', 'movie_comment.source_type as source_type', 'movie_comment.uid as uid', 'movie_comment.audit as audit', 'movie_comment.status as status')
             ->paginate($request->get('limit', 30));
 
         foreach ($res as &$val) {
             $val->nickname = ($val->nickname ?? ($val->cnickname)) ?? '';
             $val->source_type = MovieComment::COMMENT_SORT_TYPE[$val->source_type] ?? '未知';
-            //$val->nickname = $val->nickname .((($val->uid??0) <= 0)?('['.$val->source_type.']'):('[uid:'.($val->uid??0).']'));
             switch ($val->audit) {
                 case 0:
                     $val->audit = '待审核';
@@ -90,6 +73,9 @@ class CommentController extends Controller
                 $val->status = '显示';
             } else {
                 $val->status = '隐藏';
+            }
+            if ($val->type != 1) {
+                $val->score = '-';
             }
         }
 
@@ -170,8 +156,17 @@ class CommentController extends Controller
         if (!$movie) {
             return Redirect::back()->withErrors('番号不存在');
         }
-        MovieComment::insert(['comment' => $comment, 'mid' => $movie->id, 'uid' => $uid]);
-        Movie::where('id', $movie->id)->update(['comment_num' => MovieComment::where('mid', $movie->id)->count(), 'new_comment_time' => date('Y-m-d H:i:s')]);
+        if(MovieComment::where(['mid'=>$movie->id, 'uid' => $uid,'type'=>1,'status'=>1])->exists()){
+            return Redirect::back()->withErrors('已经发布过评论');
+        }
+        $score = rand(7, 10);
+        MovieComment::insert(['comment' => $comment, 'mid' => $movie->id, 'uid' => $uid, 'score' => $score]);
+        Movie::where('id', $movie->id)->update([
+            'comment_num' => MovieComment::where('mid', $movie->id)->where('status', 1)->count(),
+            'weight' => $movie->weight + 1,
+            'new_comment_time' => date('Y-m-d H:i:s')]);
+        //添加评分
+        MovieScoreNotes::add($movie->id, $uid, $score);
         return Redirect::to(URL::route('admin.movie.movie.commentList'))->with(['success' => '添加成功']);
     }
 
@@ -255,7 +250,7 @@ class CommentController extends Controller
 
     public function batchAdd(Request $request)
     {
-        $batches = BatchComment::where('status', 0)->where('type',0)->get();
+        $batches = BatchComment::where('status', 0)->where('type', 0)->get();
         if ($request->method() == 'GET') {
             return View::make('admin.comment.batch', compact('batches'));
         }
