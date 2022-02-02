@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Tools\RedisCache;
 use App\Tools\MbEncode;
+use App\Tools\UserTool;
 use App\Models\MovieCategory;
 use App\Models\MovieSeries;
 use App\Models\MovieDirector;
@@ -98,7 +99,7 @@ class MovieUpController extends Controller
             }
 
             $mName      = trim(trim($v[0]),'"');    //名称
-            $mNumber    = trim(trim($v[1]),'"');    //番号
+            $mNumber    = strtoupper(trim(trim($v[1]),'"'));    //番号
             $mCategory  = trim(trim($v[2]),'"');    //分类
             $mSeries    = trim(trim($v[3]),'"');    //系列
             $mSell      = trim(trim($v[4]),'"');    //卖家
@@ -128,19 +129,10 @@ class MovieUpController extends Controller
             }
 
             //进行番号组处理
-            $numberExp = ['.','-'];
-            //切割番号
-            $numberGroup = [];
-            for($i=0; $i<count($numberExp); $i++)
+            $sGroup = UserTool::getNumberGroup($mNumber);
+            if($sGroup)
             {
-                $numberGroup = explode($numberExp[$i],$mNumber);
-            }
-            if(count($numberGroup)>1)
-            {
-                //第一个位置位番号组
-                $sGroup = $numberGroup[0];
-
-                //判断分类是否存在
+                //判断番号组是否存在
                 $nkey   = base64_encode($sGroup);
                 $nId    = RedisCache::getSetScore($this->keyNum,$nkey);
                 if($nId == false)

@@ -268,7 +268,7 @@
 
         });
 
-        function componentSelect(name,selected,options) {
+        function componentSelect(name,selected,options,multiple) {
             function tagSelect() {
                 var cdom = this.cloneNode(true);
                 cdom.addEventListener('click',tagCancel);
@@ -291,6 +291,44 @@
                 val = val.replace(/,$/g, '');
                 $("input[name="+name+"]").val(val);
             }
+            function tagSearch(){
+                var input = $(this).val();
+
+                //遍历数据
+                $("#"+name+"-content").children().hide();
+                $("#"+name+"-content").children().each(function(da){
+                    if($(this).html().indexOf(input)>=0){
+                        $(this).show();
+                    }
+                });
+            }
+            function tagCategory(){
+                var input = $(this).attr('title');
+                var arr= new Array();   //定义一数组
+                arr=input.split(",");   //选择后，下一级需要显示的
+
+                $('#'+name+'-parents li').each(function(){
+                    if(arr.indexOf($(this).attr("id"))==-1){
+                        //不包含在children中隐藏
+                        $(this).hide();
+                    }else{
+                        $(this).show();
+                    }
+                });
+            }
+            function tagParents(){
+                var input = $(this).attr('title');
+                var arr= new Array();   //定义一数组
+                arr=input.split(",");   //选择后，下一级需要显示的
+
+                $("#"+name+"-content").children().each(function(){
+                    if(arr.indexOf($(this).attr("data-id"))==-1){
+                        $(this).hide();
+                    }else{
+                        $(this).show();
+                    }
+                });
+            }
 
             var selected_dom = '';
             var options_dom = '';
@@ -301,7 +339,7 @@
                 tag_name = decodeURI(tag_name);
 
                 if(selected.indexOf(parseInt(i)) > -1){
-                    selected_dom+= "<div class='btn btn-success v-tag' data-id='"+i+"'  style='margin-right: 8px;margin-bottom: 8px'>"+tag_name+"</div>";
+                    selected_dom+= "<div class='btn btn-success v-tag' data-id='"+i+"'  style='margin-right: 8px;margin-bottom: 8px'>"+tag_name+"<img src='/x_close.png' class='divX'/></div>";
                     selected_tag+= i + ',';
                     continue;
                 }
@@ -309,10 +347,39 @@
             }
             selected_tag = selected_tag.replace(/,$/g, '');
 
+            //搜索条件
+            var filter="";
+            if(multiple!='')
+            {
+                if(multiple.category != undefined){
+                     filter = '<div id="'+name+'Category"><div>请选择分类：</div>';
+                    var options = "";
+                    for(var i in multiple.category)
+                    {
+                        var li = multiple.category[i];
+                        options = options + '<li class="btn btn-primary" title="'+li.children+'">' + li.name +'</li>';
+                    }
+                    filter = filter + options +'</div>';
+                }
+
+                if(multiple.parents != undefined){
+                    filter = filter + '<div id="'+name+'-parents"><div>请选择父级：</div>';
+                    var options = "";
+                    for(var i in multiple.parents)
+                    {
+                        var li = multiple.parents[i];
+                        options = options + '<li class="btn btn-primary" id="'+li.id+'" title="'+li.children+'">' + li.name +'</li>';
+                    }
+                    filter = filter + options +'</div>';
+                }
+            }
+
             var html = '<div style="width: 100%;display: grid; grid-template-rows: 45px 140px;border: 1px solid #ccc;border-radius: 10px">\n' +
                 '                    <div id="'+name+'-select" style="overflow-y: auto;border-bottom: 1px solid #ccc;padding: 5px">\n' +
                 selected_dom+
                 '                    </div>\n' +
+                '   <div style="overflow-y: auto;padding: 5px;">'+filter+'<input id="'+name+'-search" type="input" value="" placeholder="请输入名称">\n'+
+                '</div>'+
                 '                    <div id="'+name+'-content" style="overflow-y: auto;padding: 5px">\n' +
                 options_dom +
                 '                    </div>\n' +
@@ -322,9 +389,14 @@
 
             $('#'+name+'-select .v-tag').click(tagCancel);
             $('#'+name+'-content .v-tag').click(tagSelect);
+            $('#'+name+'-search').keydown(tagSearch);
+            $('#'+name+'Category li').click(tagCategory);
+            $('#'+name+'-parents li').click(tagParents);
         }
-        componentSelect('labels',[],JSON.parse('<?=json_encode($labels);?>'));
-        componentSelect('actors',[],JSON.parse('<?=json_encode($actors);?>'));
+        var labelFilter = {category:<?=json_encode($labelCategory)?>,parents:<?=json_encode($labelParent)?>};
+
+        componentSelect('labels',[],JSON.parse('<?=json_encode($labels);?>'),labelFilter);
+        componentSelect('actors',[],JSON.parse('<?=json_encode($actors);?>'),'');
 
         var linkpage = {
             data:[{name:'',url:'',meta:'',issmall:'',iswarning:'',tooltip:'',}],

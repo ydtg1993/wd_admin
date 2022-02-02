@@ -49,8 +49,8 @@ class ReviewMovieController extends Controller
         //创建时间
         $data = explode('~', $request->input('date'));
         if (isset($data[0]) && isset($data[1])) {
-            $where['created_at >'] = trim($data[0]);
-            $where['created_at <'] = trim($data[1]);
+            $where['updated_at >'] = trim($data[0]);
+            $where['updated_at <'] = trim($data[1]);
         }
         //下载状态
         if($request->input('resources_status')){

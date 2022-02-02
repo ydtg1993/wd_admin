@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class MovieLabel extends Model
 {
     protected $table = 'movie_label';
+    private $cacheKey = 'label_lists';
 
     /**
      * 写入一条数据
@@ -25,9 +26,15 @@ class MovieLabel extends Model
             //写入缓存
             $text = base64_encode(trim($name));
             RedisCache::addSet('movie_label',$lid,$text);
+
+            //更新父级数量
+            if($cid>0)
+            {
+                self::countChildren($cid);
+            }
         }
 
-        //更新数据，清除下缓存
+         //清除列表缓存
         RedisCache::delKey('label_lists');
 
         return $lid;
@@ -44,11 +51,17 @@ class MovieLabel extends Model
         //写入缓存
         $text = base64_encode(trim($data['name']));
         RedisCache::addSet('movie_label',$id,$text);
+
+        //清除列表缓存
+        RedisCache::delKey('label_lists');
     }
 
     //更新子标签所属的父标签
     public static function childrenEditParent($da,$lid)
     {
+        //先重置
+        self::where('cid',$lid)->update(['cid'=>0]);
+        //根据传递的数据，重新分配
         foreach($da as $v)
         {
             self::where('id', $v)->update(['cid' => $lid]);
@@ -56,10 +69,10 @@ class MovieLabel extends Model
     }
 
     //计算父标签下级数量
-    public static function countChildren($lid=0)
+    public static function countChildren($lid = 0)
     {
-        $total = self::where('cid', $lid)->count();
-        self::where('id',$lid)->update(['item_num'=>$total]);
+        $total = self::where('cid', $lid)->where('status',1)->count();
+        $res = self::where('id',$lid)->update(['item_num'=>$total]);
     }
 
     //不联表的情况下，读取父标签
@@ -93,7 +106,7 @@ class MovieLabel extends Model
     } 
 
     /**
-     * 根据分类id读取顶级列表 
+     * 根据分类id读取父级标签列表和所属分类id 
     */
     public function listForCid($name= '',$cid=0,$offset=0,$limit=20)
     {
@@ -137,6 +150,19 @@ class MovieLabel extends Model
     public static function getForMid($mid = 0)
     {
         $res = DB::select("select D.name from movie_label as D left join movie_label_associate as A on D.id=A.cid where A.mid=$mid and A.status=1 and D.status=1 limit 100;");
+
+        return $res;
+    }
+
+    /**
+     * 读取父级列表和包含的子级标签 
+    */
+    public static function listsWithChildren()
+    {
+        $res = DB::select("select L.id,L.name,GROUP_CONCAT(A.id) as children 
+            from movie_label as L join movie_label as A on L.id=A.cid
+            where L.cid=0 and L.status=1 and A.cid>0 and A.status=1
+            group by A.cid;");
 
         return $res;
     }

@@ -16,6 +16,10 @@ class MovieLabelCategoryAss extends Model
     {
         if(count($da)>0)
         {
+            //清除一遍
+            self::where("lid",$lid)->update(['status'=>2]);
+
+            //重新设置
             foreach($da as $v)
             {
                 $res = self::select('id')->where('lid',$lid)->where('cid',$v)->first();

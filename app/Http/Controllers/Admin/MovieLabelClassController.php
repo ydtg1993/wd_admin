@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
+use App\Tools\RedisCache;
 
 class MovieLabelClassController extends Controller
 {
@@ -30,7 +31,7 @@ class MovieLabelClassController extends Controller
         if($request->input('name')){
             $model = $model->where('name','like', $request->input('name').'%');
         }
-        $res = $model->orderBy('id', 'desc')->paginate($request->get('limit', 30));
+        $res = $model->orderBy('updated_at', 'desc')->paginate($request->get('limit', 30));
         $data = [
             'code' => 0,
             'msg' => '正在请求中...',
@@ -76,6 +77,8 @@ class MovieLabelClassController extends Controller
         $data = $request->all();
         try {
             MovieLabelCategory::where('id', $id)->update(['name' => $data['name']]);
+            //清除前台的缓存列表
+            RedisCache::delKey('label_classes');
         }catch (\Exception $e){
             return Redirect::back()->withErrors('更新失败:'.$e->getMessage());
         }
@@ -93,7 +96,7 @@ class MovieLabelClassController extends Controller
         }
 
         //判断分类下面有内容，不可用删除
-        $ass = MovieLabelCategoryAss::where('cid', $id)->first();
+        $ass = MovieLabelCategoryAss::where('cid', $id)->where('status',1)->first();
         if($ass && isset($ass->id) && $ass->id>0){
             return Response::json(['code' => 1, 'msg' => '该分类下存在数据不能直接删除，请先移除分类下的标签']);
         }

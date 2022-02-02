@@ -32,7 +32,7 @@ class ReviewNumbersController extends Controller
         /*search*/
         $data = explode('~', $request->input('date'));
         if (isset($data[0]) && isset($data[1])) {
-            $model = $model->whereBetween($table.'.created_at', [trim($data[0]), trim($data[1])]);
+            $model = $model->whereBetween($table.'.updated_at', [trim($data[0]), trim($data[1])]);
         }
         if($request->input('status')){
             $model = $model->where($table.'.status', $request->input('status'));
@@ -45,7 +45,7 @@ class ReviewNumbersController extends Controller
         }
         $res = $model->whereIn($table.'.status',[1,2])
             ->leftJoin('users', 'users.id', '=', $table.'.admin_id')
-            ->orderBy($table.'.id', 'desc')
+            ->orderBy($table.'.updated_at', 'desc')
             ->select($table.'.*','users.nickname')
             ->paginate($request->get('limit', 30));
 

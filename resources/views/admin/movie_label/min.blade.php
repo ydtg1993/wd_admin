@@ -38,6 +38,7 @@
                 <div class="layui-btn-group">
                     @can('system.role.edit')
                         <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
+                        <a class="layui-btn layui-btn-sm" lay-event="del">删除</a>
                     @endcan
                 </div>
             </script>
@@ -46,7 +47,7 @@
 @endsection
 
 @section('script')
-
+    @can('system.role')
         <script>
             layui.use(['layer', 'table', 'form','laydate'], function () {
                 var $ = layui.jquery;
@@ -89,6 +90,26 @@
                     if (layEvent === 'edit') {
                         location.href = '/admin/movie/label/min/' + data.id + '/edit';
                     }
+
+                    if (layEvent === 'del') {
+                        layer.confirm('确认删除吗？', function (index) {
+                            layer.close(index)
+                            var load = layer.load();
+                            $.post("{{ route('admin.movie.label.destroy') }}", {
+                                _method: 'delete',
+                                id: data.id
+                            }, function (res) {
+                                layer.close(load);
+                                if (res.code == 0) {
+                                    layer.msg(res.msg, {icon: 1}, function () {
+                                        obj.del();
+                                    })
+                                } else {
+                                    layer.msg(res.msg, {icon: 2})
+                                }
+                            });
+                        });
+                    }
                 });
 
                 //搜索
@@ -112,5 +133,5 @@
                 });
             })
         </script>
-
+    @endcan
 @endsection

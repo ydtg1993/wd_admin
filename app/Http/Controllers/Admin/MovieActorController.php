@@ -31,7 +31,7 @@ class MovieActorController extends Controller
         /*search*/
         $data = explode('~',$request->input('date'));
         if(isset($data[0]) && isset($data[1])){
-            $model = $model->whereBetween($table.'.created_at',[trim($data[0]),trim($data[1])]);
+            $model = $model->whereBetween($table.'.updated_at',[trim($data[0]),trim($data[1])]);
         }
         if($request->input('status')){
             $model = $model->where($table.'.status', $request->input('status'));
@@ -46,6 +46,7 @@ class MovieActorController extends Controller
         $res = $model->leftJoin('movie_actor_category_associate',$table.'.id','=','movie_actor_category_associate.aid')
             ->join('movie_actor_category','movie_actor_category.id','=','movie_actor_category_associate.cid')
             ->select($table.'.*','movie_actor_category.name as category')
+            ->orderBy($table.'.updated_at','desc')
             ->paginate($request->get('limit', 30));
 
         $records = $res->toArray();

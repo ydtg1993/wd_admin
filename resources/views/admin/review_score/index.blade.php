@@ -8,7 +8,7 @@
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">时间范围</label>
+                            <label class="layui-form-label">评分时间</label>
                             <div class="layui-input-inline">
                                 <input type="text" class="layui-input" id="date" placeholder=" ~ ">
                             </div>
@@ -84,7 +84,7 @@
                         , {field: 'score', title:'评分'}
                         , {field: 'user_name', title:'用户'}
                         , {field: 'status', title:'状态'}
-                        , {field: 'created_at', title: '创建时间'}
+                        , {field: 'created_at', title: '评分时间'}
                         , {fixed: 'right', width: 260, align: 'center', toolbar: '#options'}
                     ]],
                     done: function(res, curr, count){

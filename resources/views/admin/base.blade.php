@@ -11,7 +11,17 @@
     <link rel="stylesheet" href="/static/admin/layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/static/admin/layuiadmin/style/admin.css" media="all">
     <!-- 引用jquery -->
-    <script src="/baidu-editor/third-party/jquery.min.js"></script>
+    <script src="/jquery.min.js"></script>
+    <style type="text/css">
+        .divX{
+            width:12px;
+            height:12px;
+            border-radius:60%;
+            position:absolute;
+            top:-6px;
+            right:-6px;
+        }
+    </style>
 </head>
 <body>
 
@@ -62,6 +72,21 @@
         @endif
 
     });
+
+    //判断图片是否存在  
+    function CheckImgExists(imgurl) {
+        var ImgObj = new Image(); 
+        ImgObj.src = imgurl;
+
+        console.log(ImgObj);
+        
+        //存在图片
+        if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {  
+          return true;
+        } else {  
+          return false;
+        }   
+    }
 </script>
 @yield('script')
 </body>

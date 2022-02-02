@@ -52,11 +52,11 @@ class MovieListController extends Controller
             $model = $model->where('movie_piece_list.audit', $request->input('audit'));
         }
 
-        $res = $model->orderBy('movie_piece_list.id', 'DESC')
-            ->leftJoin('user_client', 'user_client.id', '=', 'movie_piece_list.uid')
+        $res = $model->leftJoin('user_client', 'user_client.id', '=', 'movie_piece_list.uid')
             ->select('movie_piece_list.id', 'movie_piece_list.name', 'movie_piece_list.movie_sum', 'movie_piece_list.like_sum',
                 'movie_piece_list.pv_browse_sum', 'movie_piece_list.intro', 'movie_piece_list.type', 'movie_piece_list.created_at', 'movie_piece_list.updated_at','movie_piece_list.cover','movie_piece_list.authority','movie_piece_list.audit','movie_piece_list.remarks',
                 'user_client.nickname')
+            ->orderBy('movie_piece_list.updated_at','desc')
             ->paginate($request->get('limit', 30));
 
         $data = [

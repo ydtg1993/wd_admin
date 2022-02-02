@@ -8,7 +8,7 @@
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">时间范围</label>
+                            <label class="layui-form-label">更新时间</label>
                             <div class="layui-input-inline">
                                 <input type="text" class="layui-input" id="date" placeholder=" ~ ">
                             </div>
@@ -70,6 +70,7 @@
                         , {field: 'movie_sum', title:'影片数量'}
                         , {field: 'like_sum', title:'收藏数量'}
                         , {field: 'created_at', title: '创建时间'}
+                        , {field: 'updated_at', title: '更新时间'}
                         , {fixed: 'right', width: 260, align: 'center', toolbar: '#options'}
                     ]],
                     done: function(res, curr, count){

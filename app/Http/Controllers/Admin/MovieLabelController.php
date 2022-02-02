@@ -313,7 +313,7 @@ class MovieLabelController extends Controller
         }
 
         //判断分类下面有内容，不可用删除
-        $ass = MovieLabel::where('id', $id)->first();
+        $ass = MovieLabel::where('id', $id)->where('status',1)->first();
         if($ass && $ass->item_num>0){
             return Response::json(['code' => 1, 'msg' => '该标签下存在数据不能直接删除，请先移除标签下的内容']);
         }
@@ -322,9 +322,13 @@ class MovieLabelController extends Controller
 
         //更新上一层数量(子标签)
         if(isset($ass) && $ass->cid>0){
+            $lid = $ass->cid;
+            
             //更新上一层数量
-            $count = MovieLabel::countChildren($ass->cid);
-            MovieLabel::where('id', $ass->cid)->update(['item_num'=>$count]);
+            MovieLabel::countChildren($lid);
+        }else{
+            //删除分类关联
+            MovieLabelCategoryAss::where('lid',$id)->delete();
         }
 
         return Response::json(['code'=>0,'msg'=>'删除成功']);

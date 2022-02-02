@@ -24,7 +24,7 @@ class MovieCategoryController extends Controller
         if($request->method() == 'GET') {
             return View::make('admin.movie_category.index');
         }
-        $res = MovieCategory::orderBy('id', 'desc')->paginate($request->get('limit', 30));
+        $res = MovieCategory::orderBy('updated_at', 'desc')->paginate($request->get('limit', 30));
         $records = $res->toArray();
         foreach ($records['data'] as &$record){
             $record['movie_sum'] = DB::table('movie_category_associate')->where('cid',$record['id'])->count();

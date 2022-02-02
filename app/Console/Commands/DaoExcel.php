@@ -11,6 +11,8 @@ use App\Models\MovieLabel;
 use App\Models\MovieActor;
 use App\Models\Movie;
 use App\Models\MovieNumbers;
+use App\Tools\UserTool;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
@@ -69,7 +71,7 @@ class DaoExcel extends Command
         foreach($lists as $v)
         {
             $mName      = trim($v[0]);    //名称
-            $mNumber    = trim($v[1]);    //番号
+            $mNumber    = strtoupper(trim($v[1]));    //番号
             $mCategory  = trim($v[2]);    //分类
             $mSeries    = trim($v[3]);    //系列
             $mSell      = trim($v[4]);    //卖家
@@ -107,18 +109,10 @@ class DaoExcel extends Command
             
 
             //进行番号组处理
-            $numberExp = ['.','-'];
-            //切割番号
-            $numberGroup = [];
-            for($i=0; $i<count($numberExp); $i++)
-            {
-                $numberGroup = explode($numberExp[$i],$mNumber);
-            }
-            if(count($numberGroup)>1)
-            {
-                //第一个位置位番号组
-                $sGroup = $numberGroup[0];
+            $sGroup = UserTool::getNumberGroup($mNumber);
 
+            if($sGroup)
+            {
                 //判断分类是否存在
                 $nkey   = base64_encode($sGroup);
                 $nId    = RedisCache::getSetScore($this->keyNum,$nkey);

@@ -224,5 +224,30 @@ class UserTool
         return $redata;
     }
 
+    /**
+     * 生成番号组 
+    */
+    public static function getNumberGroup($number)
+    {
+        //先通过-判断
+        $numberGroup = explode('-',$number);
+        if(count($numberGroup)>1){
+            $sGroup = $numberGroup[count($numberGroup)-1];
+            $lLen = strlen($number) - strlen($sGroup);
+
+            $sGroup = substr($number,0,$lLen-1);
+
+            return $sGroup;
+        }
+
+        //通过.判断
+        $numberGroup = explode('.',$number);
+        if(count($numberGroup)>1){
+            $sGroup = $numberGroup[0];
+            return $sGroup;
+        }
+        return $sGroup;
+    }
+
 
 }

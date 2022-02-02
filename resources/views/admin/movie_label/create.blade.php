@@ -78,7 +78,7 @@
                     tag_name = decodeURI(tag_name);
 
                     if(selected.indexOf(parseInt(i)) > -1){
-                        selected_dom+= "<div class='btn btn-success v-tag' data-id='"+i+"'  style='margin-right: 8px;margin-bottom: 8px'>"+tag_name+"</div>";
+                        selected_dom+= "<div class='btn btn-success v-tag' data-id='"+i+"'  style='margin-right: 8px;margin-bottom: 8px'>"+tag_name+"<img src='/x_close.png' class='divX'/></div>";
                         selected_tag+= i + ',';
                         continue;
                     }

@@ -6,6 +6,7 @@ use App\Tools\RedisCache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
+use App\Tools\UserTool;
 
 class Movie extends Model
 {
@@ -100,17 +101,10 @@ class Movie extends Model
             }
 
             /*番号组*/
-            $numberExp = $this->exp;
-            //切割番号
-            $numberGroup = [];
-            for($i=0; $i<count($numberExp); $i++)
-            {
-                $numberGroup = explode($numberExp[$i],$data['number']);
-            }
-            if(count($numberGroup)>1)
+            $sGroup = UserTool::getNumberGroup($data['number']);
+            if($sGroup)
             {
                 //第一个位置位番号组
-                $sGroup = $numberGroup[0];
                 $dbNum = MovieNumbers::select('id')->where('name',$sGroup)->first();
                 $nId = 0;
                 if($dbNum && isset($dbNum->id))
@@ -203,19 +197,9 @@ class Movie extends Model
             }
 
             /*番号组*/
-            $numberExp = $this->exp;
-
-            //切割番号
-            $numberGroup = [];
-            for($i=0; $i<count($numberExp); $i++)
+            $sGroup = UserTool::getNumberGroup($data['number']);
+            if($sGroup)
             {
-                $numberGroup = explode($numberExp[$i],$data['number']);
-            }
-
-            if(count($numberGroup)>1)
-            {
-                //第一个位置位番号组
-                $sGroup = $numberGroup[0];
                 $dbNum = MovieNumbers::select('id')->where('name',$sGroup)->first();
                 $nId = 0;
                 if($dbNum && isset($dbNum->id))
@@ -312,7 +296,8 @@ class Movie extends Model
     private function associate($table, $movie_id, $input, $column)
     {
         $movie_director_associate = DB::table('movie_' . $table . '_associate')->where('mid', $movie_id)->first();
-        if ($movie_director_associate && $movie_director_associate->{$column} !== $input) {
+
+        if ($movie_director_associate && $movie_director_associate->{$column} == $input) {
             DB::table('movie_' . $table . '_associate')->where('id',$movie_director_associate->id)->update([$column => $input]);
         } else {
             DB::table('movie_' . $table . '_associate')->insert(['mid' => $movie_id, $column => $input]);

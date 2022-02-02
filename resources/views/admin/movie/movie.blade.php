@@ -8,7 +8,7 @@
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">创建时间</label>
+                            <label class="layui-form-label">更新时间</label>
                             <div class="layui-input-inline">
                                 <input type="text" class="layui-input" id="date" placeholder=" ~ ">
                             </div>
@@ -99,12 +99,13 @@
                 <div class="layui-btn-group">
                         <a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="up">上架</a>
                         <a class="layui-btn layui-btn-sm layui-btn-danger" lay-event="down">下架</a>
-                    @can('system.role.edit')
+                    @can('movie.movie.edit')
                         <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
                     @endcan
                     @can('movie.movie.destroy')
                         <a class="layui-btn layui-btn-sm" lay-event="del">删除</a>
                     @endcan
+                        <a class="layui-btn layui-btn-sm" lay-event="collection">传到采集内容</a>
                 </div>
             </script>
         </div>
@@ -156,11 +157,18 @@
                         });
 
                         $("[data-field='small_cover']").children().each(function(){
+                            var imgurl = "{{config('app.url')}}/resources/"+$(this).text();
+
+                            console.log(imgurl);
+                            console.log(CheckImgExists(imgurl));
+
                             var val = "<img src={{config('app.url')}}resources/"+$(this).text()+" />";
                             if($(this).text() == '封面图'){
                                 return;
                             }
-                            $(this).html(val)
+                            if($(this).text().length>5 && CheckImgExists(imgurl)==true){
+                                $(this).html(val)
+                            }
                         });
 
                         var that = this.elem.next();
@@ -249,6 +257,27 @@
                         });
                     }
 
+                    if (layEvent === 'collection') {
+                        layer.confirm('确认下架影片，并到同步到采集内容管理？', function (index) {
+                            layer.close(index)
+                            var load = layer.load();
+                            $.post("{{ route('admin.movie.movie.collection') }}", {
+                                _method: 'delete',
+                                id: data.id
+                            }, function (res) {
+                                layer.close(load);
+                                if (res.code == 0) {
+                                    layer.msg(res.msg, {icon: 1}, function () {
+                                         dataTable.reload({
+                                            });
+                                    })
+                                } else {
+                                    layer.msg(res.msg, {icon: 2})
+                                }
+                            });
+                        });
+                    }
+
                 });
 
                 //排序
@@ -268,7 +297,7 @@
                             search_value:$('#search_value').val(),
                             is_up:$('#is_up').val(),
                             field: obj.field //排序字段   在接口作为参数字段  field order
-                            ,order: obj.type //排序方式
+                            ,order: obj.type //排序方式 
                         }
                       });
                 });
@@ -331,9 +360,9 @@ EOF;
 
                 /**导入影片数据*/
                 $('#movie_upload').click(function () {
-                    var html = '<div style="margin:20px">' +
-                                '<form method="post" target="_blank" action="{{route('admin.movie.movie.mvup')}}" enctype="multipart/form-data">@csrf'+
-                                '<p><input type="file" name="file"/></p>' +
+                    var html = '<div style="margin:20px">' + 
+                                '<form method="post" target="_blank" action="{{route('admin.movie.movie.mvup')}}" enctype="multipart/form-data">@csrf'+ 
+                                '<p><input type="file" name="file"/></p>' + 
                                 '<p style="margin:10px;"><input type="submit" value="导入影片"/></p>'+
                                 '</form>'+
                                 '</div>';
@@ -347,9 +376,9 @@ EOF;
 
                 /**导入磁链数据*/
                 $('#link_up').click(function () {
-                    var html = '<div style="margin:20px">' +
+                    var html = '<div style="margin:20px">' + 
                                 '<form method="post" target="_blank" action="{{route('admin.movie.movie.linkup')}}" enctype="multipart/form-data"> @csrf'+
-                                '<p><input type="file" name="file"/></p>' +
+                                '<p><input type="file" name="file"/></p>' + 
                                 '<p style="margin:10px;"><input type="submit" value="导入磁链"/></p>'+
                                 '</form>'+
                                 '</div>';
@@ -362,7 +391,7 @@ EOF;
                 });
 
                 /**
-                 * 导出影片数据
+                 * 导出影片数据 
                  */
                 $('#movie_download').click(function(){
                     //获取选择的搜索条件
@@ -373,7 +402,7 @@ EOF;
                     var sVal   = $('#search_value').val();
                     var sc     = $('#category').val();
 
-                    var html = '<div style="margin:20px">' +
+                    var html = '<div style="margin:20px">' + 
                                 '<form method="post" target="_blank" action="{{route('admin.movie.movie.mvdown')}}"> @csrf'+
                                 '<p><input type="hidden" name="date" value="'+cDate+'"/></p>'+
                                 '<p><input type="hidden" name="rdate" value="'+rDate+'"/></p>'+

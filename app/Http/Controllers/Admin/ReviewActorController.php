@@ -30,7 +30,7 @@ class ReviewActorController extends Controller
         /*search*/
         $data = explode('~',$request->input('date'));
         if(isset($data[0]) && isset($data[1])){
-            $model = $model->whereBetween('collection_actor.created_at',[trim($data[0]),trim($data[1])]);
+            $model = $model->whereBetween('collection_actor.updated_at',[trim($data[0]),trim($data[1])]);
         }
         if($request->input('category')){
             $model = $model->where('collection_actor.category',$request->input('category'));
@@ -42,12 +42,12 @@ class ReviewActorController extends Controller
             $model = $model->where('users.nickname', $request->input('nickname'));
         }
 
-        $res = $model->whereIn('collection_actor.status',[1,2])->orderBy('id', 'desc')
+        $res = $model->whereIn('collection_actor.status',[1,2])->orderBy('updated_at.updated_at', 'desc')
             ->join('users','users.id','=','collection_actor.admin_id')
             ->join('movie_actor_category','movie_actor_category.name','=','collection_actor.category')
             ->select('collection_actor.id','collection_actor.name', 'collection_actor.movie_sum',
                 'collection_actor.status', 'collection_actor.photo','collection_actor.created_at',
-                'users.nickname',
+                'users.nickname','collection_actor.updated_at',
                 'movie_actor_category.name as category')
             ->paginate($request->get('limit', 30));
 

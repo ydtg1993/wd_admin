@@ -39,7 +39,7 @@ class CollectionMovie extends Model
             }
         }
 
-        $res =DB::select('select '.$fields.' from '.$this->table.' where '.$wh.' order by id desc limit '.$offset.','.$limit.';');
+        $res =DB::select('select '.$fields.' from '.$this->table.' where '.$wh.' order by updated_at desc limit '.$offset.','.$limit.';');
         return $res;
     }
 

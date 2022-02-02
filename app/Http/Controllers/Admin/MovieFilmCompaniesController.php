@@ -34,7 +34,7 @@ class MovieFilmCompaniesController extends Controller
         /*search*/
         $date = explode('~',$request->input('date'));
         if(isset($date[0]) && isset($date[1])){
-            $model = $model->whereBetween($table.'.created_at',[trim($date[0]),trim($date[1])]);
+            $model = $model->whereBetween($table.'.updated_at',[trim($date[0]),trim($date[1])]);
         }
         if($request->input('name')){
             $model = $model->where($table.'.name', $request->input('name'));
@@ -46,6 +46,7 @@ class MovieFilmCompaniesController extends Controller
         $res = $model->leftJoin('movie_film_companies_category_associate',$table.'.id','=','movie_film_companies_category_associate.film_companies_id')
             ->join('movie_film_companies_category','movie_film_companies_category.id','=','movie_film_companies_category_associate.cid')
             ->select($table.'.*','movie_film_companies_category.name as category')
+            ->orderBy($table.'.updated_at','desc')
             ->paginate($request->get('limit', 30));
 
         $data = [

@@ -11,6 +11,7 @@ use App\Models\MovieComment;
 use App\Models\MovieDirector;
 use App\Models\MovieFilmCompanies;
 use App\Models\MovieLabel;
+use App\Models\MovieLabelCategory;
 use App\Models\Movie;
 use App\Models\MovieScore;
 use App\Models\MovieSeries;
@@ -98,7 +99,7 @@ class MovieController extends Controller
         }
 
         //排序
-        $orderName = empty($request->input('field')) ?'id':$request->input('field');
+        $orderName = empty($request->input('field')) ?'updated_at':$request->input('field');
         $ordertype = empty($request->input('order')) ?'desc':$request->input('order');
 
         if($request->input('category')){
@@ -309,6 +310,11 @@ class MovieController extends Controller
 
             list($actors, $selected_actors) = $this->categoryMultiSelect('actor', 'aid', $category);
             $categories = MovieCategory::where('status',1)->pluck('name', 'id')->all();
+
+            //读取标签分类-包含父亲
+            $labelCategory = MovieLabelCategory::listsWithChildren();
+            $labelParent = MovieLabel::listsWithChildren();
+
             return View::make('admin.movie.create',
                 compact(
                     'categories',
@@ -316,7 +322,9 @@ class MovieController extends Controller
                     'companies',
                     'labels',
                     'directors',
-                    'actors'
+                    'actors',
+                    'labelCategory',
+                    'labelParent'
                 )
             );
         }
@@ -481,6 +489,8 @@ class MovieController extends Controller
             $data['arrLabels'] = $data['labels']?explode(',', $data['labels']):'';
             $data['arrActors'] = $data['actors']?explode(',', $data['actors']):'';
 
+            $data['number'] = strtoupper($data['number']);
+
             $movie = new Movie();
             $movie->create($data,$category_id);
 
@@ -526,6 +536,10 @@ class MovieController extends Controller
             }
             $movie->map = json_encode($mapData);
 
+            //读取标签分类-包含父亲
+            $labelCategory = MovieLabelCategory::listsWithChildren();
+            $labelParent = MovieLabel::listsWithChildren();
+
             return View::make('admin.movie.movie_edit',
                 compact('movie',
                     'categories',
@@ -539,7 +553,9 @@ class MovieController extends Controller
                     'directors',
                     'movie_director_associate',
                     'actors',
-                    'selected_actors'
+                    'selected_actors',
+                    'labelCategory',
+                    'labelParent'
                 )
             );
         }
