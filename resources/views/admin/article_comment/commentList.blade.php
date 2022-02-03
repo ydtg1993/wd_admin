@@ -71,6 +71,7 @@
                         <a class="layui-btn layui-btn-sm" lay-event="show">显示</a>
                         <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="lock">封禁</a>
                         <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="audit">审核</a>
+                        <a class="layui-btn layui-btn-normal layui-btn-sm" id="copy_comment" data-workers="{{$workers}}" lay-event="copy">复制</a>
                     @endcan
                 </div>
             </script>
@@ -193,6 +194,46 @@
                                 }
                             });
                             layer.close(index);
+                        });
+                    }
+
+                    if(layEvent == 'copy'){
+                        var workers = JSON.parse($('#copy_comment').attr('data-workers'));
+                        var options = '';
+                        for(var i in workers){
+                            options += '<option value='+i+'>'+workers[i]+'</option>';
+                        }
+                        var html = '<div>操作员: <select id=copy_comment_uid>'+options+'</select></div>' +
+                            '<div style="margin-top:15px;">影片番号: <textarea id="copy_comment_numbers" rows="6"></textarea></div>';
+
+                        layer.open({
+                            type: 1,
+                            title:'封禁',
+                            area: ['300px', '270px'], //宽高
+                            content: html,
+                            btn:['确认','关闭'],
+                            yes: function(index, layero) {            //点击确定时的方法
+                                var load = layer.load();
+                                var uid = $('#copy_comment_uid').val();
+                                var numbers = $('#copy_comment_numbers').val();
+                                $.post("{{route('admin.article.copyComment')}}", {
+                                    id:data.id,
+                                    uid: uid,
+                                    numbers:numbers
+                                }, function (res) {
+                                    layer.close(load);
+                                    if (res.code == 0) {
+                                        layer.msg(res.msg, {icon: 1}, function () {
+                                            layer.close(index);
+                                        })
+                                    } else {
+                                        layer.msg(res.msg, {icon: 2})
+                                    }
+                                });
+                            },
+                            success:function(){
+                                return;
+                            },
                         });
                     }
 

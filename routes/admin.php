@@ -199,6 +199,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
     Route::any('article/commentReply/{id}', 'ArticleCommentController@reply')->name('admin.article.commentReply');
     Route::any('article/addCommentList', 'ArticleCommentController@batchAdd')->name('admin.article.addCommentList');
     Route::any('article/commentWorkers', 'ArticleCommentController@workers')->name('admin.article.commentWorkers');
+    Route::any('article/copyComment', 'ArticleCommentController@copyComment')->name('admin.article.copyComment');
 });
 
 /*

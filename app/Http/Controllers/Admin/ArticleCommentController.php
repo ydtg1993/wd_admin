@@ -7,6 +7,8 @@ use App\Models\Article;
 use App\Models\ArticleComment;
 use App\Models\BatchComment;
 use App\Models\Movie;
+use App\Models\MovieComment;
+use App\Models\MovieScoreNotes;
 use App\Models\UserClient;
 use App\Services\Logic\RedisCache;
 use Illuminate\Http\Request;
@@ -26,7 +28,14 @@ class ArticleCommentController extends Controller
             if (!is_file($file)) {
                 file_put_contents($file, '');
             }
-            return View::make('admin.article_comment.commentList');
+            $ids = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            $workers = [];
+            $users = UserClient::whereIn('id', $ids)->get();
+            foreach ($users as $user) {
+                $workers[$user->id] = $user->email ? $user->email : $user->phone;
+            }
+            $workers = json_encode($workers);
+            return View::make('admin.article_comment.commentList', compact('workers'));
         }
 
         $model = ArticleComment::query();
@@ -290,6 +299,33 @@ class ArticleCommentController extends Controller
         $content = join("\r\n", $ids);
         file_put_contents($file, $content);
         return Redirect::to(URL::route('admin.article.commentList'))->with(['success' => '修改成功']);
+    }
+
+    public function copyComment(Request $request)
+    {
+        $id = $request->input('id');
+        $uid = $request->input('uid');
+        $numbers = $request->input('numbers');
+        $article = ArticleComment::where('id',$id)->first();
+        $numbers = explode(',',$numbers);
+        foreach ($numbers as $number){
+            $movie = Movie::where('number', $number)->first();
+            if(!$movie){
+                continue;
+            }
+            if(MovieComment::where(['mid'=>$movie->id, 'uid' => $uid,'type'=>1,'status'=>1])->exists()){
+                continue;
+            }
+            $score = rand(7, 10);
+            MovieComment::insert(['comment' => $article->comment, 'mid' => $movie->id, 'uid' => $uid, 'score' => $score]);
+            Movie::where('id', $movie->id)->update([
+                'comment_num' => MovieComment::where('mid', $movie->id)->where('status', 1)->count(),
+                'weight' => $movie->weight + 1,
+                'new_comment_time' => date('Y-m-d H:i:s')]);
+            //添加评分
+            MovieScoreNotes::add($movie->id, $uid, $score);
+        }
+        return Response::json(['code' => 0, 'msg' => '操作成功']);
     }
 }
 
