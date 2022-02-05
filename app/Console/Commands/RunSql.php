@@ -38,6 +38,15 @@ class RunSql extends Command
     public function handle()
     {
         $sql = <<<EOF
+alter table `movie_category` add column `show` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0显示 1不显示';
+EOF;
+        \Illuminate\Support\Facades\DB::unprepared($sql);
+        $sql = <<<EOF
+alter table `movie_category` add column `sort` int(11) NOT NULL DEFAULT '0' COMMENT '排序';
+EOF;
+        \Illuminate\Support\Facades\DB::unprepared($sql);
+
+        $sql = <<<EOF
 alter table `batch_comment_script` add column `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '类型 0:影片评论批处理 1:话题评论批处理';
 EOF;
         \Illuminate\Support\Facades\DB::unprepared($sql);

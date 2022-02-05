@@ -40,10 +40,10 @@ class MovieController extends Controller
             $categories = MovieCategory::where('status',1)->pluck( 'name','id');
             return View::make('admin.movie.movie',compact('categories'));
         }
-        
+
         $table = 'movie';
         $model = Movie::where($table.'.status',1);
-        
+
         /*search*/
         $date = explode('~',$request->input('date'));
         if(isset($date[0]) && isset($date[1])){
@@ -255,7 +255,7 @@ class MovieController extends Controller
             $data['director'] = $director;   //导演
             $data['sell'] = $MV->sell;
             $data['time'] = $MV->time;
-            
+
             $data['release_time'] = $MV->release_time;
             $data['small_cover'] = $MV->small_cover;
             $data['big_cove'] = $MV->big_cove;
@@ -650,7 +650,11 @@ class MovieController extends Controller
 
     private function categoryMultiSelect($table, $column, $category, $movie_id=0, $where = [])
     {
-        $movie_n_category = DB::table('movie_' . $table . '_category')->where('name', $category)->first();
+        if($table == 'label'){
+            $movie_n_category = DB::table('movie_category')->where('name', $category)->first();
+        }else {
+            $movie_n_category = DB::table('movie_' . $table . '_category')->where('name', $category)->first();
+        }
         $select = [];
         $movie_n_model = DB::table('movie_' . $table)->where('status', 1)->where($where);
         $chunk = [];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\MovieCategory;
 use App\Models\MovieLabel;
 use App\Models\MovieLabelAss;
 use App\Models\MovieLabelCategory;
@@ -26,7 +27,7 @@ class MovieLabelController extends Controller
     public function index(Request $request)
     {
         //读取分类
-        $category = MovieLabelCategory::select('id','name')->where('status',1)->get();
+        $category = MovieCategory::select('id','name')->where(['status'=>1,'show'=>1])->get();
 
         if($request->method() == 'GET') {
             return View::make('admin.movie_label.index',compact('category'));
@@ -51,7 +52,7 @@ class MovieLabelController extends Controller
             $data = $MD->listForName($name,$offset,10);
             $count = $MD->countForName($name);
         }
-        
+
         //处理数据
         $cArr = array();
         foreach($category as $v)
@@ -71,7 +72,7 @@ class MovieLabelController extends Controller
                 $data[$k] = $v;
             }
         }
-        
+
         $out = [
             'code' => 0,
             'msg' => '正在请求中...',
@@ -135,7 +136,7 @@ class MovieLabelController extends Controller
     {
         if($request->method() == 'GET') {
             $label = MovieLabel::findOrFail($id);
-            
+
             //分类
             $categorys = MovieLabelCategory::where('status',1)->pluck('name', 'id')->all();
             //子标签
@@ -184,7 +185,7 @@ class MovieLabelController extends Controller
             DB::rollBack();
             return Redirect::back()->withErrors('更新失败:'.$e->getMessage());
         }
-        
+
         return Redirect::to(URL::route('admin.movie.label'))->with(['success' => '更新成功']);
     }
 
@@ -240,7 +241,7 @@ class MovieLabelController extends Controller
                     $parentArr[$val->id] = $val->name;
                 }
             }
-            
+
         }
 
         //遍历，更新数据
@@ -303,7 +304,7 @@ class MovieLabelController extends Controller
     }
 
     /**
-     * 删除 
+     * 删除
      */
     public function destroy(Request $request)
     {
@@ -323,7 +324,7 @@ class MovieLabelController extends Controller
         //更新上一层数量(子标签)
         if(isset($ass) && $ass->cid>0){
             $lid = $ass->cid;
-            
+
             //更新上一层数量
             MovieLabel::countChildren($lid);
         }else{

@@ -43,7 +43,7 @@ class SearchController extends Controller
             ,DB::raw('count(0) as nums')
             ,DB::raw('max(created_at) as updated_at'))
             ->groupBy('content')
-            ->orderBy('updated_at','desc')->paginate($request->get('limit',20));
+            ->orderBy('nums','desc')->paginate($request->get('limit',20));
         $data = [
             'code' => 0,
             'msg'   => '正在请求中...',

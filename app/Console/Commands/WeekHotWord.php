@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\SearchLog;
 use App\Models\SearchHotWord;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class WeekHotWord extends Command
 {
@@ -43,6 +44,7 @@ class WeekHotWord extends Command
         $eTime = date("Y-m-d H:i:s",strtotime('-1 sunday',time()));
         echo $sTime.'~'.$eTime;
 
+        DB::table('user_search_log')->where('created_at','<',$sTime)->delete();
         $mdb = new SearchLog();
         $arr = $mdb->groupCountLists($sTime,$eTime);
 
