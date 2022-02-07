@@ -92,7 +92,7 @@ class MovieLabelController extends Controller
     {
         if($request->method() == 'GET') {
             //分类
-            $categorys = MovieLabelCategory::where('status',1)->pluck('name', 'id')->all();
+            $categorys = MovieCategory::where('status',1)->pluck('name', 'id')->all();
             //子标签
             $childrens = MovieLabel::where('cid','>',0)->pluck('name', 'id')->all();
 
@@ -138,7 +138,7 @@ class MovieLabelController extends Controller
             $label = MovieLabel::findOrFail($id);
 
             //分类
-            $categorys = MovieLabelCategory::where('status',1)->pluck('name', 'id')->all();
+            $categorys = MovieCategory::where('status',1)->pluck('name', 'id')->all();
             //子标签
             $childrens = MovieLabel::where('cid','>',0)->pluck('name', 'id')->all();
 

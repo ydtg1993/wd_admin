@@ -225,12 +225,13 @@ class UserTool
     }
 
     /**
-     * 生成番号组 
+     * 生成番号组
     */
     public static function getNumberGroup($number)
     {
         //先通过-判断
         $numberGroup = explode('-',$number);
+        $sGroup = '';
         if(count($numberGroup)>1){
             $sGroup = $numberGroup[count($numberGroup)-1];
             $lLen = strlen($number) - strlen($sGroup);
