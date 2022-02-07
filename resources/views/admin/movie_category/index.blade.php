@@ -40,6 +40,8 @@
                         {field: 'id', title: 'ID', sort: true, width: 80}
                         , {field: 'name', title: '名称'}
                         , {field: 'status', title:'状态'}
+                        , {field: 'show', title:'显示'}
+                        , {field: 'sort', title:'排序'}
                         , {field: 'movie_sum', title:'影片数量'}
                         , {field: 'created_at', title: '创建时间'}
                         , {field: 'updated_at', title: '更新时间'}
@@ -52,6 +54,14 @@
                                 $(this).text("正常")
                             }else if($(this).text()=='2'){
                                 $(this).text("弃用")
+                            }
+                        });
+                        $("[data-field='show']").children().each(function(){
+                            // 1.未处理  2.已处理【人工处理】 3.系统处理 4.舍弃 5.异常数据需要人工处理'
+                            if($(this).text()=='1'){
+                                $(this).text("显示")
+                            }else if($(this).text()=='0'){
+                                $(this).text("不显示")
                             }
                         });
                     }

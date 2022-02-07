@@ -110,7 +110,7 @@ class MovieLabel extends Model
     */
     public function listForCid($name= '',$cid=0,$offset=0,$limit=20)
     {
-        $wh = 'L.cid = 0 and L.status=1';
+        $wh = 'L.cid = 0 and L.status=1 and A.status=1';
         if($name){
             $wh = $wh." and L.name like '".$name."%' ";
         }

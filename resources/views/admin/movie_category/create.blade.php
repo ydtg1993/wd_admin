@@ -24,6 +24,21 @@
                         </select>
                     </div>
                 </div>
+                <div class="layui-form-item">
+                    <label for="" class="layui-form-label">显示</label>
+                    <div class="layui-input-inline">
+                        <select name="show" lay-search  lay-filter="parent_id">
+                            <option value="1" >显示</option>
+                            <option value="0" >不显示</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="" class="layui-form-label">排序</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="sort" value="0" lay-verify="required" class="layui-input" >
+                    </div>
+                </div>
 
                 <div class="layui-form-item">
                     <div class="layui-input-block">

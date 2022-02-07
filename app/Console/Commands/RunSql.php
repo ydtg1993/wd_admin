@@ -38,7 +38,7 @@ class RunSql extends Command
     public function handle()
     {
         $sql = <<<EOF
-alter table `movie_category` add column `show` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0显示 1不显示';
+alter table `movie_category` add column `show` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1显示 0不显示';
 EOF;
         \Illuminate\Support\Facades\DB::unprepared($sql);
         $sql = <<<EOF
