@@ -12,13 +12,14 @@ use App\Http\Controllers\Controller;
 use App\Models\CommConf;
 use App\Services\Logic\Comm\ConfLogic;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 
-class ConfController  extends Controller
+class ConfController extends Controller
 {
     /**
      * 广告招商
@@ -27,9 +28,10 @@ class ConfController  extends Controller
     public function adInvestment()
     {
         $conf = new ConfLogic();
-        $dataInfo  = $conf->getConf(CommConf::CONF_AD_INVESTMENT);
-        return View::make('conf.ad_investment',compact('dataInfo'));
+        $dataInfo = $conf->getConf(CommConf::CONF_AD_INVESTMENT);
+        return View::make('conf.ad_investment', compact('dataInfo'));
     }
+
     /**
      * 保存配置
      * @return \Illuminate\Contracts\View\View
@@ -47,8 +49,8 @@ class ConfController  extends Controller
     public function downloadAppSettingView()
     {
         $conf = new ConfLogic();
-        $dataInfo  = $conf->getConf(CommConf::CONF_DOWN_SITE);
-        return View::make('conf.download_app_setting',compact('dataInfo'));
+        $dataInfo = $conf->getConf(CommConf::CONF_DOWN_SITE);
+        return View::make('conf.download_app_setting', compact('dataInfo'));
     }
 
     /**
@@ -68,9 +70,10 @@ class ConfController  extends Controller
     public function aboutUsView()
     {
         $conf = new ConfLogic();
-        $dataInfo  = $conf->getConf(CommConf::CONF_ABOUT_US);
-        return View::make('conf.about_us',compact('dataInfo'));
+        $dataInfo = $conf->getConf(CommConf::CONF_ABOUT_US);
+        return View::make('conf.about_us', compact('dataInfo'));
     }
+
     /**
      * 保存配置
      * @return \Illuminate\Contracts\View\View
@@ -88,11 +91,12 @@ class ConfController  extends Controller
     public function friendLinkView()
     {
         $conf = new ConfLogic();
-        $dataInfo  = $conf->getConf(CommConf::CONF_FRIENDY_LINK);
+        $dataInfo = $conf->getConf(CommConf::CONF_FRIENDY_LINK);
 //        print_r($dataInfo);
 //        exit;
-        return View::make('conf.friend_link',compact('dataInfo'));
+        return View::make('conf.friend_link', compact('dataInfo'));
     }
+
     /**
      * 保存配置
      * @return \Illuminate\Contracts\View\View
@@ -111,9 +115,10 @@ class ConfController  extends Controller
     public function privateItemView()
     {
         $conf = new ConfLogic();
-        $dataInfo  = $conf->getConf(CommConf::CONF_PRIVACY_CLAUSE);
-        return View::make('conf.private_item',compact('dataInfo'));
+        $dataInfo = $conf->getConf(CommConf::CONF_PRIVACY_CLAUSE);
+        return View::make('conf.private_item', compact('dataInfo'));
     }
+
     /**
      * 保存配置
      * @return \Illuminate\Contracts\View\View
@@ -131,10 +136,11 @@ class ConfController  extends Controller
     public function magnetLinkView()
     {
         $conf = new ConfLogic();
-        $dataInfo  = $conf->getConf(CommConf::CONF_MAGNET_LINK);
+        $dataInfo = $conf->getConf(CommConf::CONF_MAGNET_LINK);
 
-        return View::make('conf.magnet_link',compact('dataInfo'));
+        return View::make('conf.magnet_link', compact('dataInfo'));
     }
+
     /**
      * 保存配置
      * @return \Illuminate\Contracts\View\View
@@ -152,9 +158,10 @@ class ConfController  extends Controller
     public function commentNotesView()
     {
         $conf = new ConfLogic();
-        $dataInfo  = $conf->getConf(CommConf::CONF_COMMENT_NOTES);
-        return View::make('conf.comment_notes',compact('dataInfo'));
+        $dataInfo = $conf->getConf(CommConf::CONF_COMMENT_NOTES);
+        return View::make('conf.comment_notes', compact('dataInfo'));
     }
+
     /**
      * 保存配置
      * @return \Illuminate\Contracts\View\View
@@ -175,30 +182,63 @@ class ConfController  extends Controller
 
     }
 
-    protected function saveCommon(Request $request){
+    protected function saveCommon(Request $request)
+    {
         $viewMap = [
-            1=>'admin.conf.ad_investment',
-            2=>'admin.conf.download_app_setting',
-            3=>'admin.conf.about_us',
-            4=>'admin.conf.friend_link',
-            5=>'admin.conf.private_item',
-            6=>'admin.conf.magnet_link',
-            7=>'admin.conf.comment_notes',
+            1 => 'admin.conf.ad_investment',
+            2 => 'admin.conf.download_app_setting',
+            3 => 'admin.conf.about_us',
+            4 => 'admin.conf.friend_link',
+            5 => 'admin.conf.private_item',
+            6 => 'admin.conf.magnet_link',
+            7 => 'admin.conf.comment_notes',
         ];
         $data = $request->input();
-        Log::info('数据：'.json_encode($data));
-        try{
+        Log::info('数据：' . json_encode($data));
+        try {
             $conf = new ConfLogic();
-            $conf->saveConf($data,$data['type']??0);
+            $conf->saveConf($data, $data['type'] ?? 0);
 //            print_r(URL::route($viewMap[$data['type']]));
-            return Redirect::to(URL::route($viewMap[$data['type']]))->with(['success'=>'更新成功']);
-        }catch (\Exception $exception){
+            return Redirect::to(URL::route($viewMap[$data['type']]))->with(['success' => '更新成功']);
+        } catch (\Exception $exception) {
             return Redirect::back()->withErrors('更新失败');
         }
     }
 
 
-
+    public function clearCache(Request $request)
+    {
+        if ($request->method() == 'POST') {
+            $prefix = config('database.redis.options.prefix');
+            function clearAll($cache,$prefix){
+                $keys = Redis::keys($cache);
+                foreach ($keys as $key){
+                    Redis::del(str_replace($prefix,'',$key));
+                }
+            }
+            $type = $request->input('type');
+            switch ($type){
+                case 1:
+                    clearAll('actor_detail_products:*',$prefix);
+                    break;
+                case 2:
+                    clearAll('series_detail_products:*',$prefix);
+                    break;
+                case 3:
+                    clearAll('film_company_detail_products:*',$prefix);
+                    break;
+                case 4:
+                    clearAll('number_detail_products:*',$prefix);
+                    break;
+                case 5:
+                    clearAll('movie:lists:catecory:*',$prefix);
+                    clearAll('movie:count:catecory:*',$prefix);
+                    break;
+            }
+            return Response::json(['code' => 0, 'msg' => '成功']);
+        }
+        return View::make('conf.clear_cache');
+    }
 
 
 }

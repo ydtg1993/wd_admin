@@ -440,6 +440,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
     //短评须知
     Route::get('conf/comment_notes', 'ConfController@commentNotesView')->name('admin.conf.comment_notes');
     Route::put('conf/save_comment_notes', 'ConfController@saveCommentNotes')->name('admin.conf.save_comment_notes');
+
+    Route::any('conf/clearCache', 'ConfController@clearCache')->name('admin.conf.clearCache');
 });
 
 

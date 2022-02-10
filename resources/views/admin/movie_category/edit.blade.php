@@ -29,7 +29,7 @@
                     <div class="layui-input-inline">
                         <select name="show" lay-search  lay-filter="parent_id">
                             <option value="1" <?=$category->show==1?'selected':'' ?>>显示</option>
-                            <option value="0" <?=$category->show==2?'selected':'' ?>>不显示</option>
+                            <option value="0" <?=$category->show==0?'selected':'' ?>>不显示</option>
                         </select>
                     </div>
                 </div>
