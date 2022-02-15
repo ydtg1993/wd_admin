@@ -69,8 +69,8 @@ class CropController extends Controller
             $path = dirname($filename);
             $new_filename = substr(md5(basename($filename)), 8, 16) . '_acp.';
             $new_file = ltrim($path . '/' . $new_filename . $file_ext,'/');
-            if(is_file($new_file)){
-                unlink($new_file);
+            if(is_file(public_path('resources') . '/' . $new_file)){
+                unlink(public_path('resources') . '/' . $new_file);
             }
             $im = new \Imagick($file);
             $src_w = $im->getImageWidth();
