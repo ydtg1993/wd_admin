@@ -85,12 +85,14 @@ class BatchComment extends Command
             DB::beginTransaction();
             $flag = $this->walk_sheet_parent_article($batch->id,$sheet_list);
             if(!$flag){
+                DB::rollBack();
                 $this->clear();
                 continue;
             }
 
             $flag = $this->walk_sheet_children_article($batch->id,$this->sheet_list_children);
             if(!$flag){
+                DB::rollBack();
                 $this->clear();
                 continue;
             }
@@ -116,12 +118,14 @@ class BatchComment extends Command
             DB::beginTransaction();
             $flag = $this->walk_sheet_parent($batch->id,$sheet_list);
             if(!$flag){
+                DB::rollBack();
                 $this->clear();
                 continue;
             }
 
             $flag = $this->walk_sheet_children($batch->id,$this->sheet_list_children);
             if(!$flag){
+                DB::rollBack();
                 $this->clear();
                 continue;
             }

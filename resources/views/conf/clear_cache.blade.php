@@ -8,6 +8,7 @@
             <h2>清除网站缓存</h2>
         </div>
         <div class="layui-card-body">
+            <button class="clear" data-id="0">首页列表</button>
             <button class="clear" data-id="1">演员影片列表</button>
             <button class="clear" data-id="2">系列影片列表</button>
             <button class="clear" data-id="3">片商影片列表</button>
