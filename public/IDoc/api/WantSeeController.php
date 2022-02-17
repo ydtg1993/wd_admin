@@ -20,7 +20,7 @@ class WantSeeController
      * @apiSuccess {Number} id 收藏ID
      *
      */
-    public function add(Request $request)
+    public function add()
     {
 
     }
@@ -36,9 +36,9 @@ class WantSeeController
      * @apiSuccess {Number} id 收藏ID
      *
      */
-    public function del(Request $request)
+    public function del()
     {
 
     }
-   
+
 }

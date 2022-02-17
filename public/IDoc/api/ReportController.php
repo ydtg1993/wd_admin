@@ -7,7 +7,7 @@
  */
 
 
-class ReportController extends  BaseController
+class ReportController
 {
 
 

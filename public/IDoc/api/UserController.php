@@ -7,7 +7,7 @@
  */
 
 
-class UserController extends  BaseController
+class UserController
 {
     /***
      * 【
@@ -48,7 +48,7 @@ class UserController extends  BaseController
      * @apiSuccess {String} token 登录token
      *
      */
-    public function login(Request $request)
+    public function login()
     {
 
     }
@@ -67,7 +67,7 @@ class UserController extends  BaseController
      * @apiSuccess {String} token 登录token
      *
      */
-    public function register(Request $request)
+    public function register()
     {
 
     }
@@ -111,7 +111,7 @@ class UserController extends  BaseController
      * @apiSuccess {string} login_ip 登录ip
      *
      */
-    public function changeUserInfo(Request $request)
+    public function changeUserInfo()
     {
 
     }
@@ -146,7 +146,7 @@ class UserController extends  BaseController
      *
      *
      */
-    public function getUserInfo(Request $request)
+    public function getUserInfo()
     {
 
     }
@@ -168,7 +168,7 @@ class UserController extends  BaseController
      *
      *
      */
-    public function sendVerifyCodes(Request $request)
+    public function sendVerifyCodes()
     {
 
     }
@@ -273,7 +273,7 @@ class UserController extends  BaseController
      *
      *
      */
-    public function loginwithcode(Request $request)
+    public function loginwithcode()
     {
 
     }
@@ -294,7 +294,7 @@ class UserController extends  BaseController
      *
      *
      */
-    public function setRead(Request $request)
+    public function setRead()
     {
 
     }
@@ -314,7 +314,7 @@ class UserController extends  BaseController
      *
      *
      */
-    public function delete(Request $request)
+    public function delete()
     {
 
     }
@@ -336,7 +336,7 @@ class UserController extends  BaseController
      *
      *
      */
-    public function forgetPassword(Request $request)
+    public function forgetPassword()
     {
 
     }

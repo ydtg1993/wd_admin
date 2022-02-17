@@ -7,7 +7,7 @@
  */
 
 
-class ComplaintController extends  BaseController
+class ComplaintController
 {
 
     /**

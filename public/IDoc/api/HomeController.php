@@ -173,7 +173,7 @@ class HomeController
      *
      */
 
-    public function index(Request $request)
+    public function index()
     {
 
     }
@@ -239,7 +239,7 @@ class HomeController
 
     }
 
-    
+
 
 
     /**

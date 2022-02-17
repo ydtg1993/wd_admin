@@ -7,7 +7,7 @@
  */
 
 
-class SeriesDetailController extends  BaseController
+class SeriesDetailController
 {
     /**
      * @api {Post} /api/series/detail 系列信息

@@ -7,7 +7,7 @@
  */
 
 
-class ToolController extends  BaseController
+class ToolController
 {
 
     /**

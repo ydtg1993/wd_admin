@@ -394,7 +394,7 @@ class UserActionController
      * @apiSuccess {String} list.big_cove 大图
      *
      */
-    public function getList(Request $request)
+    public function getList()
     {
 
     }
