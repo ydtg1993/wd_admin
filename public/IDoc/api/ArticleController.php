@@ -23,6 +23,9 @@ class ArticleController
      * @apiSuccess {string}  list.link          外链视频
      * @apiSuccess {int}     list.ishot         是否热推
      * @apiSuccess {string}  list.update_at     更新时间
+     * @apiSuccess {object}  list.label         话题标签
+     * @apiSuccess {int}     list.label.id      标签id
+     * @apiSuccess {int}     list.label.name    标签名称
      */
 
     /**
@@ -48,6 +51,9 @@ class ArticleController
      * @apiSuccess {int}     list.ishot         是否热推
      * @apiSuccess {int}     list.sort          排序
      * @apiSuccess {string}  list.update_at     更新时间
+     * @apiSuccess {object}  list.label         话题标签
+     * @apiSuccess {int}     list.label.id      标签id
+     * @apiSuccess {int}     list.label.name    标签名称
      */
     public function lsit()
     {
@@ -86,7 +92,7 @@ class ArticleController
      * @apiGroup 话题管理
      * @apiDescription 获取话题相关列表
      *
-     * @apiParam {int} int   话题id
+     * @apiParam {int} id   话题id
      *
      * @apiSuccess {String} code 响应码 200 正确 其他错误
      * @apiSuccess {String} msg 错误提示
@@ -100,6 +106,74 @@ class ArticleController
      * @apiSuccess {string}  list.update_at     更新时间
      */
     public function related()
+    {
+
+    }
+
+    /**
+     * @api {Get} /api/user/article/comment 话题评论提交
+     * @apiName  话题评论提交
+     * @apiGroup 话题管理
+     * @apiDescription 话题评论提交
+     *
+     * @apiParam {int}      aid      话题id
+     * @apiParam {string}   comment  评论内容
+     * @apiParam {int}      reply_id 需要回复的评论id
+     *
+     * @apiSuccess {String} code 响应码 200 正确 其他错误
+     * @apiSuccess {String} msg 错误提示
+     * @apiSuccess {object} data 列表
+     */
+    public function comment()
+    {
+
+    }
+
+    /**
+     * @api {Get} /api/user/article/comment/action 话题评论的赞和踩
+     * @apiName  话题评论赞和踩
+     * @apiGroup 话题管理
+     * @apiDescription 话题评论赞和踩
+     *
+     * @apiParam {int}      acid      评论id
+     * @apiParam {string}   ty        传值[up]=赞,[down]=踩
+     *
+     * @apiSuccess {String} code 响应码 200 正确 其他错误
+     * @apiSuccess {String} msg 错误提示
+     * @apiSuccess {object} data 列表
+     */
+    public function action()
+    {
+
+    }
+
+    /**
+     * @api {Get} /api/user/article/comment/lists 话题评论列表
+     * @apiName  获取话题评论列表
+     * @apiGroup 话题管理
+     * @apiDescription 获取话题评论列表
+     *
+     * @apiParam {int} aid          话题id
+     * @apiParam {int} page         页码,默认=1
+     * @apiParam {int} pageSize     每页读取多少条
+     *
+     * @apiSuccess {String} code 响应码 200 正确 其他错误
+     * @apiSuccess {String} msg 错误提示
+     * @apiSuccess {int} sum 评论总数
+     * @apiSuccess {object}  list 列表
+     * @apiSuccess {int}     list.id            评论id
+     * @apiSuccess {string}  list.comment       评论内容
+     * @apiSuccess {string}  list.uid           评论用户uid
+     * @apiSuccess {string}  list.nickname      评论用户名称
+     * @apiSuccess {string}  list.avatar        评论用户头像
+     * @apiSuccess {int}     list.cid           回复的评论id
+     * @apiSuccess {int}     list.reply_uid     回复评论的用户id
+     * @apiSuccess {int}     list.type          [1]=评论,[2]=回复
+     * @apiSuccess {int}     list.like          赞
+     * @apiSuccess {int}     list.dislike       踩
+     * @apiSuccess {string}  list.comment_time  评论时间
+     */
+    public function lists()
     {
 
     }

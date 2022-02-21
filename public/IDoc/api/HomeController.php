@@ -146,7 +146,8 @@ class HomeController
      * @apiDescription 获取首页标签影片列表
      *
      * @apiParam {Number} home_type 首页类型5必须传5
-     * @apiParam {Number} cid 标签的id
+     * @apiParam {Number} cid 标签的id，多个请使用英文逗号隔开
+     * @apiParam {Number} gid 标签分类的id
      * @apiParam {Number} is_subtitle 状态：1.不含字幕、2.含字幕
      * @apiParam {Number} is_download 状态：1.不可下载、2.可下载
      * @apiParam {Number} is_short_comment 状态：1.不含短评、2.含短评
