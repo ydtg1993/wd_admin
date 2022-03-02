@@ -36,8 +36,8 @@ class Movie extends Model
     }
 
     /**
-     * 添加电影 
-     * 
+     * 添加电影
+     *
      */
     public function create($data,$category_id)
     {
@@ -81,19 +81,19 @@ class Movie extends Model
             {
                 $this->associate('director', $id, $data['director'], 'did');
             }
-            
+
             /*系列*/
             if($data['series'])
             {
                 $this->associate('series', $id, $data['series'], 'series_id');
             }
-            
+
             /*片商*/
             if($data['company'])
             {
                 $this->associate('film_companies', $id, $data['company'], 'film_companies_id');
             }
-            
+
             /*分类*/
             if($category_id)
             {
@@ -136,7 +136,7 @@ class Movie extends Model
     }
 
     /**
-     * 修改影片 
+     * 修改影片
      */
     public function edit($data,$id)
     {
@@ -177,19 +177,19 @@ class Movie extends Model
             {
                 $this->associate('director', $id, $data['director'], 'did');
             }
-            
+
             /*系列*/
             if($data['series'])
             {
                 $this->associate('series', $id, $data['series'], 'series_id');
             }
-            
+
             /*片商*/
             if($data['company'])
             {
                 $this->associate('film_companies', $id, $data['company'], 'film_companies_id');
             }
-            
+
             //分类
             if($data['category_id'])
             {
@@ -225,7 +225,7 @@ class Movie extends Model
     }
 
     /**
-     * 删除影片 
+     * 删除影片
      */
     public static function rm($ids)
     {
@@ -240,7 +240,7 @@ class Movie extends Model
     }
 
     /**
-     * 上架影片 
+     * 上架影片
      */
     public static function up($ids)
     {
@@ -255,7 +255,7 @@ class Movie extends Model
     }
 
     /**
-     * 下架影片 
+     * 下架影片
      */
     public static function down($ids)
     {
@@ -271,7 +271,7 @@ class Movie extends Model
 
 
     /**
-     * 获取磁链的数据 
+     * 获取磁链的数据
      */
     public function getFluxLink($mid = 0)
     {
@@ -291,7 +291,7 @@ class Movie extends Model
     }
 
     /**
-     * 一对一数据表操作 
+     * 一对一数据表操作
      */
     private function associate($table, $movie_id, $input, $column)
     {
@@ -312,7 +312,7 @@ class Movie extends Model
     }
 
     /**
-     * 一对多，操作数据表 
+     * 一对多，操作数据表
      */
     private function dataAssociate($table, $movie_id, $data, $column)
     {
@@ -341,4 +341,47 @@ class Movie extends Model
         }
     }
 
+    /**
+     * 格式化影片列表数据
+     * @param array $data
+     */
+    public static function formatList($data = [])
+    {
+        $is_new_comment_day = ((strtotime($data['new_comment_time'] ?? '') - strtotime(date('Y-m-d 00:00:00'))) >= 0) ? 1 : 2;//最新评论时间减去 今日开始时间 如果大于0 则今日新评论
+        $is_new_comment_day = ($is_new_comment_day == 2) ? (
+        (((strtotime($data['new_comment_time'] ?? '') - (strtotime(date('Y-m-d 00:00:00')) - (60 * 60 * 24))) >= 0) ? 3 : 2)
+        ) : 1;
+
+        $is_flux_linkage_day = ((strtotime($data['flux_linkage_time'] ?? '') - strtotime(date('Y-m-d 00:00:00'))) >= 0) ? 1 : 2;
+        $is_flux_linkage_day = ($is_flux_linkage_day == 2) ? (
+        (((strtotime($data['flux_linkage_time'] ?? '') - (strtotime(date('Y-m-d 00:00:00')) - (60 * 60 * 24))) >= 0) ? 3 : 2)
+        ) : 1;
+
+        $small_cover = $data['small_cover'] ?? '';
+        $big_cove = $data['big_cove'] ?? '';
+        $reData = [];
+        $reData['id'] = $data['id'] ?? 0;
+
+        $reData['name'] = $data['name'] ?? '';
+        $reData['number'] = $data['number'] ?? '';
+        $reData['release_time'] = $data['release_time'] ?? '';
+        $reData['created_at'] = $data['created_at'] ?? '';
+
+        $reData['is_download'] = $data['is_download'] ?? 1;//状态 1.不可下载  2.可下载
+        $reData['is_subtitle'] = $data['is_subtitle'] ?? 1;//状态 1.不含字幕  2.含字幕
+        $reData['is_hot'] = $data['is_hot'] ?? 1;//状态 1.普通  2.热门
+        $reData['is_new_comment'] = $is_new_comment_day;//状态 1.今日新评  2.无状态 3.昨日新评
+
+        $reData['is_flux_linkage'] = $is_flux_linkage_day;//状态 1.今日新种  2.无状态 3.昨日新种
+        $reData['comment_num'] = $data['comment_num'] ?? 0;
+        $reData['score'] = $data['score'] ?? 0;
+
+        $image_domain = env('IMAGE_DOMAIN', '');
+        $reData['small_cover'] = $small_cover == '' ? '' : ($image_domain . $small_cover);
+
+        $reData['big_cove'] = $big_cove == '' ? '' : ($image_domain . $big_cove);
+        $reData['is_short_comment'] = $data['is_short_comment'] ?? 0;;
+
+        return $reData;
+    }
 }

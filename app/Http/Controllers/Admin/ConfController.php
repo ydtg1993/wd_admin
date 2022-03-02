@@ -209,8 +209,8 @@ class ConfController extends Controller
     public function clearCache(Request $request)
     {
         if ($request->method() == 'POST') {
-            $prefix = config('database.redis.options.prefix');
-            function clearAll($cache,$prefix){
+            function clearAll($cache){
+                $prefix = config('database.redis.options.prefix');
                 $keys = Redis::keys($cache);
                 foreach ($keys as $key){
                     Redis::del(str_replace($prefix,'',$key));
@@ -218,21 +218,24 @@ class ConfController extends Controller
             }
             $type = $request->input('type');
             switch ($type){
+                case 0:
+                    clearAll('home:*');
+                    break;
                 case 1:
-                    clearAll('actor_detail_products:*',$prefix);
+                    clearAll('actor_detail_products:*');
                     break;
                 case 2:
-                    clearAll('series_detail_products:*',$prefix);
+                    clearAll('series_detail_products:*');
                     break;
                 case 3:
-                    clearAll('film_company_detail_products:*',$prefix);
+                    clearAll('film_company_detail_products:*');
                     break;
                 case 4:
-                    clearAll('number_detail_products:*',$prefix);
+                    clearAll('number_detail_products:*');
                     break;
                 case 5:
-                    clearAll('movie:lists:catecory:*',$prefix);
-                    clearAll('movie:count:catecory:*',$prefix);
+                    clearAll('movie:lists:catecory:*');
+                    clearAll('movie:count:catecory:*');
                     break;
             }
             return Response::json(['code' => 0, 'msg' => '成功']);
