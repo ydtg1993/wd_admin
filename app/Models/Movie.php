@@ -376,7 +376,7 @@ class Movie extends Model
         $reData['comment_num'] = $data['comment_num'] ?? 0;
         $reData['score'] = $data['score'] ?? 0;
 
-        $image_domain = env('IMAGE_DOMAIN', '');
+        $image_domain = config('app.url').'resources/';
         $reData['small_cover'] = $small_cover == '' ? '' : ($image_domain . $small_cover);
 
         $reData['big_cove'] = $big_cove == '' ? '' : ($image_domain . $big_cove);

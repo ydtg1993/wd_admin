@@ -19,7 +19,10 @@ class MovieLog extends Model
         $log = new MovieLog();
         $type > 0 ? ($log = $log->where('cid', $type)) : null;
         if ($time > 0) {
-            $time == 1 ? ($log = $log->where('created_at', '>=', date('Y-m-d 00:00:00', time()))) : null;
+            $time == 1 ? ($log = $log->whereBetween('created_at',[
+                date('Y-m-d 00:00:00', strtotime("-1 days")),
+                date('Y-m-d 00:00:00', time())
+            ])) : null;
             $time == 2 ? ($log = $log->where('created_at', '>=', (date('Y-m-d 00:00:00', strtotime('-' . (date('w', time()) - 1) . ' days', time()))))) : null;
             $time == 3 ? ($log = $log->where('created_at', '>=', date('Y-m-01 00:00:00', time()))) : null;
         }
