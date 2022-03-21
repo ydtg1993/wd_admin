@@ -7,7 +7,7 @@
  */
 
 
-class ActorDetailController
+class ActorDetailController extends  BaseController
 {
     /**
      * @api {Post} /api/actor/detail 演员信息

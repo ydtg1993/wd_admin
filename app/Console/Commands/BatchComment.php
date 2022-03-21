@@ -218,7 +218,6 @@ class BatchComment extends Command
                 $this->comment_ids[] = $comment_id;
             }
         }catch (\Exception $e){
-            DB::rollBack();
             BatchCommentModel::where('id',$batch_id)->update(['msg'=>(string)$e->getMessage(),'status'=>2]);
             return false;
         }
@@ -264,7 +263,6 @@ class BatchComment extends Command
                 $this->comment_ids[] = $comment_id;
             }
         }catch (\Exception $e){
-            DB::rollBack();
             BatchCommentModel::where('id',$batch_id)->update(['msg'=>(string)$e->getMessage(),'status'=>2]);
             return false;
         }
@@ -314,7 +312,6 @@ class BatchComment extends Command
                 $this->comment_ids[] = $comment_id;
             }
         }catch (\Exception $e){
-            DB::rollBack();
             BatchCommentModel::where('id',$batch_id)->update(['msg'=>(string)$e->getMessage(),'status'=>2]);
             return false;
         }
@@ -359,7 +356,6 @@ class BatchComment extends Command
                 $this->comment_ids[] = $comment_id;
             }
         }catch (\Exception $e){
-            DB::rollBack();
             BatchCommentModel::where('id',$batch_id)->update(['msg'=>(string)$e->getMessage(),'status'=>2]);
             return false;
         }

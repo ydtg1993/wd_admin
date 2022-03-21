@@ -7,7 +7,7 @@
  */
 
 
-class NumberDetailController
+class NumberDetailController extends  BaseController
 {
     /**
      * @api {Post} /api/number/detail 番号信息

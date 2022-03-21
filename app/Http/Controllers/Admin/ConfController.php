@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: night
- * Date: 2021/5/31
- * Time: 17:09
- */
 
 namespace App\Http\Controllers\Admin;
 
@@ -172,6 +166,45 @@ class ConfController extends Controller
 
     }
 
+    /**
+     * 首次登陆提示
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function firstLogin()
+    {
+        $conf = new ConfLogic();
+        $dataInfo  = $conf->getConf(CommConf::CONF_FIRST_LOGIN);
+        return View::make('conf.first_login',compact('dataInfo'));
+    }
+    /**
+     * 保存配置
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function saveFirstLogin(Request $request)
+    {
+        return self::saveCommon($request);
+
+    }
+    /**
+     * 首次登陆提示
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function appSharp()
+    {
+        $conf = new ConfLogic();
+        $dataInfo  = $conf->getConf(CommConf::CONF_APP_SHARP);
+        return View::make('conf.app_sharp',compact('dataInfo'));
+    }
+    /**
+     * 保存配置
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function saveAppSharp(Request $request)
+    {
+        return self::saveCommon($request);
+
+    }
+
 
     /**
      * 保存配置
@@ -185,13 +218,15 @@ class ConfController extends Controller
     protected function saveCommon(Request $request)
     {
         $viewMap = [
-            1 => 'admin.conf.ad_investment',
-            2 => 'admin.conf.download_app_setting',
-            3 => 'admin.conf.about_us',
-            4 => 'admin.conf.friend_link',
-            5 => 'admin.conf.private_item',
-            6 => 'admin.conf.magnet_link',
-            7 => 'admin.conf.comment_notes',
+            1=>'admin.conf.ad_investment',
+            2=>'admin.conf.download_app_setting',
+            3=>'admin.conf.about_us',
+            4=>'admin.conf.friend_link',
+            5=>'admin.conf.private_item',
+            6=>'admin.conf.magnet_link',
+            7=>'admin.conf.comment_notes',
+            8=>'admin.conf.first_login',
+            9=>'admin.conf.app_sharp',
         ];
         $data = $request->input();
         Log::info('数据：' . json_encode($data));
@@ -237,6 +272,8 @@ class ConfController extends Controller
                     clearAll('movie:lists:catecory:*');
                     clearAll('movie:count:catecory:*');
                     break;
+                case 6:
+                    clearAll('Rank:movie:rank:*');
             }
             return Response::json(['code' => 0, 'msg' => '成功']);
         }

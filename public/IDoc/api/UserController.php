@@ -159,8 +159,7 @@ class UserController
      * @apiDescription 发送验证码【发送前需要验证图形验证码】
      *
      * @apiParam {String} emailOrPhone 邮箱或者电话
-     * @apiParam {String} key 图形验证码的key
-     * @apiParam {String} captcha 图形验证码
+     * @apiParam {String} validate 网易验证接口返回值 参考文献https://support.dun.163.com/documents/15588062143475712?docId=294963579379175424
      *
      * @apiSuccess {String} code 响应码 200 正确 其他错误
      * @apiSuccess {String} msg 错误提示

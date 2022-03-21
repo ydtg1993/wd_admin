@@ -103,12 +103,9 @@ class MovieController extends Controller
         $ordertype = empty($request->input('order')) ?'desc':$request->input('order');
 
         if($request->input('category')){
-            $model = $model->where('movie_category.name', $request->input('category'));
+            $model = $model->where($table.'.cid', $request->input('category'));
         }
-        $res = $model->join('movie_category','movie_category.id','=','movie.cid')
-            ->orderBy($orderName, $ordertype)
-            ->select($table.'.*','movie_category.name as category')
-            ->paginate($request->get('limit', 30));
+        $res = $model->orderBy($orderName, $ordertype)->paginate($request->get('limit', 30));
 
         $records = $res->toArray();
         $movies = $records['data'];
@@ -117,6 +114,11 @@ class MovieController extends Controller
             $actors = MovieActor::whereIn('id', $movie_actor_associate_ids)->pluck('name')->all();
             $movie['actors'] = join(',', $actors);
             $movie['is_up']=($movie['is_up']==1)?'上架':'下架';
+            $movie['category'] = '';
+            $category = MovieCategory::where('id',$movie['cid'])->first();
+            if($category){
+                $movie['cid'] = $category->name;
+            }
         }
 
         $data = [

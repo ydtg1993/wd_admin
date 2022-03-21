@@ -5,29 +5,14 @@
 
     <div class="layui-card">
         <div class="layui-card-header layuiadmin-card-header-auto">
-            <h2>短评须知</h2>
+            <h2>首次登陆须知</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.conf.save_comment_notes')}}" method="post">
+            <form class="layui-form" action="{{route('admin.conf.save_first_login')}}" method="post">
                 {{ method_field('put') }}
                 {{csrf_field()}}
-                <input type="hidden" name="type" value="7" >
+                <input type="hidden" name="type" value="8" >
                 <input type="hidden" name="id" value="{{isset($dataInfo['id'])?$dataInfo['id']:0}}" >
-
-                <div class="layui-form-item">
-                    <label for="" class="layui-form-label">开关</label>
-                    <div class="layui-input-block">
-                        <input type="radio" name="isopen" value="1" title="开" class="radio" <?php if(isset($dataInfo['isopen']) && $dataInfo['isopen']==1){echo 'checked';}?>>
-                        <input type="radio" name="isopen" value="2" title="关" class="radio" <?php if(isset($dataInfo['isopen']) && $dataInfo['isopen']==2){echo 'checked';}?>>
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <label for="" class="layui-form-label">显示时间（秒）</label>
-                    <div class="layui-input-inline">
-                        <input type="number" name="countdown" value="{{$dataInfo['countdown']??''}}"  placeholder="显示倒计时（秒）" class="layui-input" min="0">
-                    </div>
-                </div>
 
                 <div class="layui-form-item">
                     <label for="" class="layui-form-label">内容</label>

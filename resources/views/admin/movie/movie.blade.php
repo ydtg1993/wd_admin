@@ -136,7 +136,7 @@
                         , {field:'score',title:'评分'}
                         , {field: 'time', title:'时长'}
                         , {field: 'small_cover', title:'封面图'}
-                        , {field: 'category', title:'类别'}
+                        , {field: 'cid', title:'类别',sort: true}
                         , {field: 'comment_num', title:'评论'}
                         , {field: 'flux_linkage_num', title:'磁链'}
                         , {field: 'wan_see', title:'想看'}

@@ -7,7 +7,7 @@
  */
 
 
-class MovieDetailController
+class MovieDetailController extends  BaseController
 {
     /**
      * @api {Post} /api/movie/detail 影片详情

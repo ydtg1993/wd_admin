@@ -1,6 +1,6 @@
 <?php
 
-class LabelController
+class LabelController extends  BaseController
 {
 
     /**
@@ -26,9 +26,9 @@ class LabelController
      * @apiName  获取标签列表
      * @apiGroup 影片标签
      * @apiDescription 获取标签列表
-     *
+     *   
      * @apiParam {int} cid  标签分类id
-     *
+     * 
      * @apiSuccess {String} code 响应码 200 正确 其他错误
      * @apiSuccess {String} msg 错误提示
      * @apiSuccess {Object} data 列表【数组】

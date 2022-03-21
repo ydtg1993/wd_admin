@@ -7,7 +7,7 @@
  */
 
 
-class FilmCompaniesDetailController
+class FilmCompaniesDetailController extends  BaseController
 {
     /**
      * @api {Post} /api/company/detail 公司信息

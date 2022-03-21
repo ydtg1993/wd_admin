@@ -73,19 +73,19 @@
 
     });
 
-    //判断图片是否存在  
+    //判断图片是否存在
     function CheckImgExists(imgurl) {
-        var ImgObj = new Image(); 
+        var ImgObj = new Image();
         ImgObj.src = imgurl;
 
         console.log(ImgObj);
-        
+
         //存在图片
-        if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {  
+        if (ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0)) {
           return true;
-        } else {  
+        } else {
           return false;
-        }   
+        }
     }
 </script>
 @yield('script')

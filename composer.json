@@ -10,11 +10,9 @@
     "require": {
         "php": "^7.2",
         "fideloper/proxy": "^4.0",
-        "jenssegers/mongodb": "3.6.*",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
         "mews/captcha": "^3.0",
-        "overtrue/laravel-wechat": "^5.0",
         "spatie/laravel-permission": "^3.0"
     },
     "require-dev": {
@@ -27,8 +25,13 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "secure-http": false,
+        "allow-plugins": {
+            "easywechat-composer/easywechat-composer": true
+        }
     },
+    "repositories":{"packagist":{"type": "composer","url": "http://10.64.64.44:8081/repository/composer-packagist"}},
     "extra": {
         "laravel": {
             "dont-discover": []

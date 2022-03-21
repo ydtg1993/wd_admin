@@ -127,7 +127,7 @@ class MovieLabelController extends Controller
 
 
     /**
-     * 更新资讯
+     * 更新
      * @param Request $request
      * @param $id
      * @return \Illuminate\Http\RedirectResponse

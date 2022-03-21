@@ -7,7 +7,7 @@
  */
 
 
-class DirectorDetailController
+class DirectorDetailController extends  BaseController
 {
     /**
      * @api {Post} /api/director/detail 导演信息

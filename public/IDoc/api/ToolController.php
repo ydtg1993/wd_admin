@@ -35,27 +35,6 @@ class ToolController
     {
 
     }
-    /**
-     * @api {Get} /api/captcha/cors/math 图形验证码
-     * @apiName  图形验证码
-     * @apiGroup 工具接口
-     * @apiDescription 发送图形验证码
-     *
-     *
-     *
-     *    * @apiSuccessExample  {json} success-example
-    {
-        "sensitive": false,
-        "key": "eyJpdiI6ImtmMlY0emowd3I1VEo1NVVSbE9scEE9PSIsInZhbHVlIjoieUxnaDdLTXVsRlBjR3NiZ3EzcFduMW9qcGtoYVAxMHVGSTgzMnJwM3g1OHdFS2FwYzNGdUthMExDTEpLdWFWNWxLN2sxQStEMjJkZ0YzY09iZUswM1wvZjhtNExIZFZVUWk0dHpDOWF5Q
-     * TBZPSIsIm1hYyI6ImMyOGU4OWIyYjdlOTQ2ZDU4NzljYmVjYTI4MGQwYzdlMjQ0OWFlYTNkYzc4OTViMTBjMWNhZjAxZjJmMDQ5YzIifQ==",//图形验证码的key
-        "img": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAAkCA"//图形验证码路径
-    }
-     */
-    public function sendCaptcha()
-    {
-
-    }
-
 
     /**
      * @api {Post} /api/file/upload/piece/list 上传片单图

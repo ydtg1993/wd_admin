@@ -24,7 +24,8 @@ class CommConf extends Model
     const CONF_PRIVACY_CLAUSE = 5;//隐私条款
     const CONF_MAGNET_LINK = 6;//磁链使用教程
     const CONF_COMMENT_NOTES = 7; //短评须知
-
+    const CONF_FIRST_LOGIN = 8; //首次登陆须知
+    const CONF_APP_SHARP = 9; //app分享
 
         /*
          * 1.广告招商 2. 下载本站 3.关于我们 4.友情链接 5.隐私条款 6.磁链使用教程*/
@@ -42,6 +43,8 @@ class CommConf extends Model
                 5=>'private_item',
                 6=>'magnet_link',
                 7=>'comment_notes',
+                8=>'first_login',
+                9=>'app_sharp',
              ];
             $cacheKey = $redisPrefix.$keyMap[$model->type];
             $cacheKeyAll = $redisPrefix.'all';

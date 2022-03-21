@@ -7,7 +7,7 @@
  */
 
 
-class AnnouncementController
+class AnnouncementController extends  BaseController
 {
 
     /**

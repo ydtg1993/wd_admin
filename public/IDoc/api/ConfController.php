@@ -7,7 +7,7 @@
  */
 
 
-class ConfController
+class ConfController extends  BaseController
 {
 
     /**
@@ -62,12 +62,6 @@ class ConfController
      *           "content": "<p>55566</p>"//内容富文本
      *           }
      *       }
-     *       "first_login": {//登陆提示 type=8
-     *           "content": "<p>444666</p>"//内容富文本
-     *       },
-     *       "app_share": {//app分享 type=9
-     *           "content": "<p>444666</p>"//内容富文本
-     *       },
      *   }
      */
     public function getAllConf()
@@ -86,29 +80,6 @@ class ConfController
    * @apiSuccess {String} code 响应码 200 正确 其他错误 返回值格式参考如上
    * */
     public function getOneConf()
-    {
-
-    }
-
-   /**
-   * @api {get} /api/conf/firstlogin 首次登陆须知
-   * @apiName  获取一条基础信息
-   * @apiGroup 网站管理
-   *
-   * @apiSuccess {String} code 响应码 200 正确 其他错误 返回值格式参考如上
-   * */
-    public function firstLogin()
-    {
-
-    }
-    /**
-   * @api {get} /api/conf/appshare  app分享
-   * @apiName  获取一条基础信息
-   * @apiGroup 网站管理
-   *
-   * @apiSuccess {String} code 响应码 200 正确 其他错误 返回值格式参考如上
-   * */
-    public function appshare()
     {
 
     }

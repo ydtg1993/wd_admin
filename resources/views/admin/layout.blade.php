@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/static/admin/layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/static/admin/layuiadmin/style/admin.css" media="all">
     <!-- 引用jquery -->
-    <script src="/baidu-editor/third-party/jquery.min.js"></script>
+    <script src="/jquery.min.js"></script>
 </head>
 <body class="layui-layout-body">
 <div id="LAY_app">

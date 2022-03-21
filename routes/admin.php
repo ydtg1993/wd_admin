@@ -441,6 +441,12 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
     Route::get('conf/comment_notes', 'ConfController@commentNotesView')->name('admin.conf.comment_notes');
     Route::put('conf/save_comment_notes', 'ConfController@saveCommentNotes')->name('admin.conf.save_comment_notes');
 
+    Route::get('conf/first_login', 'ConfController@firstLogin')->name('admin.conf.first_login');
+    Route::put('conf/save_first_login', 'ConfController@saveFirstLogin')->name('admin.conf.save_first_login');
+
+    Route::get('conf/app_sharp', 'ConfController@appSharp')->name('admin.conf.app_sharp');
+    Route::put('conf/save_app_sharp', 'ConfController@saveAppSharp')->name('admin.conf.save_app_sharp');
+    
     Route::any('conf/clearCache', 'ConfController@clearCache')->name('admin.conf.clearCache');
 });
 

@@ -165,7 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
-        Jenssegers\Mongodb\MongodbServiceProvider::class,
+        //Jenssegers\Mongodb\MongodbServiceProvider::class,
         App\Providers\Es\EsServiceProvider::class,
         /*
          * Application Service Providers...
@@ -178,7 +178,7 @@ return [
 
         Spatie\Permission\PermissionServiceProvider::class,
         Mews\Captcha\CaptchaServiceProvider::class,
-        Overtrue\LaravelWeChat\ServiceProvider::class,
+        //Overtrue\LaravelWeChat\ServiceProvider::class,
         //Elasticquent\ElasticquentServiceProvider::class,
 
     ],
@@ -231,10 +231,10 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Mongo'     => Jenssegers\Mongodb\MongodbServiceProvider::class,
+        //'Mongo'     => Jenssegers\Mongodb\MongodbServiceProvider::class,
 
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
-        'EasyWeChat' => Overtrue\LaravelWeChat\Facade::class,
+        //'EasyWeChat' => Overtrue\LaravelWeChat\Facade::class,
 
     ],
 

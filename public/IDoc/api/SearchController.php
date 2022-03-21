@@ -26,7 +26,7 @@ class UserSeenController
      * @apiDescription 搜索【影片，番号】
      *
      * @apiParam {String} search 搜索内容
-     * @apiParam {String} ty  搜索类型 movie=影片 number=番号
+     * @apiParam {String} ty  搜索类型 movie=影片 number=番号 
      * @apiParam {Number} is_subtitle 状态：1.不含字幕、2.含字幕
      * @apiParam {Number} is_download 状态：1.不可下载、2.可下载
      * @apiParam {Number} is_short_comment 状态：1.不含短评、2.含短评
@@ -64,7 +64,7 @@ class UserSeenController
      * @apiDescription 搜索【演员】
      *
      * @apiParam {String} search 搜索内容
-     * @apiParam {String} ty  搜索类型 actor=演员
+     * @apiParam {String} ty  搜索类型 actor=演员 
      * @apiParam {Number} page 分页页码 默认值1（兼容老接口）
      * @apiParam {Number} pageSize 分页长度，默认值10
      * @apiParam {Number} lastid 请求得到的最后id，用于新分页，默认值0
@@ -181,10 +181,10 @@ class UserSeenController
      * @apiSuccess {Number} list.uid 用户id
      * @apiSuccess {Number} list.username 用户名
      * @apiSuccess {Number} list.avatar 用户头像
-     * @apiSuccess {Number} list.created_at 创建时间
+     * @apiSuccess {Number} list.created_at 创建时间 
      */
 
-    public function search()
+    public function search(Request $request)
     {
 
     }
@@ -201,9 +201,9 @@ class UserSeenController
      * @apiSuccess {Number} list[] 关键词组数
      *
      */
-    public function hotword()
+    public function hotword(Request $request)
     {
 
     }
-
+   
 }

@@ -31,7 +31,7 @@ class TagController extends Controller
     public function data(Request $request)
     {
 
-        $res = Tag::orderBy('sort','asc')->orderBy('id','desc')->paginate($request->get('limit',30));
+        $res = Tag::orderBy('sort','asc')->orderBy('sort','asc')->paginate($request->get('limit',30));
         $data = [
             'code' => 0,
             'msg'   => '正在请求中...',

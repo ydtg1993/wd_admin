@@ -35,12 +35,14 @@ class UserClientController extends Controller
      */
     public function data(Request $request)
     {
-        $data = $request->all(['created_at_start','created_at_end','status','type','u_number','u_nickname','u_phone','u_email']);
+        $data = $request->all(['created_at_start','created_at_end','status','type','reg_device','u_number','u_nickname','u_phone','u_email']);
 
         $res = UserClient::when($data['type'],function ($query,$data) {
                 return $query->where('user_client.type',$data);
             })->when($data['status'],function ($query,$data) {
                 return $query->where('user_client.status',$data);
+            })->when($data['reg_device'],function ($query,$data) {
+                return $query->where('user_client.reg_device',$data);
             }) ->when($data['u_number'],function ($query,$data) {
                 //查询用户id
                 return $query->where('user_client.number','like',$data.'%');

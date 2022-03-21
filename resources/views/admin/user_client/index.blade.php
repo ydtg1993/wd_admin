@@ -32,6 +32,17 @@
             </div>
 
             <div class="layui-inline">
+            <select name="reg_device" lay-verify="required" id="reg_device">
+                <option value=0>设备类型</option>
+                <option value="web" @if (isset($userClient)&&($userClient->reg_device=='web'))  selected @endif>电脑网页</option>
+                <option value="android" @if (isset($userClient)&&($userClient->reg_device=='android'))  selected @endif>安卓手机</option>
+                <option value="iphone" @if (isset($userClient)&&($userClient->reg_device=='iphone'))  selected @endif>苹果手机</option>
+                <option value="ipad" @if (isset($userClient)&&($userClient->reg_device=='ipad'))  selected @endif>平板</option>
+                <option value="other" @if (isset($userClient)&&($userClient->reg_device=='other'))  selected @endif>其他</option>
+            </select>
+            </div>
+
+            <div class="layui-inline">
                 <label for="" class="layui-form-label">uuid</label>
                 <div class="layui-input-inline">
                     <input type="text" name="u_number"  placeholder="uuid"  class="layui-input">
@@ -122,6 +133,7 @@
                         {type:'checkbox',fixed:'id'}
                         ,{field: 'id', title: 'ID', sort: true, width: 40}
                         , {field: 'number', title: 'uuid'}
+                        , {field: 'reg_device', title: '设备类型'}
                         , {field: 'nickname', title: '用户名'}
                         , {field: 'email', title: '登录邮箱'}
                         , {field: 'phone',  title: '手机号码'}
@@ -308,6 +320,7 @@
                                     status:$("input[name=tyall]:checked").val(),
                                     unlockday:$("#unlockdayall").val(),
                                     remarks:$("#rkall").val(),
+                                    reg_device:$('#reg_device').val(),
                                 }, function (res) {
                                     layer.close(load);
                                     if (res.code == 0) {

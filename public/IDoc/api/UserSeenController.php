@@ -24,7 +24,7 @@ class UserSeenController
      * @apiSuccess {string} warning 当碰到过滤词时，提示的警告
      *
      */
-    public function add()
+    public function add(Request $request)
     {
 
     }
@@ -59,7 +59,7 @@ class UserSeenController
      * @apiSuccess {Number} id 操作的ID
      *
      */
-    public function edit()
+    public function edit(Request $request)
     {
 
     }
@@ -74,7 +74,7 @@ class UserSeenController
      * @apiSuccess {string} warning 当碰到过滤词时，提示的警告
      *
      */
-    public function del()
+    public function del(Request $request)
     {
 
     }
@@ -92,9 +92,9 @@ class UserSeenController
      * @apiSuccess {String} msg 错误提示
      * @apiSuccess {String} warning 警告
      */
-    public function batch_hand_send()
+    public function batch_hand_send(Request $request)
     {
 
     }
-
+   
 }
