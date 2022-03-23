@@ -19,9 +19,7 @@
                 </div>
                 <div style="padding-left:100px">
                     <!-- 加载编辑器的容器 -->
-                    <textarea id="container" name="content" type="text/plain" style="width:600px;height:200px;">
-                            {{isset($dataInfo['content'])?$dataInfo['content']:''}}
-                    </textarea>
+                    <textarea id="container" name="content" type="text/plain" style="width:600px;height:200px;">{{isset($dataInfo['content'])?$dataInfo['content']:''}}</textarea>
                 </div>
                 @can('conf.about_us.edit')
                 <div class="layui-form-item" style="padding-left:230px;padding-top: 20px">
@@ -39,7 +37,7 @@
 
 <?php
     $conf = isset($dataInfo['content'])?$dataInfo['content']:'';
-    $conf =str_replace(array("\r\n", "\r", "\n"), "", $conf);  
+    $conf =str_replace(array("\r\n", "\r", "\n"), "", $conf);
     $conf = str_replace(PHP_EOL,'',$conf);
     $conf = str_replace('
 ','',$conf);
@@ -52,8 +50,6 @@
     </script>
     <script src="/ckeditor/ckeditor.js"></script>
     <script type="text/javascript">
-        CKEDITOR.replace( 'container', {
-                    language: 'zh-cn',
-                } );
+
     </script>
 @endsection
