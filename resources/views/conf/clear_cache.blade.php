@@ -15,6 +15,7 @@
             <button class="clear" data-id="4">片单影片列表</button>
             <button class="clear" data-id="5">标签分类列表</button>
             <button class="clear" data-id="6">排行榜列表</button>
+            <button class="clear" data-id="7">公共配置</button>
         </div>
     </div>
 @endsection

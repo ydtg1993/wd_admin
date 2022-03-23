@@ -173,9 +173,10 @@ class ConfController extends Controller
     public function firstLogin()
     {
         $conf = new ConfLogic();
-        $dataInfo  = $conf->getConf(CommConf::CONF_FIRST_LOGIN);
-        return View::make('conf.first_login',compact('dataInfo'));
+        $dataInfo = $conf->getConf(CommConf::CONF_FIRST_LOGIN);
+        return View::make('conf.first_login', compact('dataInfo'));
     }
+
     /**
      * 保存配置
      * @return \Illuminate\Contracts\View\View
@@ -185,6 +186,7 @@ class ConfController extends Controller
         return self::saveCommon($request);
 
     }
+
     /**
      * 首次登陆提示
      * @return \Illuminate\Contracts\View\View
@@ -192,9 +194,10 @@ class ConfController extends Controller
     public function appSharp()
     {
         $conf = new ConfLogic();
-        $dataInfo  = $conf->getConf(CommConf::CONF_APP_SHARP);
-        return View::make('conf.app_sharp',compact('dataInfo'));
+        $dataInfo = $conf->getConf(CommConf::CONF_APP_SHARP);
+        return View::make('conf.app_sharp', compact('dataInfo'));
     }
+
     /**
      * 保存配置
      * @return \Illuminate\Contracts\View\View
@@ -218,15 +221,15 @@ class ConfController extends Controller
     protected function saveCommon(Request $request)
     {
         $viewMap = [
-            1=>'admin.conf.ad_investment',
-            2=>'admin.conf.download_app_setting',
-            3=>'admin.conf.about_us',
-            4=>'admin.conf.friend_link',
-            5=>'admin.conf.private_item',
-            6=>'admin.conf.magnet_link',
-            7=>'admin.conf.comment_notes',
-            8=>'admin.conf.first_login',
-            9=>'admin.conf.app_sharp',
+            1 => 'admin.conf.ad_investment',
+            2 => 'admin.conf.download_app_setting',
+            3 => 'admin.conf.about_us',
+            4 => 'admin.conf.friend_link',
+            5 => 'admin.conf.private_item',
+            6 => 'admin.conf.magnet_link',
+            7 => 'admin.conf.comment_notes',
+            8 => 'admin.conf.first_login',
+            9 => 'admin.conf.app_sharp',
         ];
         $data = $request->input();
         Log::info('数据：' . json_encode($data));
@@ -244,15 +247,17 @@ class ConfController extends Controller
     public function clearCache(Request $request)
     {
         if ($request->method() == 'POST') {
-            function clearAll($cache){
+            function clearAll($cache)
+            {
                 $prefix = config('database.redis.options.prefix');
                 $keys = Redis::keys($cache);
-                foreach ($keys as $key){
-                    Redis::del(str_replace($prefix,'',$key));
+                foreach ($keys as $key) {
+                    Redis::del(str_replace($prefix, '', $key));
                 }
             }
+
             $type = $request->input('type');
-            switch ($type){
+            switch ($type) {
                 case 0:
                     clearAll('home:*');
                     break;
@@ -274,6 +279,8 @@ class ConfController extends Controller
                     break;
                 case 6:
                     clearAll('Rank:movie:rank:*');
+                case 7:
+                    clearAll('Conf:*');
             }
             return Response::json(['code' => 0, 'msg' => '成功']);
         }
@@ -281,4 +288,19 @@ class ConfController extends Controller
     }
 
 
+    public function commentSwitch(Request $request)
+    {
+        $cache = 'Comment:verify:switch';
+        if ($request->method() == 'POST') {
+            Redis::set($cache,$request->input('on'));
+            return Response::json(['code' => 0, 'msg' => '成功']);
+        }
+        $res = Redis::get($cache);
+        if ($res == 1) {
+            $on = 1;
+        } else {
+            $on = 0;
+        }
+        return View::make('conf.comment_switch', compact('on'));
+    }
 }
