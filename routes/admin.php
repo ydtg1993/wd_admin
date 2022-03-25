@@ -279,17 +279,26 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::any('movie/movie', 'MovieController@index')->name('admin.movie.movie');
         Route::any('movie/movie.scoreList', 'MovieController@scoreList')->name('admin.movie.movie.scoreList');
 
-        Route::any('movie/movie.commentList', 'CommentController@commentList')->name('admin.movie.movie.commentList');
-        Route::any('movie/movie.commentDel', 'CommentController@commentDel')->name('admin.movie.movie.commentDel');
-        Route::any('movie/movie.commentDestroy', 'CommentController@commentDestroy')->name('admin.movie.movie.commentDestroy');
-        Route::any('movie/movie.commentShow', 'CommentController@commentShow')->name('admin.movie.movie.commentShow');
-        Route::any('movie/movie.commentAudit', 'CommentController@commentAudit')->name('admin.movie.movie.commentAudit');
-        Route::any('movie/movie.addComment', 'CommentController@add')->name('admin.movie.movie.addComment');
-        Route::any('movie/movie.commentEdit/{id}', 'CommentController@edit')->name('admin.movie.movie.commentEdit');
-        Route::any('movie/movie.commentReply/{id}', 'CommentController@reply')->name('admin.movie.movie.commentReply');
-        Route::any('movie/movie.addCommentList', 'CommentController@batchAdd')->name('admin.movie.movie.addCommentList');
-        Route::any('movie/movie.commentWorkers', 'CommentController@workers')->name('admin.movie.movie.commentWorkers');
-        //批量删除评论
+        //评论 新版本
+        Route::any('movie/movie.commentList', 'NewCommentController@commentList')->name('admin.movie.movie.commentList');
+        Route::any('movie/movie.commentReplyList', 'NewCommentController@commentReplyList')->name('admin.movie.movie.commentReplyList');
+        Route::any('movie/movie.commentDel', 'NewCommentController@commentDel')->name('admin.movie.movie.commentDel');
+        Route::any('movie/movie.commentDestroy', 'NewCommentController@commentDestroy')->name('admin.movie.movie.commentDestroy');
+        Route::any('movie/movie.commentShow', 'NewCommentController@commentShow')->name('admin.movie.movie.commentShow');
+        //Route::any('movie/movie.commentAudit', 'NewCommentController@commentAudit')->name('admin.movie.movie.commentAudit');
+        //Route::any('movie/movie.addComment', 'NewCommentController@add')->name('admin.movie.movie.addComment');
+        //Route::any('movie/movie.commentEdit/{id}', 'NewCommentController@edit')->name('admin.movie.movie.commentEdit');
+        //Route::any('movie/movie.commentReply/{id}', 'NewCommentController@reply')->name('admin.movie.movie.commentReply');
+        //Route::any('movie/movie.addCommentList', 'NewCommentController@batchAdd')->name('admin.movie.movie.addCommentList');
+        //Route::any('movie/movie.commentWorkers', 'NewCommentController@workers')->name('admin.movie.movie.commentWorkers');
+        Route::any('movie/movie.commentAddLike', 'NewCommentController@commentAddLike')->name('admin.movie.movie.commentAddLike');
+        Route::any('movie/movie.commentBlockUser', 'NewCommentController@blockUser')->name('admin.movie.movie.commentBlockUser');
+        Route::any('movie/movie.commentBlockUsers', 'NewCommentController@blockUsers')->name('admin.movie.movie.commentBlockUsers');
+        Route::any('movie/movie.commentGetUserInfo', 'NewCommentController@getUserInfo')->name('admin.movie.movie.commentGetUserInfo');
+        Route::any('movie/movie.commentLike', 'NewCommentController@like')->name('admin.movie.movie.commentLike');
+        Route::any('movie/movie.commentReply', 'NewCommentController@reply')->name('admin.movie.movie.commentReply');
+
+
         Route::any('movie/movie.wantSeeList', 'MovieController@wantSeeList')->name('admin.movie.movie.wantSeeList');
         Route::any('movie/movie.sawList', 'MovieController@sawList')->name('admin.movie.movie.sawList');
         Route::any('movie/movie/create', 'MovieController@create')->name('admin.movie.movie.create')->middleware('permission:movie.movie.create');
@@ -446,8 +455,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
 
     Route::get('conf/app_sharp', 'ConfController@appSharp')->name('admin.conf.app_sharp');
     Route::put('conf/save_app_sharp', 'ConfController@saveAppSharp')->name('admin.conf.save_app_sharp');
-    
+
     Route::any('conf/clearCache', 'ConfController@clearCache')->name('admin.conf.clearCache');
+
+    Route::any('conf/commentSwitch', 'ConfController@commentSwitch')->name('admin.conf.commentSwitch');
 });
 
 

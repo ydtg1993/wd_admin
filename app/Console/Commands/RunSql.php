@@ -38,37 +38,32 @@ class RunSql extends Command
     public function handle()
     {
         $sql = <<<EOF
-alter table `batch_comment_script` add column `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '类型 0:影片评论批处理 1:话题评论批处理';
+CREATE TABLE `user_like_comment` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `cid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '评论ID',
+  `type` tinyint(4) DEFAULT '1' COMMENT '类型 1.赞  2.踩  ',
+  `status` tinyint(4) DEFAULT '1' COMMENT '状态 1.正常  2.删除  ',
+  `like_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '收藏时间',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `id_user_like_comment_id` (`id`) USING BTREE,
+  KEY `id_user_like_comment_uid` (`uid`) USING BTREE,
+  KEY `id_user_like_comment_type` (`type`) USING BTREE,
+  KEY `id_user_like_comment_cid` (`cid`) USING BTREE,
+  KEY `id_user_like_comment_like_time` (`like_time`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='用户点赞记录'
+EOF;
+        \Illuminate\Support\Facades\DB::unprepared($sql);
+        $sql = <<<EOF
+alter table `movie_comment` add column `m_like` int(11) NOT NULL DEFAULT '0' COMMENT '人工加赞';
+EOF;
+        \Illuminate\Support\Facades\DB::unprepared($sql);
+        $sql = <<<EOF
+alter table `movie_comment` add column `m_dislike` int(11) NOT NULL DEFAULT '0' COMMENT '人工点踩';
 EOF;
         \Illuminate\Support\Facades\DB::unprepared($sql);
 
-        $sql = <<<EOF
-CREATE TABLE `article_comment` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `aid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '话题ID',
-  `uid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID/回复的用户ID',
-  `cid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '归属评论ID 0表示顶级评论',
-  `comment` text COLLATE utf8mb4_unicode_ci COMMENT '评论记录',
-  `score` float DEFAULT '0' COMMENT '评分0代表没有评分',
-  `type` tinyint(4) DEFAULT '1' COMMENT '评论类型 1.评论  2.回复  ',
-  `reply_uid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '回复的目标用户ID',
-  `status` tinyint(4) DEFAULT '1' COMMENT ' 1.正常  2.删除  ',
-  `like` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '赞',
-  `dislike` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '踩',
-  `comment_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '评论时间',
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `audit` tinyint(4) DEFAULT '1' COMMENT '审核状态：1.正常 0.待审核 -1.不通过',
-  PRIMARY KEY (`id`),
-  KEY `id_movie_comment_id` (`id`) USING BTREE,
-  KEY `id_movie_comment_uid` (`uid`) USING BTREE,
-  KEY `id_movie_comment_aid` (`aid`) USING BTREE,
-  KEY `id_movie_comment_cid` (`cid`) USING BTREE,
-  KEY `id_movie_comment_type` (`type`) USING BTREE,
-  KEY `id_movie_comment_reply_uid` (`reply_uid`) USING BTREE,
-  KEY `id_movie_comment_created_at` (`created_at`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='话题评论表';
-EOF;
-        \Illuminate\Support\Facades\DB::unprepared($sql);
     }
 }
