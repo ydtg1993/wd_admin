@@ -100,6 +100,8 @@
                     done: function(res, curr, count){
                         var that = this.elem.next();
                         res.data.forEach(function (item, index) {
+                            $("tr[data-index="+index+"] td[data-field='number']").children(index).html('<span title="'+item.movie_name+'">'+item.number+'</span>');
+                            
                             $("tr[data-index="+index+"] td[data-field='uid']").children(index).html('<a href=javascript:void(0) class=uid_info>'+item.uid+'</a>');
 
                             var nickname = '<input style=width:120px; value='+item.nickname+' /><a class=\"layui-btn layui-btn-danger layui-btn-sm\" lay-event=\"lock\">封</a>';
