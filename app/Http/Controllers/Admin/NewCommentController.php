@@ -49,6 +49,8 @@ class NewCommentController extends Controller
         }
         if (!is_null($request->input('source_type')) && $request->input('source_type') !== '') {
             $model = $model->where('movie_comment.source_type', $request->input('source_type'));
+        }else{
+            $model = $model->where('movie_comment.source_type', 1);
         }
 
         $res = $model->orderBy('movie_comment.id', 'DESC')
@@ -116,6 +118,8 @@ class NewCommentController extends Controller
         }
         if (!is_null($request->input('source_type')) && $request->input('source_type') !== '') {
             $model = $model->where('movie_comment.source_type', $request->input('source_type'));
+        }else{
+            $model = $model->where('movie_comment.source_type', 1);
         }
 
         $res = $model->orderBy('movie_comment.id', 'DESC')
