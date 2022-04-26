@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\Logic\Common;
 use App\Tools\RedisCache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
@@ -18,8 +19,8 @@ class MovieActor extends Model
     {
         //写入数据表
         $da = [
-            'name'=>$name, 
-            'status'=>$status, 
+            'name'=>$name,
+            'status'=>$status,
             'sex'=>$sex,
             'photo'=>$photo,
             'social_accounts'=>$sa
@@ -37,7 +38,26 @@ class MovieActor extends Model
     }
 
     /**
-     * 通过影片id，来读取列表 
+     * 格式化演员列表数据
+     * @param array $data
+     */
+    public static function formatList($data = [])
+    {
+        $photo = $data['photo']??'';
+        $reData = [];
+        $reData['id'] = $data['id']??0;
+        $reData['name'] = $data['name']??'';
+        $image_domain = config('app.url').'resources/';
+        $reData['photo'] = $photo == ''?'':($image_domain.$photo);
+        $reData['sex'] = $data['sex']??1;
+        $reData['social_accounts'] = json_decode($data['social_accounts']??'',true) ;
+        $reData['movie_sum'] = $data['movie_sum']??0;
+        $reData['like_sum'] = $data['like_sum']??0;
+        return $reData;
+    }
+
+    /**
+     * 通过影片id，来读取列表
      */
     public static function getForMid($mid = 0)
     {

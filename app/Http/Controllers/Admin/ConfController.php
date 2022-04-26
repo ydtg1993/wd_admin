@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Console\Commands\RankList;
 use App\Http\Controllers\Controller;
 use App\Models\CommConf;
 use App\Services\Logic\Comm\ConfLogic;
@@ -278,9 +279,11 @@ class ConfController extends Controller
                     clearAll('movie:count:catecory:*');
                     break;
                 case 6:
-                    clearAll('Rank:movie:rank:*');
+                    (new RankList())->movie();
                 case 7:
                     clearAll('Conf:*');
+                case 8:
+                    (new RankList())->actor();
             }
             return Response::json(['code' => 0, 'msg' => '成功']);
         }

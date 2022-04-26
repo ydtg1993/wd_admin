@@ -43,8 +43,8 @@
                                 <select id="category" lay-search  lay-filter="parent_id">
                                     <option value='' >选择分类</option>
                                     <?php
-                                    foreach ($categories as $category){
-                                        echo "<option value=$category >$category</option>";
+                                    foreach ($categories as $cid=>$category){
+                                        echo "<option value='$cid' >$category</option>";
                                     }
                                     ?>
                                 </select>
@@ -297,7 +297,7 @@
                             search_value:$('#search_value').val(),
                             is_up:$('#is_up').val(),
                             field: obj.field //排序字段   在接口作为参数字段  field order
-                            ,order: obj.type //排序方式 
+                            ,order: obj.type //排序方式
                         }
                       });
                 });
@@ -360,9 +360,9 @@ EOF;
 
                 /**导入影片数据*/
                 $('#movie_upload').click(function () {
-                    var html = '<div style="margin:20px">' + 
-                                '<form method="post" target="_blank" action="{{route('admin.movie.movie.mvup')}}" enctype="multipart/form-data">@csrf'+ 
-                                '<p><input type="file" name="file"/></p>' + 
+                    var html = '<div style="margin:20px">' +
+                                '<form method="post" target="_blank" action="{{route('admin.movie.movie.mvup')}}" enctype="multipart/form-data">@csrf'+
+                                '<p><input type="file" name="file"/></p>' +
                                 '<p style="margin:10px;"><input type="submit" value="导入影片"/></p>'+
                                 '</form>'+
                                 '</div>';
@@ -376,9 +376,9 @@ EOF;
 
                 /**导入磁链数据*/
                 $('#link_up').click(function () {
-                    var html = '<div style="margin:20px">' + 
+                    var html = '<div style="margin:20px">' +
                                 '<form method="post" target="_blank" action="{{route('admin.movie.movie.linkup')}}" enctype="multipart/form-data"> @csrf'+
-                                '<p><input type="file" name="file"/></p>' + 
+                                '<p><input type="file" name="file"/></p>' +
                                 '<p style="margin:10px;"><input type="submit" value="导入磁链"/></p>'+
                                 '</form>'+
                                 '</div>';
@@ -391,7 +391,7 @@ EOF;
                 });
 
                 /**
-                 * 导出影片数据 
+                 * 导出影片数据
                  */
                 $('#movie_download').click(function(){
                     //获取选择的搜索条件
@@ -402,7 +402,7 @@ EOF;
                     var sVal   = $('#search_value').val();
                     var sc     = $('#category').val();
 
-                    var html = '<div style="margin:20px">' + 
+                    var html = '<div style="margin:20px">' +
                                 '<form method="post" target="_blank" action="{{route('admin.movie.movie.mvdown')}}"> @csrf'+
                                 '<p><input type="hidden" name="date" value="'+cDate+'"/></p>'+
                                 '<p><input type="hidden" name="rdate" value="'+rDate+'"/></p>'+

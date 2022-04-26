@@ -99,20 +99,24 @@ class RankList extends Command
             //计入缓存
             $cache = "Rank:actor:rank:{$type}";
             $reData = ['list' => [], 'sum' => 0];
-            $actor_ids = DB::table('actor_popularity_chart')
-                ->where('cid', $type)
-                ->where('mtime', '>=', $this->this_month)
-                ->orderBy('hot_val', 'desc')
-                ->orderBy('up_mhot', 'desc')
+            $actors = DB::table('actor_popularity_chart')
+                ->join('movie_actor','actor_popularity_chart.aid','=','movie_actor.id')
+                ->where('actor_popularity_chart.cid', $type)
+                ->where('actor_popularity_chart.mtime', '>=', $this->this_month)
+                ->orderBy('actor_popularity_chart.hot_val', 'desc')
+                ->orderBy('actor_popularity_chart.up_mhot', 'desc')
                 ->offset(0)
                 ->limit(100)
-                ->pluck('aid')
-                ->all();
-            $list = MovieActor::whereIn('id', $actor_ids)->get();
+                ->select('movie_actor.*')
+                ->get();
+            $actors = $actors->toArray();
+            if(empty($actors)){
+                continue;
+            }
             $i = 1;
             $temp = [];
-            foreach ($list as $val) {
-                $actor = MovieActor::formatList($val);
+            foreach ($actors as $val) {
+                $actor = MovieActor::formatList((array)$val);
                 $actor['rank'] = $i;
                 $i++;
                 $temp[] = $actor;
