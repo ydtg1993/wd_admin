@@ -36,7 +36,12 @@ class MovieLog extends Model
             $tempMovie = [];
 
             foreach ($MovieList as $val) {
-                $tempMovie[$val['id'] ?? 0] = Movie::formatList($val);//格式化视频数据
+                $data = Movie::formatList($val);//格式化视频数据
+                $data['score_people'] = $val['score_people'];
+                $data['wan_see'] = $val['wan_see'];
+                $data['seen'] = $val['seen'];
+                $data['pv'] = DB::table('movie_log')->where('mid', $val['id'])->count();
+                $tempMovie[$val['id'] ?? 0] = $data;
             }
             $rank = 0;
             foreach ($browseList as $val) {

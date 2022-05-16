@@ -53,6 +53,14 @@ class MovieActor extends Model
         $reData['social_accounts'] = json_decode($data['social_accounts']??'',true) ;
         $reData['movie_sum'] = $data['movie_sum']??0;
         $reData['like_sum'] = $data['like_sum']??0;
+        $reData['info'] = [
+            'new_movie_count' =>$data['new_movie_count'],
+            'new_movie_pv' =>$data['new_movie_pv'],
+            'new_movie_want' =>$data['new_movie_want'],
+            'new_movie_seen' =>$data['new_movie_seen'],
+            'new_movie_score' =>$data['new_movie_score'],
+            'new_movie_score_people' =>$data['new_movie_score_people'],
+        ];
         return $reData;
     }
 
