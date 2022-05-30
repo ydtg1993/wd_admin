@@ -2,7 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Movie;
+use App\Models\MovieCategory;
+use App\Models\MovieLog;
 use App\Tools\RedisCache;
+use Elasticsearch\ClientBuilder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Command;
 
@@ -68,6 +72,60 @@ class JobAssociate extends Command
         $this->countLabel(0);
         echo '结束标签统计'.PHP_EOL;
 
+        //本月累计新增PV浏览量 计入
+        echo '开始统计pv:'.PHP_EOL;
+        $this->countPv();
+    }
+
+    private function countPv()
+    {
+        $time = time();
+        $this_month = date('Y-m-01 00:00:00', $time);//本月时间
+        $page = 1;
+        $limit = 500;
+
+        $ES = ClientBuilder::create()->setHosts([env('ELASTIC_HOST').':'.env('ELASTIC_PORT')])->build();
+        while(true){
+            if($time > strtotime(date('Y-m-01 12:00:00', $time))){
+                //本月首日清0
+                break;
+            }
+            $start = ($page - 1) * $limit;
+            $data = Movie::where('status',1)->take($limit)->skip($start)->pluck('id')->all();
+            $page++;
+            if (empty($data)) {
+                return;
+            }
+            foreach ($data as $id){
+                $ES->update([
+                    'index' => 'movie',
+                    'type' => '_doc',
+                    'id' => $id,
+                    'body' => [
+                        'doc' => [
+                            'pv' => 0
+                        ]
+                    ]
+                ]);
+            }
+        }
+
+        $cids = MovieCategory::pluck('id')->all();
+        foreach ($cids as $cid) {
+            $log = DB::select("SELECT mid,count(0) as num FROM movie_log where cid='{$cid}' AND created_at>'{$this_month}' group by mid");
+            foreach ($log as $l) {
+                $ES->update([
+                    'index' => 'movie',
+                    'type' => '_doc',
+                    'id' => $l->mid,
+                    'body' => [
+                        'doc' => [
+                            'pv' => $l->num
+                        ]
+                    ]
+                ]);
+            }
+        }
     }
 
     private function countActor($startId = 0)
@@ -78,7 +136,7 @@ class JobAssociate extends Command
         if(count($res)<1){
             return 0;
         }
-        
+
         //循环写入数据
         foreach($res as $val)
         {
@@ -100,7 +158,7 @@ class JobAssociate extends Command
         if(count($res)<1){
             return 0;
         }
-        
+
         //循环写入数据
         foreach($res as $val)
         {
@@ -122,7 +180,7 @@ class JobAssociate extends Command
         if(count($res)<1){
             return 0;
         }
-        
+
         //循环写入数据
         foreach($res as $val)
         {
@@ -144,7 +202,7 @@ class JobAssociate extends Command
         if(count($res)<1){
             return 0;
         }
-        
+
         //循环写入数据
         foreach($res as $val)
         {
@@ -167,7 +225,7 @@ class JobAssociate extends Command
         if(count($res)<1){
             return 0;
         }
-        
+
         //循环写入数据
         foreach($res as $val)
         {
@@ -189,7 +247,7 @@ class JobAssociate extends Command
         if(count($res)<1){
             return 0;
         }
-        
+
         //循环写入数据
         foreach($res as $val)
         {

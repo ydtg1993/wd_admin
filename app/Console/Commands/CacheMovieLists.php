@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Tools\RedisCache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Redis;
 
 class CacheMovieLists extends Command
 {
@@ -141,7 +140,7 @@ class CacheMovieLists extends Command
 
     /**
      * 电影写入缓存
-     * @param  int  $mid  电影的id 
+     * @param  int  $mid  电影的id
      */
     private function cacheDo($mid = 0)
     {
@@ -149,7 +148,7 @@ class CacheMovieLists extends Command
         foreach($arrMovie as $v){
             //处理特殊数据，发现名称里面居然有换行，制表等等，用base64来隐藏数据
             $text = base64_encode(trim($v->number));
-            $res = RedisCache::addSet($this->key,intval($v->id),$text);
+            $res = Redis::zadd($this->key,intval($v->id),$text);
             if($res > 0)
             {
                 echo $v->id.'，写入电影番号缓存,'.$v->number.'结果：'.$res.PHP_EOL;
@@ -161,19 +160,19 @@ class CacheMovieLists extends Command
 
     /**
      * 分类写入缓存
-     * @param  int  $cid  分类的id 
+     * @param  int  $cid  分类的id
      */
     private function casheDoCategory($cid = 0)
     {
         $arr = DB::select('select id,`name` from movie_category where id>? order by id asc limit ?',[$cid,$this->pageSize]);
         foreach ($arr as $v) {
             $text = base64_encode(trim($v->name));
-            $res = RedisCache::addSet($this->keyCategory,intval($v->id),$text);
+            $res = Redis::zadd($this->keyCategory,intval($v->id),$text);
             if($res > 0)
             {
                 echo $v->id.'，写入分类缓存，'.$v->name.'结果：'.$res.PHP_EOL;
             }
-            
+
             $cid = $v->id;
         }
         return $cid;
@@ -187,12 +186,12 @@ class CacheMovieLists extends Command
         $arr = DB::select('select id,`name` from movie_actor where id>? order by id asc limit ?',[$aid,$this->pageSize]);
         foreach ($arr as $v) {
             $text = base64_encode(trim($v->name));
-            $res = RedisCache::addSet($this->keyActor,intval($v->id),$text);
+            $res = Redis::zadd($this->keyActor,intval($v->id),$text);
             if($res > 0)
             {
                 echo $v->id.'，写入演员缓存，'.$v->name.'结果：'.$res.PHP_EOL;
             }
-            
+
             $aid = $v->id;
         }
         return $aid;
@@ -206,7 +205,7 @@ class CacheMovieLists extends Command
         $arr = DB::select('select id,`name` from movie_director where id>? order by id asc limit ?',[$did,$this->pageSize]);
         foreach ($arr as $v) {
             $text = base64_encode(trim($v->name));
-            $res = RedisCache::addSet($this->keyDirector,intval($v->id),$text);
+            $res = Redis::zadd($this->keyDirector,intval($v->id),$text);
             if($res > 0)
             {
                 echo $v->id.'，写入演员缓存，'.$v->name.'结果：'.$res.PHP_EOL;
@@ -224,7 +223,7 @@ class CacheMovieLists extends Command
         $arr = DB::select('select id,`name` from movie_film_companies where id>? order by id asc limit ?',[$fid,$this->pageSize]);
         foreach ($arr as $v) {
             $text = base64_encode(trim($v->name));
-            $res = RedisCache::addSet($this->keyFilm,intval($v->id),$text);
+            $res = Redis::zadd($this->keyFilm,intval($v->id),$text);
             if($res > 0)
             {
                 echo $v->id.'，写入片商缓存，'.$v->name.'结果：'.$res.PHP_EOL;
@@ -242,7 +241,7 @@ class CacheMovieLists extends Command
         $arr = DB::select('select id,`name` from movie_label where id>? order by id asc limit ?',[$lid,$this->pageSize]);
         foreach ($arr as $v) {
             $text = base64_encode(trim($v->name));
-            $res = RedisCache::addSet($this->keyLabel,intval($v->id),$text);
+            $res = Redis::zadd($this->keyLabel,intval($v->id),$text);
             if($res > 0)
             {
                 echo $v->id.'，写入标签缓存，'.$v->name.'结果：'.$res.PHP_EOL;
@@ -260,7 +259,7 @@ class CacheMovieLists extends Command
         $arr = DB::select('select id,`name` from movie_series where id>? order by id asc limit ?',[$sid,$this->pageSize]);
         foreach ($arr as $v) {
             $text = base64_encode(trim($v->name));
-            $res = RedisCache::addSet($this->keySeries,intval($v->id),$text);
+            $res = Redis::zadd($this->keySeries,intval($v->id),$text);
             if($res > 0)
             {
                 echo $v->id.'，写入系列缓存，'.$v->name.'结果：'.$res.PHP_EOL;

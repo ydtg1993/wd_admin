@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\AdsList;
 use Illuminate\Console\Command;
-use App\Tools\RedisCache;
+use Illuminate\Support\Facades\Redis;
 
 class AutoExpireAds extends Command
 {
@@ -47,8 +47,7 @@ class AutoExpireAds extends Command
             AdsList::where('id',$v->id)->update(['status'=>3]);
 
             //清除缓存
-            RedisCache::delKey('ads_list:'.$v['location']);
-
+            Redis::del('ads_list:'.$v['location']);
             echo '过期广告:'.$v->name.PHP_EOL;
         }
 

@@ -78,16 +78,20 @@ class RankList extends Command
     /**
      * 演员热度统计
      */
-    private function actorHotProcess()
+    public function actorHotProcess($t = '')
     {
-        $types = DB::table('movie_actor_category')->pluck('id')->all();
-        $this->this_month = date('Y-m-01 00:00:00', time());//本月时间
-        $this->last_month = date('Y-m-01 00:00:00', strtotime('-1 month'));
+        $types = [1, 2, 3, 10];
+        if($t){
+            $time = $t;
+        }else {
+            $time = time();
+        }
+        $this->this_month = date('Y-m-01 00:00:00', $time);//本月时间
+        $this->last_month = date('Y-m-01 00:00:00', strtotime('-1 month',$time));
         $page = 1;
         $pageSize = 500;//一次处理500条
 
         foreach ($types as $type) {
-            $this->total = 100;//每种类型统计上限100条 重置
             while (true) {
                 //该类型所有演员 分片处理
                 $aids = DB::table('movie_actor_category_associate')
@@ -96,57 +100,13 @@ class RankList extends Command
                     ->offset(($page - 1) * $pageSize)
                     ->limit($pageSize)->pluck('aid')->all();
                 if (empty($aids)) {
+                    $page = 1;
                     break;
                 }
                 $page++;
                 //演员热度 分片计算
                 $this->actorHotCal($type, $aids);
             }
-
-            //计入缓存
-            $cache = "Rank:actor:rank:{$type}";
-            $reData = ['list' => [], 'sum' => 0];
-            $actors = DB::table('actor_popularity_chart')
-                ->join('movie_actor', 'actor_popularity_chart.aid', '=', 'movie_actor.id')
-                ->where('actor_popularity_chart.cid', $type)
-                ->where('actor_popularity_chart.mtime', $this->this_month)
-                ->orderBy('actor_popularity_chart.hot_val', 'desc')
-                ->orderBy('actor_popularity_chart.up_mhot', 'desc')
-                ->offset(0)
-                ->limit(100)
-                ->select('movie_actor.*')
-                ->get()->toArray();
-            if (empty($actors)) {
-                continue;
-            }
-            $total = count($actors);
-            if($total<100){
-                $rest = 100 - $total;
-                $records = DB::table('actor_popularity_chart')
-                    ->join('movie_actor', 'actor_popularity_chart.aid', '=', 'movie_actor.id')
-                    ->where('actor_popularity_chart.cid', $type)
-                    ->whereNotIn('actor_popularity_chart.aid', array_column($actors,'id'))
-                    ->where('actor_popularity_chart.mtime','<', $this->this_month)
-                    ->orderBy('actor_popularity_chart.hot_val', 'desc')
-                    ->orderBy('actor_popularity_chart.up_mhot', 'desc')
-                    ->offset(0)
-                    ->limit($rest)
-                    ->select('movie_actor.*')
-                    ->get()->toArray();
-
-                $actors = array_merge($actors ,$records);
-            }
-            $i = 1;
-            $temp = [];
-            foreach ($actors as $val) {
-                $actor = MovieActor::formatList((array)$val);
-                $actor['rank'] = $i;
-                $i++;
-                $temp[] = $actor;
-            }
-            $reData['sum'] = count($temp);
-            $reData['list'] = $temp;
-            Redis::setex($cache, 3600 * 48, json_encode($reData));
         }
     }
 
@@ -158,20 +118,28 @@ class RankList extends Command
             $wan_see_num = 0;//想看数量
             $seenNum = 0;//看过数量
             $comment_numNum = 0;//评论数量
+            $new_movie_score = 0;//上月所有片子得分平均值
+            $new_movie_score_people = 0;
 
             $page = 1;
             $pageSize = 500;//一次处理500条
             while (true) {
                 //该用户本月新增影片
-                $movie_ids = DB::table('movie_actor_associate')
+                $movie_ids=[];
+                $movies = DB::table('movie_actor_associate')
                     ->join('movie', 'movie_actor_associate.mid', '=', 'movie.id')
                     ->where('movie_actor_associate.aid', $aid)
                     ->where('movie_actor_associate.status', 1)
                     ->whereBetween('movie.release_time', [$this->last_month, $this->this_month])
                     ->offset(($page - 1) * $pageSize)
                     ->limit($pageSize)
-                    ->pluck('movie.id')
-                    ->all();
+                    ->select('movie.id','movie.score','movie.score_people')
+                    ->get();
+                foreach ($movies as $movie){
+                    $movie_ids[] = $movie->id;
+                    $new_movie_score += $movie->score;
+                    $new_movie_score_people += $movie->score_people;
+                }
                 if (empty($movie_ids)) {
                     //最后结算
                     if ($movie_count == 0) {
@@ -187,10 +155,20 @@ class RankList extends Command
                         ->where('aid', $aid)
                         ->where('cid', $type)
                         ->where('mtime', $this->this_month)->first();
+
+                    $data = [
+                        'hot_val' => $hotVal,
+                        'new_movie_count'=>$movie_count,
+                        'new_movie_pv'=>$newMidCountPv,
+                        'new_movie_want'=>$wan_see_num,
+                        'new_movie_seen'=>$seenNum,
+                        'new_movie_score'=> (int)$new_movie_score/$movie_count,
+                        'new_movie_score_people'=>$new_movie_score_people
+                    ];
                     if ($actor_popularity_chart) {
                         DB::table('actor_popularity_chart')
                             ->where('id', $actor_popularity_chart->id)
-                            ->update(['hot_val' => $hotVal]);
+                            ->update($data);
                     } else {
                         $last_record = DB::table('actor_popularity_chart')
                             ->where('aid', $aid)
@@ -198,13 +176,13 @@ class RankList extends Command
                             ->where('mtime', $this->last_month)
                             ->first();
 
-                        DB::table('actor_popularity_chart')->insert([
+                        $data += [
                             'aid' => $aid,
                             'cid' => $type,
                             'mtime' => $this->this_month,
-                            'hot_val' => $hotVal,
-                            'up_mhot' => $last_record ? $last_record->hot_val : 0
-                        ]);
+                            'up_mhot' => $last_record ? $last_record->hot_val : 0,
+                        ];
+                        DB::table('actor_popularity_chart')->insert($data);
                     }
                     break;
                 }
